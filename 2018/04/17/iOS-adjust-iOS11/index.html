@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="iOS11 适配1、启动页如果启动页采用 Launch Imaged Sourc，则需要添加iPhoneX的启动图，不然整个 App 上下将有部分不能显示区域。 启动图的尺寸为：1125*2436px 即：375*812@3x 2、safeAreaiOS11为UIViewController和UIView增加了两个新的属性safeAreaInsets和safeAreaLayoutGuide, 通过">
+<meta name="description" content="1、启动页如果启动页采用 Launch Imaged Sourc，则需要添加iPhoneX的启动图，不然整个 App 上下将有部分不能显示区域。 启动图的尺寸为：1125*2436px 即：375*812@3x 2、safeAreaiOS11为UIViewController和UIView增加了两个新的属性safeAreaInsets和safeAreaLayoutGuide, 通过这两个属性我们可">
 <meta name="keywords" content="iOS,Objective-C">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS11 适配">
 <meta property="og:url" content="http://yoursite.com/2018/04/17/iOS-adjust-iOS11/index.html">
 <meta property="og:site_name" content="Yun&#39;s Blog">
-<meta property="og:description" content="iOS11 适配1、启动页如果启动页采用 Launch Imaged Sourc，则需要添加iPhoneX的启动图，不然整个 App 上下将有部分不能显示区域。 启动图的尺寸为：1125*2436px 即：375*812@3x 2、safeAreaiOS11为UIViewController和UIView增加了两个新的属性safeAreaInsets和safeAreaLayoutGuide, 通过">
+<meta property="og:description" content="1、启动页如果启动页采用 Launch Imaged Sourc，则需要添加iPhoneX的启动图，不然整个 App 上下将有部分不能显示区域。 启动图的尺寸为：1125*2436px 即：375*812@3x 2、safeAreaiOS11为UIViewController和UIView增加了两个新的属性safeAreaInsets和safeAreaLayoutGuide, 通过这两个属性我们可">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://images2017.cnblogs.com/blog/1281817/201711/1281817-20171120105905915-716853123.png">
-<meta property="og:updated_time" content="2018-04-17T08:16:19.000Z">
+<meta property="og:updated_time" content="2018-04-17T08:18:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS11 适配">
-<meta name="twitter:description" content="iOS11 适配1、启动页如果启动页采用 Launch Imaged Sourc，则需要添加iPhoneX的启动图，不然整个 App 上下将有部分不能显示区域。 启动图的尺寸为：1125*2436px 即：375*812@3x 2、safeAreaiOS11为UIViewController和UIView增加了两个新的属性safeAreaInsets和safeAreaLayoutGuide, 通过">
+<meta name="twitter:description" content="1、启动页如果启动页采用 Launch Imaged Sourc，则需要添加iPhoneX的启动图，不然整个 App 上下将有部分不能显示区域。 启动图的尺寸为：1125*2436px 即：375*812@3x 2、safeAreaiOS11为UIViewController和UIView增加了两个新的属性safeAreaInsets和safeAreaLayoutGuide, 通过这两个属性我们可">
 <meta name="twitter:image" content="https://images2017.cnblogs.com/blog/1281817/201711/1281817-20171120105905915-716853123.png">
 
 
@@ -344,7 +344,7 @@
       
 
       
-        <h1 id="iOS11-适配"><a href="#iOS11-适配" class="headerlink" title="iOS11 适配"></a>iOS11 适配</h1><h1 id="1、启动页"><a href="#1、启动页" class="headerlink" title="1、启动页"></a>1、启动页</h1><p>如果启动页采用 Launch Imaged Sourc，则需要添加iPhoneX的启动图，不然整个 App 上下将有部分不能显示区域。</p>
+        <h1 id="1、启动页"><a href="#1、启动页" class="headerlink" title="1、启动页"></a>1、启动页</h1><p>如果启动页采用 Launch Imaged Sourc，则需要添加iPhoneX的启动图，不然整个 App 上下将有部分不能显示区域。</p>
 <p>启动图的尺寸为：1125*2436px 即：375*812@3x</p>
 <h1 id="2、safeArea"><a href="#2、safeArea" class="headerlink" title="2、safeArea"></a>2、safeArea</h1><p>iOS11为UIViewController和UIView增加了两个新的属性safeAreaInsets和safeAreaLayoutGuide, 通过这两个属性我们可以获得安全区域的范围,<br>我们要做的是让那些不能被遮挡的内容和控件在安全区域范围内显示,</p>
 <ul>
@@ -552,7 +552,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#iOS11-适配"><span class="nav-number">1.</span> <span class="nav-text">iOS11 适配</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1、启动页"><span class="nav-number">2.</span> <span class="nav-text">1、启动页</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2、safeArea"><span class="nav-number">3.</span> <span class="nav-text">2、safeArea</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#手动布局"><span class="nav-number">3.1.</span> <span class="nav-text">手动布局</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3、Masonry"><span class="nav-number">4.</span> <span class="nav-text">3、Masonry</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4、prefersLargeTitles"><span class="nav-number">5.</span> <span class="nav-text">4、prefersLargeTitles</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5、UITableView"><span class="nav-number">6.</span> <span class="nav-text">5、UITableView</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1、启动页"><span class="nav-number">1.</span> <span class="nav-text">1、启动页</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2、safeArea"><span class="nav-number">2.</span> <span class="nav-text">2、safeArea</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#手动布局"><span class="nav-number">2.1.</span> <span class="nav-text">手动布局</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3、Masonry"><span class="nav-number">3.</span> <span class="nav-text">3、Masonry</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4、prefersLargeTitles"><span class="nav-number">4.</span> <span class="nav-text">4、prefersLargeTitles</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5、UITableView"><span class="nav-number">5.</span> <span class="nav-text">5、UITableView</span></a></li></ol></div>
             
 
           </div>
