@@ -249,6 +249,248 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/18/ios-kit-vc-lift/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yun's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/18/ios-kit-vc-lift/" itemprop="url">ios_kit_vc_lift</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-18T18:45:04+08:00">
+                2018-04-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="UIViewController-生命周期"><a href="#UIViewController-生命周期" class="headerlink" title="UIViewController 生命周期"></a>UIViewController 生命周期</h1><p><strong>UIViewController 生命周期的主要包括9个方法：</strong></p>
+<p><img src="http://ot8psglzx.bkt.clouddn.com/WX20180418-180809.png?imageMogr2/thumbnail/!70p" alt=""></p>
+<h2 id="init"><a href="#init" class="headerlink" title="init"></a>init</h2><blockquote>
+<p>默认初始化</p>
+</blockquote>
+<ul>
+<li><p><strong>业务逻辑</strong></p>
+<p>  可以初始化数据</p>
+</li>
+<li><p><strong>注意事项</strong></p>
+<p>  不要创建 view。不要调用 self.view。因为view是lazyinit的，调用 self.view，会导致viewcontroller创建view。</p>
+</li>
+</ul>
+<h2 id="loadView"><a href="#loadView" class="headerlink" title="loadView"></a>loadView</h2><blockquote>
+<p>加载 view，如果是从 nib 文件或者 stroyboard加载，则加载相关文件，如果没有，则创建默认的 view。</p>
+</blockquote>
+<ul>
+<li><p><strong>业务逻辑</strong></p>
+<p>  不要重载该方法，创建 view 可以在viewDidLoad中</p>
+</li>
+<li><p><strong>注意事项</strong></p>
+<p>  不要创建view。不要调用 self.view。要调用都在 [super loadView]后。</p>
+</li>
+</ul>
+<h2 id="viewDidLoad"><a href="#viewDidLoad" class="headerlink" title="viewDidLoad"></a>viewDidLoad</h2><blockquote>
+<p>加载view完成。</p>
+</blockquote>
+<ul>
+<li><p><strong>业务逻辑</strong></p>
+<p>  创建附加 view，但是 self.view 的 frame 不可用。</p>
+</li>
+<li><p><strong>注意事项</strong></p>
+<p>  该方法可能调用多次。</p>
+</li>
+</ul>
+<h2 id="viewWillApper"><a href="#viewWillApper" class="headerlink" title="viewWillApper"></a>viewWillApper</h2><blockquote>
+<p>view被添加到superview之前，切换动画之前调用。</p>
+</blockquote>
+<ul>
+<li><p><strong>业务逻辑</strong></p>
+<p>  显示前的处理。如键盘弹出，状态条和navigationbar颜色。</p>
+</li>
+<li><p><strong>注意事项</strong></p>
+<p>  此时 View的 frame 不定，不能利用frame的值</p>
+</li>
+</ul>
+<h2 id="viewDidApper"><a href="#viewDidApper" class="headerlink" title="viewDidApper"></a>viewDidApper</h2><blockquote>
+<p>1、view 已经显示，动画切换完成</p>
+</blockquote>
+<ul>
+<li><p><strong>业务逻辑</strong></p>
+<p>  业务处理 ，可以使用 self.view 的 frame</p>
+</li>
+<li><p><strong>注意事项</strong></p>
+<p>  暂无</p>
+</li>
+</ul>
+<h2 id="viewWillDisapper"><a href="#viewWillDisapper" class="headerlink" title="viewWillDisapper"></a>viewWillDisapper</h2><blockquote>
+<p>1、view移出之前，还未调用 removeFromSuperView</p>
+</blockquote>
+<ul>
+<li><p><strong>业务逻辑</strong></p>
+<p>  根据具体业务处理</p>
+</li>
+<li><p><strong>注意事项</strong></p>
+<p>  暂无</p>
+</li>
+</ul>
+<h2 id="viewDidDisapper"><a href="#viewDidDisapper" class="headerlink" title="viewDidDisapper"></a>viewDidDisapper</h2><blockquote>
+<p>1、view移出完成，动画完成。</p>
+</blockquote>
+<ul>
+<li><p><strong>业务逻辑</strong></p>
+<p>  处理view 不显示时的一些业务逻辑。</p>
+</li>
+<li><p><strong>注意事项</strong></p>
+<p>  暂无</p>
+</li>
+</ul>
+<h2 id="viewDidUnload"><a href="#viewDidUnload" class="headerlink" title="viewDidUnload"></a>viewDidUnload</h2><blockquote>
+<p>1、一般发生在内存警告时，view置为nil</p>
+</blockquote>
+<ul>
+<li><p><strong>业务逻辑</strong></p>
+<p>  可以释放其他view，比如viewcontroller的 self.view上加了一个label，而且这个label是viewcontroller的属性，那么你要把这个属性设置成nil，以免占用不必要的内存，而这个label在viewDidLoad时会重新创建。</p>
+</li>
+<li><p><strong>注意事项</strong></p>
+<p>  暂无</p>
+</li>
+</ul>
+<h2 id="dealloc"><a href="#dealloc" class="headerlink" title="dealloc"></a>dealloc</h2><blockquote>
+<p>1、销毁时调用</p>
+</blockquote>
+<ul>
+<li><p><strong>业务逻辑</strong></p>
+<p>  移除观察者，定时器等</p>
+</li>
+<li><p><strong>注意事项</strong></p>
+<p>  暂无</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/17/iOS-adjust-iOS11/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -881,7 +1123,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -903,7 +1145,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
