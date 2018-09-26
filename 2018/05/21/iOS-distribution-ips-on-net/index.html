@@ -108,27 +108,28 @@
 
 
 
-  <meta name="description" content="UIViewController 生命周期方法与业务逻辑UIViewController 生命周期的主要包括9个方法：  init 默认初始化   业务逻辑   可以初始化数据  注意事项   不要创建 view。不要调用 self.view。因为view是lazyinit的，调用 self.view，会导致viewcontroller创建view。   loadView 加载 view，如果是从">
-<meta name="keywords" content="iOS,UIKit">
+  <meta name="description" content="发布线上安装iOS应用（ipa）发布 ipa 文件到线上，通过itms-services 协议访问安装。 适用对象 企业证书，直接安装   所有人都可以下载安装，用户打开前，需要信任手动信任企业证书。   个人/公司证书，给添加过 UDID 的设备安装   适用于部分设备安装（添加了 UDID 的设备）  操作步骤本人采用Xcode 生成安装文件，步骤如下：  打开Xcode，的 Organize">
+<meta name="keywords" content="iOS,Objective-C,总结">
 <meta property="og:type" content="article">
-<meta property="og:title" content="UIViewController 生命周期方法与业务逻辑">
-<meta property="og:url" content="http://yoursite.com/2018/04/18/ios-kit-vc-lift/index.html">
+<meta property="og:title" content="发布线上安装iOS应用（ipa）">
+<meta property="og:url" content="http://yoursite.com/2018/05/21/iOS-distribution-ips-on-net/index.html">
 <meta property="og:site_name" content="Yun&#39;s Blog">
-<meta property="og:description" content="UIViewController 生命周期方法与业务逻辑UIViewController 生命周期的主要包括9个方法：  init 默认初始化   业务逻辑   可以初始化数据  注意事项   不要创建 view。不要调用 self.view。因为view是lazyinit的，调用 self.view，会导致viewcontroller创建view。   loadView 加载 view，如果是从">
+<meta property="og:description" content="发布线上安装iOS应用（ipa）发布 ipa 文件到线上，通过itms-services 协议访问安装。 适用对象 企业证书，直接安装   所有人都可以下载安装，用户打开前，需要信任手动信任企业证书。   个人/公司证书，给添加过 UDID 的设备安装   适用于部分设备安装（添加了 UDID 的设备）  操作步骤本人采用Xcode 生成安装文件，步骤如下：  打开Xcode，的 Organize">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ot8psglzx.bkt.clouddn.com/VcLife.png?imageMogr2/thumbnail/!70p">
-<meta property="og:updated_time" content="2018-04-19T02:46:39.000Z">
+<meta property="og:image" content="http://ot8psglzx.bkt.clouddn.com/WX20180521-170859.png?imageMogr2/thumbnail/!70p">
+<meta property="og:image" content="http://ot8psglzx.bkt.clouddn.com/WX20180521-171144.png?imageMogr2/thumbnail/!70p">
+<meta property="og:updated_time" content="2018-09-26T09:18:02.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="UIViewController 生命周期方法与业务逻辑">
-<meta name="twitter:description" content="UIViewController 生命周期方法与业务逻辑UIViewController 生命周期的主要包括9个方法：  init 默认初始化   业务逻辑   可以初始化数据  注意事项   不要创建 view。不要调用 self.view。因为view是lazyinit的，调用 self.view，会导致viewcontroller创建view。   loadView 加载 view，如果是从">
-<meta name="twitter:image" content="http://ot8psglzx.bkt.clouddn.com/VcLife.png?imageMogr2/thumbnail/!70p">
+<meta name="twitter:title" content="发布线上安装iOS应用（ipa）">
+<meta name="twitter:description" content="发布线上安装iOS应用（ipa）发布 ipa 文件到线上，通过itms-services 协议访问安装。 适用对象 企业证书，直接安装   所有人都可以下载安装，用户打开前，需要信任手动信任企业证书。   个人/公司证书，给添加过 UDID 的设备安装   适用于部分设备安装（添加了 UDID 的设备）  操作步骤本人采用Xcode 生成安装文件，步骤如下：  打开Xcode，的 Organize">
+<meta name="twitter:image" content="http://ot8psglzx.bkt.clouddn.com/WX20180521-170859.png?imageMogr2/thumbnail/!70p">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/04/18/ios-kit-vc-lift/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/05/21/iOS-distribution-ips-on-net/"/>
 
 
 
@@ -138,7 +139,7 @@
   };
 </script>
 
-  <title>UIViewController 生命周期方法与业务逻辑 | Yun's Blog</title>
+  <title>发布线上安装iOS应用（ipa） | Yun's Blog</title>
   
 
 
@@ -224,7 +225,7 @@
           
           <li class="menu-item menu-item-home">
     <a href="/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Startseite</a>
   </li>
         
         
@@ -232,7 +233,7 @@
           
           <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archiv</a>
   </li>
 
       
@@ -283,7 +284,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/18/ios-kit-vc-lift/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/21/iOS-distribution-ips-on-net/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yun">
@@ -300,7 +301,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">UIViewController 生命周期方法与业务逻辑
+          <h1 class="post-title" itemprop="name headline">发布线上安装iOS应用（ipa）
               
             
           </h1>
@@ -318,14 +319,14 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
 
               
                 
               
 
-              <time title="Created: 2018-04-18 18:45:04" itemprop="dateCreated datePublished" datetime="2018-04-18T18:45:04+08:00">2018-04-18</time>
+              <time title="Post created: 2018-05-21 17:38:48" itemprop="dateCreated datePublished" datetime="2018-05-21T17:38:48+08:00">2018-05-21</time>
             
 
             
@@ -342,7 +343,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-04-19 10:46:39" itemprop="dateModified" datetime="2018-04-19T10:46:39+08:00">2018-04-19</time>
+                <time title="Updated at: 2018-09-26 17:18:02" itemprop="dateModified" datetime="2018-09-26T17:18:02+08:00">2018-09-26</time>
               
             
           </span>
@@ -356,7 +357,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">In</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
@@ -393,107 +394,43 @@
       
 
       
-        <h1 id="UIViewController-生命周期方法与业务逻辑"><a href="#UIViewController-生命周期方法与业务逻辑" class="headerlink" title="UIViewController 生命周期方法与业务逻辑"></a>UIViewController 生命周期方法与业务逻辑</h1><p><strong>UIViewController 生命周期的主要包括9个方法：</strong></p>
-<p><img src="http://ot8psglzx.bkt.clouddn.com/VcLife.png?imageMogr2/thumbnail/!70p" alt=""></p>
-<h2 id="init"><a href="#init" class="headerlink" title="init"></a>init</h2><blockquote>
-<p>默认初始化</p>
+        <h1 id="发布线上安装iOS应用（ipa）"><a href="#发布线上安装iOS应用（ipa）" class="headerlink" title="发布线上安装iOS应用（ipa）"></a>发布线上安装iOS应用（ipa）</h1><p>发布 ipa 文件到线上，通过itms-services 协议访问安装。</p>
+<h3 id="适用对象"><a href="#适用对象" class="headerlink" title="适用对象"></a>适用对象</h3><ol>
+<li>企业证书，直接安装</li>
+</ol>
+<blockquote>
+<p>所有人都可以下载安装，用户打开前，需要信任手动信任企业证书。</p>
 </blockquote>
-<ul>
-<li><p><strong>业务逻辑</strong></p>
-<p>  可以初始化数据</p>
-</li>
-<li><p><strong>注意事项</strong></p>
-<p>  不要创建 view。不要调用 self.view。因为view是lazyinit的，调用 self.view，会导致viewcontroller创建view。</p>
-</li>
-</ul>
-<h2 id="loadView"><a href="#loadView" class="headerlink" title="loadView"></a>loadView</h2><blockquote>
-<p>加载 view，如果是从 nib 文件或者 stroyboard加载，则加载相关文件，如果没有，则创建默认的 view。</p>
+<ol>
+<li>个人/公司证书，给添加过 UDID 的设备安装</li>
+</ol>
+<blockquote>
+<p>适用于部分设备安装（添加了 UDID 的设备）</p>
 </blockquote>
-<ul>
-<li><p><strong>业务逻辑</strong></p>
-<p>  不要重载该方法，创建 view 可以在viewDidLoad中</p>
+<h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><p>本人采用Xcode 生成安装文件，步骤如下：</p>
+<ol>
+<li><p>打开Xcode，的 Organizer，选择需要发布的应用</p>
 </li>
-<li><p><strong>注意事项</strong></p>
-<p>  不要创建view。不要调用 self.view。要调用都在 [super loadView]后。</p>
+<li><p>点击 Export，选择 Ad Hoc，点击 Next</p>
 </li>
-</ul>
-<h2 id="viewDidLoad"><a href="#viewDidLoad" class="headerlink" title="viewDidLoad"></a>viewDidLoad</h2><blockquote>
-<p>加载view完成。</p>
-</blockquote>
-<ul>
-<li><p><strong>业务逻辑</strong></p>
-<p>  创建附加 view，但是 self.view 的 frame 不可用。</p>
+<li><p>勾选如图选项：点击 Next</p>
 </li>
-<li><p><strong>注意事项</strong></p>
-<p>  该方法可能调用多次。</p>
+</ol>
+<p><img src="http://ot8psglzx.bkt.clouddn.com/WX20180521-170859.png?imageMogr2/thumbnail/!70p" alt=""></p>
+<ol>
+<li>填写相关项，需要 https 协议的链接，可用 github 仓库。</li>
+</ol>
+<p><img src="http://ot8psglzx.bkt.clouddn.com/WX20180521-171144.png?imageMogr2/thumbnail/!70p" alt=""></p>
+<ol>
+<li><p>根据情况执行后续操作，得到manifest.plist文件。上传到服务器，可选择 git。</p>
 </li>
-</ul>
-<h2 id="viewWillApper"><a href="#viewWillApper" class="headerlink" title="viewWillApper"></a>viewWillApper</h2><blockquote>
-<p>view被添加到superview之前，切换动画之前调用。</p>
-</blockquote>
-<ul>
-<li><p><strong>业务逻辑</strong></p>
-<p>  显示前的处理。如键盘弹出，状态条和navigationbar颜色。</p>
+<li><p>生成下载地址：如：</p>
 </li>
-<li><p><strong>注意事项</strong></p>
-<p>  此时 View的 frame 不定，不能利用frame的值</p>
-</li>
-</ul>
-<h2 id="viewDidApper"><a href="#viewDidApper" class="headerlink" title="viewDidApper"></a>viewDidApper</h2><blockquote>
-<p>1、view 已经显示，动画切换完成</p>
-</blockquote>
-<ul>
-<li><p><strong>业务逻辑</strong></p>
-<p>  业务处理 ，可以使用 self.view 的 frame</p>
-</li>
-<li><p><strong>注意事项</strong></p>
-<p>  暂无</p>
-</li>
-</ul>
-<h2 id="viewWillDisapper"><a href="#viewWillDisapper" class="headerlink" title="viewWillDisapper"></a>viewWillDisapper</h2><blockquote>
-<p>1、view移出之前，还未调用 removeFromSuperView</p>
-</blockquote>
-<ul>
-<li><p><strong>业务逻辑</strong></p>
-<p>  根据具体业务处理</p>
-</li>
-<li><p><strong>注意事项</strong></p>
-<p>  暂无</p>
-</li>
-</ul>
-<h2 id="viewDidDisapper"><a href="#viewDidDisapper" class="headerlink" title="viewDidDisapper"></a>viewDidDisapper</h2><blockquote>
-<p>1、view移出完成，动画完成。</p>
-</blockquote>
-<ul>
-<li><p><strong>业务逻辑</strong></p>
-<p>  处理view 不显示时的一些业务逻辑。</p>
-</li>
-<li><p><strong>注意事项</strong></p>
-<p>  暂无</p>
-</li>
-</ul>
-<h2 id="viewDidUnload"><a href="#viewDidUnload" class="headerlink" title="viewDidUnload"></a>viewDidUnload</h2><blockquote>
-<p>1、一般发生在内存警告时，view置为nil</p>
-</blockquote>
-<ul>
-<li><p><strong>业务逻辑</strong></p>
-<p>  可以释放其他view，比如viewcontroller的 self.view上加了一个label，而且这个label是viewcontroller的属性，那么你要把这个属性设置成nil，以免占用不必要的内存，而这个label在viewDidLoad时会重新创建。</p>
-</li>
-<li><p><strong>注意事项</strong></p>
-<p>  暂无</p>
-</li>
-</ul>
-<h2 id="dealloc"><a href="#dealloc" class="headerlink" title="dealloc"></a>dealloc</h2><blockquote>
-<p>1、销毁时调用</p>
-</blockquote>
-<ul>
-<li><p><strong>业务逻辑</strong></p>
-<p>  移除观察者，定时器等</p>
-</li>
-<li><p><strong>注意事项</strong></p>
-<p>  暂无</p>
-</li>
-</ul>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">itms-services://?action=download-manifest&amp;url=https://raw.githubusercontent.com/xxx/dis_ipa/master/manifest.plist</span><br></pre></td></tr></table></figure>
+<ol>
+<li>手机上用 Safari 打开以上链接，进行安装。</li>
+</ol>
 
       
     </div>
@@ -516,7 +453,9 @@
           
             <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            <a href="/tags/UIKit/" rel="tag"># UIKit</a>
+            <a href="/tags/Objective-C/" rel="tag"># Objective-C</a>
+          
+            <a href="/tags/总结/" rel="tag"># 总结</a>
           
         </div>
       
@@ -529,8 +468,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/17/iOS-adjust-iOS11/" rel="next" title="iOS11 适配">
-                <i class="fa fa-chevron-left"></i> iOS11 适配
+              <a href="/2018/04/20/iOS-Sol-circular-reference/" rel="next" title="iOS中的循环引用">
+                <i class="fa fa-chevron-left"></i> iOS中的循环引用
               </a>
             
           </div>
@@ -539,8 +478,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/04/19/alfred-qiniu-up-img/" rel="prev" title="快速上传图片到七牛(Alfred+七牛)">
-                快速上传图片到七牛(Alfred+七牛) <i class="fa fa-chevron-right"></i>
+              <a href="/2018/05/21/iOS-exception-img-on-iOS9/" rel="prev" title="iOS9 因为图片莫名闪退">
+                iOS9 因为图片莫名闪退 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -588,10 +527,10 @@
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
+            Inhaltsverzeichnis
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
+            Übersicht
           </li>
         </ul>
       
@@ -611,8 +550,8 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">10</span>
-                    <span class="site-state-item-name">posts</span>
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">Artikel</span>
                   </a>
                 </div>
               
@@ -633,7 +572,7 @@
                       
                     
                     <span class="site-state-item-count">4</span>
-                    <span class="site-state-item-name">categories</span>
+                    <span class="site-state-item-name">Kategorien</span>
                   </a>
                 </div>
               
@@ -663,8 +602,16 @@
                     
                       
                     
-                    <span class="site-state-item-count">9</span>
-                    <span class="site-state-item-name">tags</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">Tags</span>
                   </a>
                 </div>
               
@@ -699,7 +646,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#UIViewController-生命周期方法与业务逻辑"><span class="nav-number">1.</span> <span class="nav-text">UIViewController 生命周期方法与业务逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#init"><span class="nav-number">1.1.</span> <span class="nav-text">init</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#loadView"><span class="nav-number">1.2.</span> <span class="nav-text">loadView</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#viewDidLoad"><span class="nav-number">1.3.</span> <span class="nav-text">viewDidLoad</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#viewWillApper"><span class="nav-number">1.4.</span> <span class="nav-text">viewWillApper</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#viewDidApper"><span class="nav-number">1.5.</span> <span class="nav-text">viewDidApper</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#viewWillDisapper"><span class="nav-number">1.6.</span> <span class="nav-text">viewWillDisapper</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#viewDidDisapper"><span class="nav-number">1.7.</span> <span class="nav-text">viewDidDisapper</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#viewDidUnload"><span class="nav-number">1.8.</span> <span class="nav-text">viewDidUnload</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dealloc"><span class="nav-number">1.9.</span> <span class="nav-text">dealloc</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#发布线上安装iOS应用（ipa）"><span class="nav-number">1.</span> <span class="nav-text">发布线上安装iOS应用（ipa）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#适用对象"><span class="nav-number">1.0.1.</span> <span class="nav-text">适用对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作步骤"><span class="nav-number">1.0.2.</span> <span class="nav-text">操作步骤</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -733,7 +680,7 @@
 
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.6.0</div>
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.6.0</div>
 
 
 

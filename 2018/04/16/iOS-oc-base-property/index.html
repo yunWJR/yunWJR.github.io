@@ -108,25 +108,25 @@
 
 
 
-  <meta name="description" content="Hackintosh 黑苹果总结 个人用黑苹果开发iOS、java已经有2年多。之所以选择黑苹果，还是因为 Macbook 性能太弱，而且发热严重。2年之久，基本随着 Mac系统更新，也会更新系统（不然无法更新最新的Xcode，纯 java 开发倒是无所谓）。只有一次打开【文件保险箱】功能挂了（下面有说明，千万不要打开该选项），其他时候都没问题。分享其中的一些经验，给愿意尝试黑苹果的朋友。   个">
-<meta name="keywords" content="Hackintosh,黑苹果">
+  <meta name="description" content="Objective-C 基础 - 属性(property)@property用于声明属性，自动实现属性的读写方法。 属性特质原子性、读写权限、内存管理语义、方法名、其他。 1、原子性 atomic -默认  占用部分资源、效率一般、线程安全   nonatomic   非原子、效率高、线程不安全    2、读写权限 readwrite -默认  读写   readonly   只读    3、内存">
+<meta name="keywords" content="iOS,Objective-C">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hackintosh 黑苹果总结">
-<meta property="og:url" content="http://yoursite.com/2018/09/13/hackintosh-summary/index.html">
+<meta property="og:title" content="Objective-C 基础 - 属性">
+<meta property="og:url" content="http://yoursite.com/2018/04/16/iOS-oc-base-property/index.html">
 <meta property="og:site_name" content="Yun&#39;s Blog">
-<meta property="og:description" content="Hackintosh 黑苹果总结 个人用黑苹果开发iOS、java已经有2年多。之所以选择黑苹果，还是因为 Macbook 性能太弱，而且发热严重。2年之久，基本随着 Mac系统更新，也会更新系统（不然无法更新最新的Xcode，纯 java 开发倒是无所谓）。只有一次打开【文件保险箱】功能挂了（下面有说明，千万不要打开该选项），其他时候都没问题。分享其中的一些经验，给愿意尝试黑苹果的朋友。   个">
+<meta property="og:description" content="Objective-C 基础 - 属性(property)@property用于声明属性，自动实现属性的读写方法。 属性特质原子性、读写权限、内存管理语义、方法名、其他。 1、原子性 atomic -默认  占用部分资源、效率一般、线程安全   nonatomic   非原子、效率高、线程不安全    2、读写权限 readwrite -默认  读写   readonly   只读    3、内存">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-26T09:21:34.000Z">
+<meta property="og:updated_time" content="2018-09-26T09:01:27.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hackintosh 黑苹果总结">
-<meta name="twitter:description" content="Hackintosh 黑苹果总结 个人用黑苹果开发iOS、java已经有2年多。之所以选择黑苹果，还是因为 Macbook 性能太弱，而且发热严重。2年之久，基本随着 Mac系统更新，也会更新系统（不然无法更新最新的Xcode，纯 java 开发倒是无所谓）。只有一次打开【文件保险箱】功能挂了（下面有说明，千万不要打开该选项），其他时候都没问题。分享其中的一些经验，给愿意尝试黑苹果的朋友。   个">
+<meta name="twitter:title" content="Objective-C 基础 - 属性">
+<meta name="twitter:description" content="Objective-C 基础 - 属性(property)@property用于声明属性，自动实现属性的读写方法。 属性特质原子性、读写权限、内存管理语义、方法名、其他。 1、原子性 atomic -默认  占用部分资源、效率一般、线程安全   nonatomic   非原子、效率高、线程不安全    2、读写权限 readwrite -默认  读写   readonly   只读    3、内存">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/09/13/hackintosh-summary/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/04/16/iOS-oc-base-property/"/>
 
 
 
@@ -136,7 +136,7 @@
   };
 </script>
 
-  <title>Hackintosh 黑苹果总结 | Yun's Blog</title>
+  <title>Objective-C 基础 - 属性 | Yun's Blog</title>
   
 
 
@@ -281,7 +281,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/13/hackintosh-summary/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/16/iOS-oc-base-property/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yun">
@@ -298,7 +298,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hackintosh 黑苹果总结
+          <h1 class="post-title" itemprop="name headline">Objective-C 基础 - 属性
               
             
           </h1>
@@ -323,7 +323,7 @@
                 
               
 
-              <time title="Post created: 2018-09-13 18:22:42" itemprop="dateCreated datePublished" datetime="2018-09-13T18:22:42+08:00">2018-09-13</time>
+              <time title="Post created: 2018-04-16 09:05:48" itemprop="dateCreated datePublished" datetime="2018-04-16T09:05:48+08:00">2018-04-16</time>
             
 
             
@@ -340,7 +340,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Updated at: 2018-09-26 17:21:34" itemprop="dateModified" datetime="2018-09-26T17:21:34+08:00">2018-09-26</time>
+                <time title="Updated at: 2018-09-26 17:01:27" itemprop="dateModified" datetime="2018-09-26T17:01:27+08:00">2018-09-26</time>
               
             
           </span>
@@ -357,7 +357,7 @@
                 <span class="post-meta-item-text">in</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Hackintosh/" itemprop="url" rel="index"><span itemprop="name">Hackintosh</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
 
                 
                 
@@ -391,58 +391,83 @@
       
 
       
-        <h1 id="Hackintosh-黑苹果总结"><a href="#Hackintosh-黑苹果总结" class="headerlink" title="Hackintosh 黑苹果总结"></a>Hackintosh 黑苹果总结</h1><blockquote>
-<p>个人用黑苹果开发iOS、java已经有2年多。之所以选择黑苹果，还是因为 Macbook 性能太弱，而且发热严重。2年之久，基本随着 Mac系统更新，也会更新系统（不然无法更新最新的Xcode，纯 java 开发倒是无所谓）。只有一次打开【文件保险箱】功能挂了（下面有说明，千万不要打开该选项），其他时候都没问题。分享其中的一些经验，给愿意尝试黑苹果的朋友。</p>
+        <h1 id="Objective-C-基础-属性-property"><a href="#Objective-C-基础-属性-property" class="headerlink" title="Objective-C 基础 - 属性(property)"></a>Objective-C 基础 - 属性(property)</h1><h3 id="property"><a href="#property" class="headerlink" title="@property"></a>@property</h3><p>用于声明属性，自动实现属性的读写方法。</p>
+<h2 id="属性特质"><a href="#属性特质" class="headerlink" title="属性特质"></a>属性特质</h2><p>原子性、读写权限、内存管理语义、方法名、其他。</p>
+<h3 id="1、原子性"><a href="#1、原子性" class="headerlink" title="1、原子性"></a>1、原子性</h3><ul>
+<li><p>atomic -默认</p>
+<blockquote>
+<p>占用部分资源、效率一般、线程安全</p>
 </blockquote>
-<ul>
-<li><p>个人黑苹果电脑的配置：</p>
-<p>  电脑一：台式机（i7-87000k 华擎 Z370M-ITX 16G GT750ti）</p>
-<p>  电脑二：台式机（i5-4590 华硕 b85m 8G）</p>
-<p>  电脑三：联想 Y700笔记本（i5-6300 8G GT960M）</p>
 </li>
-<li><p>帮人配的电脑：</p>
-<p>  电脑一：台式机（i7-77000 华擎 deskmini 16G）</p>
-<p>  电脑二：台式机（i5-7500 华硕 B150 8G）</p>
-<p>  <a href="https://github.com/yunWJR/Hackintosh_List" target="_blank" rel="noopener">EIF 分享-包括以上提到的几种配置机型</a></p>
+<li><p>nonatomic </p>
+<blockquote>
+<p>非原子、效率高、线程不安全</p>
+</blockquote>
 </li>
 </ul>
-<h2 id="一、哪些电脑可以安装黑苹果"><a href="#一、哪些电脑可以安装黑苹果" class="headerlink" title="一、哪些电脑可以安装黑苹果"></a>一、哪些电脑可以安装黑苹果</h2><h3 id="1、笔记本"><a href="#1、笔记本" class="headerlink" title="1、笔记本"></a>1、笔记本</h3><p>如何确定笔记本可以安装：</p>
-<p>1）搜索笔记本型号，看有安装成功的案例没。</p>
-<p>2）看CPU，如果 CPU 的型号与苹果已经发布的笔记本相同或类似（类似定义为同代 CPU），那么 CPU 应该没问题。</p>
-<p>3）看显卡：如果笔记本有独显，那么独显基本是不能使用的，只能使用集显。偶尔少数笔记本有独显，主板不能屏蔽独显，导致无法安装。</p>
-<p>4）以上满足的话，可以尝试安装。</p>
-<h3 id="2、台式机"><a href="#2、台式机" class="headerlink" title="2、台式机"></a>2、台式机</h3><p>如何确定台式机可以安装：</p>
-<p>1）搜索台式机配置，看有安装成功的案例没。</p>
-<p>2）看CPU，如果CPU的型号与苹果已经发布的笔记本相同或类似（类似定义为同代 CPU），那么 CPU 应该没问题，基本都常见的 intel 台式机 CPU 都可以安装。最新的 AMD 都 CPU 也有大神放出内核，可以安装。</p>
-<p>3）看显卡：如果有独显，比较新的 AMD 显卡都可以支持，N 卡一般也支持，有 WebDriver。</p>
-<p>4）主板：一般都支持，技嘉的一般支持原生电源管理，比较好。华擎的支持比较到位，曾经几块主板专门出过安装黑苹果的 BIOS，良心。</p>
-<p>5）网卡：一般 intel 的有线网卡都支持，无线的话，选择 苹果采用的型号，容易驱动。</p>
-<h3 id="3、建议"><a href="#3、建议" class="headerlink" title="3、建议"></a>3、建议</h3><p>1）如果买新电脑</p>
-<p>笔记本可以买没有独显的，因为有也一版用不上。先查下哪些比较好安装的机型，照着买就行。</p>
-<p>台式机可以参考 <a href="https://www.tonymacx86.com/buyersguide/building-a-customac-hackintosh-the-ultimate-buyers-guide/" target="_blank" rel="noopener">tonymacx86</a>上的配置，都很容易安装。</p>
-<p>2）最好配2块以上硬盘。</p>
-<p>一块安装 Mac。另外一块安装 Windows，或者作为备份盘（TimeMachine）。如果作为生成环境使用，建议单独配置一块硬盘作为 TimeMachine 的备份盘。</p>
-<p>3）如果要独显，最好选 AMD 的卡，可以很好的原生驱动。</p>
-<p>4）如果配无线，最好选 Mac 电脑上用过的型号，容易驱动。</p>
-<h2 id="二、安装流程"><a href="#二、安装流程" class="headerlink" title="二、安装流程"></a>二、安装流程</h2><h3 id="最简方式："><a href="#最简方式：" class="headerlink" title="最简方式："></a>最简方式：</h3><p>1、Mac 上 AppStore 中下载 Mac 系统</p>
-<p>2、制作安装镜像到 U 盘，可以借助工具 <a href="http://diskmakerx.com/" target="_blank" rel="noopener">DiskMaker</a></p>
-<p>3、制作 EFI 启动分区，可以制作在 U 盘上，也可以制作在硬盘上。</p>
-<p>4、放入 EFI 分区启动文件（kext 和 config 配置文件等）</p>
-<p>5、设置好 BIOS 选项</p>
-<p>6、从 EFI 启动安装</p>
-<p>7、完善安装（各硬件驱动）</p>
-<p>8、完善 EFI，可将稳定的 EIF 文件，放入 Mac 分区的 EFI 分区。从 Mac 分区启动。</p>
-<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>1、不要随意升级 Mac 新版本，可能造成 kext 不兼容。</p>
-<p>2、最好配一块备份盘，用 TimeMachine 备份。TimeMachine 确实好用。</p>
-<p>3、一般不要去动 SLE 下的系统kext，也尽量不要把 kext 放入 SLE 下面，补丁 kext 都可以放在 EFI 下的 kext 中调试。</p>
-<p>4、千万不要打开『安全与隐私』中的 【<strong>文件保险箱</strong>】功能，该功能与硬件相关，打开后，黑苹果就GG。</p>
-<p>5、config 中的硬件 ID 尽量用同一个（同一台机子），新机子第一次安装时，随机生成一个。频繁更改 ID，会让你重新登录 AppleId。</p>
-<h3 id="可以参考的网站"><a href="#可以参考的网站" class="headerlink" title="可以参考的网站"></a>可以参考的网站</h3><p><a href="https://www.tonymacx86.com/" target="_blank" rel="noopener">tonymacx86 - 国外很活跃度黑苹果网站，还有配置推荐</a></p>
-<p><a href="http://bbs.pcbeta.com/forum.php?mod=forumdisplay&amp;fid=558&amp;filter=author&amp;orderby=dateline" target="_blank" rel="noopener">pcbeta - 国内活跃度黑苹果网站</a></p>
-<p><a href="https://sourceforge.net/projects/cloverefiboot/" target="_blank" rel="noopener">cloverefiboot - clover项目现在地址</a></p>
-<p><a href="https://bitbucket.org/RehabMan/" target="_blank" rel="noopener">RehabMan bitbucket -  RehabMan的 kext下载</a></p>
-<p><a href="https://github.com/RehabMan" target="_blank" rel="noopener">RehabMan git - RehabMan的 kext下载和一些配置信息</a></p>
-<p><a href="https://github.com/acidanthera" target="_blank" rel="noopener">acidanthera git - 作者写了很多有用的 kext</a></p>
+<h3 id="2、读写权限"><a href="#2、读写权限" class="headerlink" title="2、读写权限"></a>2、读写权限</h3><ul>
+<li><p>readwrite -默认</p>
+<blockquote>
+<p>读写</p>
+</blockquote>
+</li>
+<li><p>readonly </p>
+<blockquote>
+<p>只读</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="3、内存管理"><a href="#3、内存管理" class="headerlink" title="3、内存管理"></a>3、内存管理</h3><p>MRC时，有assign、retain、copy，ARC加入了strong、weak</p>
+<ul>
+<li><p>assign -值类型默认</p>
+<blockquote>
+<p>简单赋值、用于值类型，如CGFloat、NSInteger等</p>
+</blockquote>
+</li>
+<li><p>strong (同retain -MRC) -引用类型默认</p>
+<blockquote>
+<p>强引用、用于引用类型</p>
+<p>赋值时，保留新值，新值引用计数+1，释放旧值（引用计数-1）。</p>
+<p>用于所有的实例变量和局部变量、其他常规对象引用。</p>
+<p>注意：可变对象应该使用strong，如NSMultiString</p>
+</blockquote>
+</li>
+<li><p>copy </p>
+<blockquote>
+<p>复制、用于引用类型</p>
+<p>赋值时，拷贝新值（新对象引用计数为1），释放旧值（引用计数-1），不改变新值（引用计数不变）。</p>
+<p>copy的本质为复制该内存所存储的内容，重新创建一个对象赋给其相同的内容，对于实现了NSCopying协议的对象有效。</p>
+<p>用于不可变对象：NSString、block、NSArray、NSDictionary等</p>
+<p>注意：用于可变对象时，设置值后，变为不可变对象</p>
+</blockquote>
+</li>
+<li><p>weak </p>
+<blockquote>
+<p>弱引用、用于引用类型</p>
+<p>赋值时、单纯的引用新对象地址，不改变新对象（引用计数不变），不改变旧对象（引用计数不变）</p>
+<p>当引用对象释放后，其值置为nil</p>
+</blockquote>
+</li>
+<li><p>__unsafe_unretained </p>
+<blockquote>
+<p>类似assign、适用于引用类型、不安全的弱引用</p>
+<p>功能类似于weak、对象摧毁后，不置nil、不安全，可用weak代替</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="4、方法名"><a href="#4、方法名" class="headerlink" title="4、方法名"></a>4、方法名</h3><ul>
+<li><p>getter=<name></name></p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;   @property (nonatomic, getter=isOn) BOOL on;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>setter=<name></name></p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;   @property (nonatomic, setter=setOnState) BOOL on;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ul>
+<h3 id="5、其他"><a href="#5、其他" class="headerlink" title="5、其他"></a>5、其他</h3><p>nonnull, null_resettable, nullable</p>
 
       
     </div>
@@ -463,9 +488,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Hackintosh/" rel="tag"># Hackintosh</a>
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            <a href="/tags/黑苹果/" rel="tag"># 黑苹果</a>
+            <a href="/tags/Objective-C/" rel="tag"># Objective-C</a>
           
         </div>
       
@@ -478,8 +503,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/18/iOS-book-EffectiveObjective-C2.0-chap2/" rel="next" title="EffectiveObjective-C2.0 笔记 - 第二部分">
-                <i class="fa fa-chevron-left"></i> EffectiveObjective-C2.0 笔记 - 第二部分
+              <a href="/2018/03/29/mac-add-shell/" rel="next" title="Mac 添加自定义脚本">
+                <i class="fa fa-chevron-left"></i> Mac 添加自定义脚本
               </a>
             
           </div>
@@ -487,6 +512,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/17/iOS-adjust-iOS11/" rel="prev" title="iOS11 适配">
+                iOS11 适配 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -652,7 +681,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Hackintosh-黑苹果总结"><span class="nav-number">1.</span> <span class="nav-text">Hackintosh 黑苹果总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、哪些电脑可以安装黑苹果"><span class="nav-number">1.1.</span> <span class="nav-text">一、哪些电脑可以安装黑苹果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、笔记本"><span class="nav-number">1.1.1.</span> <span class="nav-text">1、笔记本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、台式机"><span class="nav-number">1.1.2.</span> <span class="nav-text">2、台式机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、建议"><span class="nav-number">1.1.3.</span> <span class="nav-text">3、建议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、安装流程"><span class="nav-number">1.2.</span> <span class="nav-text">二、安装流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#最简方式："><span class="nav-number">1.2.1.</span> <span class="nav-text">最简方式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注意事项"><span class="nav-number">1.2.2.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可以参考的网站"><span class="nav-number">1.2.3.</span> <span class="nav-text">可以参考的网站</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Objective-C-基础-属性-property"><span class="nav-number">1.</span> <span class="nav-text">Objective-C 基础 - 属性(property)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#property"><span class="nav-number">1.0.1.</span> <span class="nav-text">@property</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#属性特质"><span class="nav-number">1.1.</span> <span class="nav-text">属性特质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、原子性"><span class="nav-number">1.1.1.</span> <span class="nav-text">1、原子性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、读写权限"><span class="nav-number">1.1.2.</span> <span class="nav-text">2、读写权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、内存管理"><span class="nav-number">1.1.3.</span> <span class="nav-text">3、内存管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、方法名"><span class="nav-number">1.1.4.</span> <span class="nav-text">4、方法名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、其他"><span class="nav-number">1.1.5.</span> <span class="nav-text">5、其他</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
