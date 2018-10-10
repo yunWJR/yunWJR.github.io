@@ -117,7 +117,7 @@
 <meta property="og:description" content="UIViewController 生命周期方法与业务逻辑UIViewController 生命周期的主要包括9个方法：  init 默认初始化   业务逻辑   可以初始化数据  注意事项   不要创建 view。不要调用 self.view。因为view是lazyinit的，调用 self.view，会导致viewcontroller创建view。   loadView 加载 view，如果是从">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ot8psglzx.bkt.clouddn.com/VcLife.png?imageMogr2/thumbnail/!70p">
-<meta property="og:updated_time" content="2018-09-26T09:07:18.000Z">
+<meta property="og:updated_time" content="2018-10-10T08:16:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="UIViewController 生命周期方法与业务逻辑">
 <meta name="twitter:description" content="UIViewController 生命周期方法与业务逻辑UIViewController 生命周期的主要包括9个方法：  init 默认初始化   业务逻辑   可以初始化数据  注意事项   不要创建 view。不要调用 self.view。因为view是lazyinit的，调用 self.view，会导致viewcontroller创建view。   loadView 加载 view，如果是从">
@@ -224,7 +224,7 @@
           
           <li class="menu-item menu-item-home">
     <a href="/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Startseite</a>
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
   </li>
         
         
@@ -232,7 +232,7 @@
           
           <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archiv</a>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
   </li>
 
       
@@ -318,14 +318,14 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
 
               
                 
               
 
-              <time title="Post created: 2018-04-18 18:45:04" itemprop="dateCreated datePublished" datetime="2018-04-18T18:45:04+08:00">2018-04-18</time>
+              <time title="Created: 2018-04-18 18:45:04" itemprop="dateCreated datePublished" datetime="2018-04-18T18:45:04+08:00">2018-04-18</time>
             
 
             
@@ -342,7 +342,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Updated at: 2018-09-26 17:07:18" itemprop="dateModified" datetime="2018-09-26T17:07:18+08:00">2018-09-26</time>
+                <time title="Modified: 2018-10-10 16:16:44" itemprop="dateModified" datetime="2018-10-10T16:16:44+08:00">2018-10-10</time>
               
             
           </span>
@@ -356,7 +356,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
@@ -440,7 +440,7 @@
 </li>
 </ul>
 <h2 id="viewDidApper"><a href="#viewDidApper" class="headerlink" title="viewDidApper"></a>viewDidApper</h2><blockquote>
-<p>1、view 已经显示，动画切换完成</p>
+<p>view 已经显示，动画切换完成</p>
 </blockquote>
 <ul>
 <li><p><strong>业务逻辑</strong></p>
@@ -451,7 +451,7 @@
 </li>
 </ul>
 <h2 id="viewWillDisapper"><a href="#viewWillDisapper" class="headerlink" title="viewWillDisapper"></a>viewWillDisapper</h2><blockquote>
-<p>1、view移出之前，还未调用 removeFromSuperView</p>
+<p>view移出之前，还未调用 removeFromSuperView</p>
 </blockquote>
 <ul>
 <li><p><strong>业务逻辑</strong></p>
@@ -462,7 +462,7 @@
 </li>
 </ul>
 <h2 id="viewDidDisapper"><a href="#viewDidDisapper" class="headerlink" title="viewDidDisapper"></a>viewDidDisapper</h2><blockquote>
-<p>1、view移出完成，动画完成。</p>
+<p>view移出完成，动画完成。</p>
 </blockquote>
 <ul>
 <li><p><strong>业务逻辑</strong></p>
@@ -473,7 +473,7 @@
 </li>
 </ul>
 <h2 id="viewDidUnload"><a href="#viewDidUnload" class="headerlink" title="viewDidUnload"></a>viewDidUnload</h2><blockquote>
-<p>1、一般发生在内存警告时，view置为nil</p>
+<p>一般发生在内存警告时，view置为nil</p>
 </blockquote>
 <ul>
 <li><p><strong>业务逻辑</strong></p>
@@ -484,7 +484,7 @@
 </li>
 </ul>
 <h2 id="dealloc"><a href="#dealloc" class="headerlink" title="dealloc"></a>dealloc</h2><blockquote>
-<p>1、销毁时调用</p>
+<p>销毁时调用</p>
 </blockquote>
 <ul>
 <li><p><strong>业务逻辑</strong></p>
@@ -588,10 +588,10 @@
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Inhaltsverzeichnis
+            Table of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Übersicht
+            Overview
           </li>
         </ul>
       
@@ -612,7 +612,7 @@
                   <a href="/archives/">
                 
                     <span class="site-state-item-count">11</span>
-                    <span class="site-state-item-name">Artikel</span>
+                    <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
               
@@ -633,7 +633,7 @@
                       
                     
                     <span class="site-state-item-count">4</span>
-                    <span class="site-state-item-name">Kategorien</span>
+                    <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
               
@@ -672,7 +672,7 @@
                       
                     
                     <span class="site-state-item-count">13</span>
-                    <span class="site-state-item-name">Tags</span>
+                    <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
               
@@ -741,7 +741,7 @@
 
 
 
-  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.6.0</div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
 
 
 
