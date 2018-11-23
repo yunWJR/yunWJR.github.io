@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="iOS12 XCode10 适配1. libstdc++弃用  报错Undefined symbols XCode10编译报错ndefined symbols for architecture XXX，如果你的工程中有libstdc++依赖（可从Linked Frameworks and Libraries 项查看），那么就会出现这类错误。 因为苹果在XCode10和iOS12中移除了libstd">
+<meta name="keywords" content="iOS,Objective-C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS12 XCode10 适配">
+<meta property="og:url" content="http://yoursite.com/2018/11/03/iOS-adjust-iOS12/index.html">
+<meta property="og:site_name" content="Yun&#39;s Blog">
+<meta property="og:description" content="iOS12 XCode10 适配1. libstdc++弃用  报错Undefined symbols XCode10编译报错ndefined symbols for architecture XXX，如果你的工程中有libstdc++依赖（可从Linked Frameworks and Libraries 项查看），那么就会出现这类错误。 因为苹果在XCode10和iOS12中移除了libstd">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-23T09:24:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS12 XCode10 适配">
+<meta name="twitter:description" content="iOS12 XCode10 适配1. libstdc++弃用  报错Undefined symbols XCode10编译报错ndefined symbols for architecture XXX，如果你的工程中有libstdc++依赖（可从Linked Frameworks and Libraries 项查看），那么就会出现这类错误。 因为苹果在XCode10和iOS12中移除了libstd">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/03/iOS-adjust-iOS12/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>iOS12 XCode10 适配 | Yun's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yun's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/03/iOS-adjust-iOS12/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yun's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS12 XCode10 适配
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-11-03 17:22:31" itemprop="dateCreated datePublished" datetime="2018-11-03T17:22:31+08:00">2018-11-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2018-11-23 17:24:09" itemprop="dateModified" datetime="2018-11-23T17:24:09+08:00">2018-11-23</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="iOS12-XCode10-适配"><a href="#iOS12-XCode10-适配" class="headerlink" title="iOS12 XCode10 适配"></a>iOS12 XCode10 适配</h1><h2 id="1-libstdc-弃用-报错Undefined-symbols"><a href="#1-libstdc-弃用-报错Undefined-symbols" class="headerlink" title="1. libstdc++弃用  报错Undefined symbols"></a>1. libstdc++弃用  报错Undefined symbols</h2><p> XCode10编译报错<code>ndefined symbols for architecture XXX</code>，如果你的工程中有libstdc++依赖（可从Linked Frameworks and Libraries 项查看），那么就会出现这类错误。</p>
+<p>因为苹果在XCode10和iOS12中移除了libstdc++这个库，由libc++这个库取而代之，苹果的解释是libstdc++已经标记为废弃有5年了，建议大家使用经过了llvm优化过并且全面支持C++11的libc++库。</p>
+<blockquote>
+<p>libstdc++.dylib是C++98版本的标准库实现动态库，而libc++.dylib是C++11版本的标准库实现动态库。libc++是一个更加新的C++标准库实现，它完全支持C++11标准。因此苹果弃用了libstdc++.dylib，这符合苹果一贯的作风。</p>
+</blockquote>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><ul>
+<li><p><strong>最直接的是修改依赖库，支持libc++.dylib</strong></p>
+</li>
+<li><p><strong>临时方法</strong></p>
+<p>  将libstdc++.dylib拷贝到 XCode中，共四个地方</p>
+<p>  <a href="http://qnyuntmp.yunsoho.cn/libstdc++.zip" target="_blank" rel="noopener">libstdc++.dylib下载地址</a></p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo cp CoreSimulator/* /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/usr/lib/</span><br><span class="line">sudo cp MacOSX/* /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib/</span><br><span class="line">sudo cp iPhoneOS/* /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/lib/</span><br><span class="line">sudo cp iPhoneSimulator/* /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/usr/lib/</span><br></pre></td></tr></table></figure>
+<h2 id="2-UICollectionViewCell-高度计算不正确"><a href="#2-UICollectionViewCell-高度计算不正确" class="headerlink" title="2. UICollectionViewCell 高度计算不正确"></a>2. UICollectionViewCell 高度计算不正确</h2><p><strong>更新 iOS12后，一定要检查所有用到UICollectionViewCell的界面，因为UICollectionViewCell可能出现高度计算不正确的现象。</strong></p>
+<p>iOS12对AutoLayout做出了性能优化，但是更新 iOS12后，发现一些UICollectionViewCell的高度不正确，一时间也调试不出什么问题，因此就采用手动计算高度暂时解决。</p>
+<p>这里有一篇同样的问题，解决思路可供参考<a href="http://www.cocoachina.com/ios/20181023/25267.html" target="_blank" rel="noopener">链接</a></p>
+<h3 id="解决方法-1"><a href="#解决方法-1" class="headerlink" title="解决方法"></a>解决方法</h3><ul>
+<li><p><strong>1. 手动计算高度</strong></p>
+</li>
+<li><p><strong>2. 忽略 contentView，直接把 subView 加到 cell 上</strong></p>
+</li>
+</ul>
+<h2 id="3-StatusBar-网络状态"><a href="#3-StatusBar-网络状态" class="headerlink" title="3. StatusBar 网络状态"></a>3. StatusBar 网络状态</h2><p>如果app通过状态栏的网络状态指示器去判断手机当前联网状态，修改进行修改，因为iOS12 更改了StatusBar内部结构。</p>
+<p><a href="https://blog.csdn.net/wxs0124/article/details/80613847" target="_blank" rel="noopener">参考链接</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">+ (NSString *)getIphoneXNetWorkStates &#123;    </span><br><span class="line">    UIApplication *app = [UIApplication sharedApplication];</span><br><span class="line">    id statusBar = [[app valueForKeyPath:@&quot;statusBar&quot;] valueForKeyPath:@&quot;statusBar&quot;];</span><br><span class="line">    id one = [statusBar valueForKeyPath:@&quot;regions&quot;];</span><br><span class="line">    id two = [one valueForKeyPath:@&quot;trailing&quot;];</span><br><span class="line">    NSArray *three = [two valueForKeyPath:@&quot;displayItems&quot;];</span><br><span class="line">    NSString *state = @&quot;无网络&quot;;</span><br><span class="line">    for (UIView *view in three) &#123;</span><br><span class="line">        //alert: iOS12.0 情况下identifier的变成了类&quot;_UIStatusBarIdentifier&quot;而不是NSString，所以会在调用“isEqualToString”方法时发生crash，</span><br><span class="line">        //修改前</span><br><span class="line">//        NSString *identifier = [view valueForKeyPath:@&quot;identifier&quot;];</span><br><span class="line">        //修改后</span><br><span class="line">        NSString *identifier = [[view valueForKeyPath:@&quot;identifier&quot;] description];</span><br><span class="line">        if ([identifier isEqualToString:@&quot;_UIStatusBarWifiItem.signalStrengthDisplayIdentifier&quot;]) &#123;</span><br><span class="line">            id item = [view valueForKeyPath:@&quot;_item&quot;];</span><br><span class="line"></span><br><span class="line">            //alert: 这个问题和上边一样itemId是_UIStatusBarIdentifier 类型，不是string</span><br><span class="line">            NSString *itemId = [[item valueForKeyPath:@&quot;identifier&quot;] description];</span><br><span class="line">            if ([itemId isEqualToString:@&quot;_UIStatusBarWifiItem&quot;]) &#123;</span><br><span class="line">                state = @&quot;WIFI&quot;;</span><br><span class="line">            &#125;</span><br><span class="line">            state = @&quot;不确定&quot;;</span><br><span class="line"></span><br><span class="line">        &#125; else if ([identifier isEqualToString:@&quot;_UIStatusBarCellularItem.typeDisplayIdentifier&quot;]) &#123;</span><br><span class="line">            UIView *statusBarStringView = [view valueForKeyPath:@&quot;_view&quot;];</span><br><span class="line">            // 4G/3G/E</span><br><span class="line">            state = [statusBarStringView valueForKeyPath:@&quot;text&quot;];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return state;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="iOS12新功能"><a href="#iOS12新功能" class="headerlink" title="iOS12新功能"></a>iOS12新功能</h2><h3 id="1-刘海屏判断"><a href="#1-刘海屏判断" class="headerlink" title="1. 刘海屏判断"></a>1. 刘海屏判断</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#define isNotchMobile ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? (CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size)||CGSizeEqualToSize(CGSizeMake(1242, 2688), [[UIScreen mainScreen] currentMode].size)||CGSizeEqualToSize(CGSizeMake(828, 1792), [[UIScreen mainScreen] currentMode].size)) : NO)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/Objective-C/" rel="tag"># Objective-C</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/12/iOS-book-EffectiveObjective-C2.0-chap7/" rel="next" title="EffectiveObjective-C2.0 笔记 - 第七部分">
+                <i class="fa fa-chevron-left"></i> EffectiveObjective-C2.0 笔记 - 第七部分
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Yun</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#iOS12-XCode10-适配"><span class="nav-number">1.</span> <span class="nav-text">iOS12 XCode10 适配</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-libstdc-弃用-报错Undefined-symbols"><span class="nav-number">1.1.</span> <span class="nav-text">1. libstdc++弃用  报错Undefined symbols</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方法"><span class="nav-number">1.1.1.</span> <span class="nav-text">解决方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-UICollectionViewCell-高度计算不正确"><span class="nav-number">1.2.</span> <span class="nav-text">2. UICollectionViewCell 高度计算不正确</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方法-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">解决方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-StatusBar-网络状态"><span class="nav-number">1.3.</span> <span class="nav-text">3. StatusBar 网络状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS12新功能"><span class="nav-number">1.4.</span> <span class="nav-text">iOS12新功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-刘海屏判断"><span class="nav-number">1.4.1.</span> <span class="nav-text">1. 刘海屏判断</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yun</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Gemini</a> v6.4.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

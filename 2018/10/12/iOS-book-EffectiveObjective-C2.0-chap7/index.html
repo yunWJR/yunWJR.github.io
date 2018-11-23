@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="EffectiveObjective-C2.0 笔记 - 第七部分 7. 系统框架7.1 熟悉系统框架1. 框架：将一系列代码封装成动态库，并在其中放入描述其接口的头文件。  平时我们第三方框架用的是静态库，因为iOS 应用程序不允许其中包含动态库。  2. Foundation、CoreFoundation 框架平时用的比较多，“无缝桥接” 可以将这两种框架的对象平滑转换。 3. 常用框架：">
+<meta name="keywords" content="iOS,Effective Objective-C 2.0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EffectiveObjective-C2.0 笔记 - 第七部分">
+<meta property="og:url" content="http://yoursite.com/2018/10/12/iOS-book-EffectiveObjective-C2.0-chap7/index.html">
+<meta property="og:site_name" content="Yun&#39;s Blog">
+<meta property="og:description" content="EffectiveObjective-C2.0 笔记 - 第七部分 7. 系统框架7.1 熟悉系统框架1. 框架：将一系列代码封装成动态库，并在其中放入描述其接口的头文件。  平时我们第三方框架用的是静态库，因为iOS 应用程序不允许其中包含动态库。  2. Foundation、CoreFoundation 框架平时用的比较多，“无缝桥接” 可以将这两种框架的对象平滑转换。 3. 常用框架：">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-05T02:03:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="EffectiveObjective-C2.0 笔记 - 第七部分">
+<meta name="twitter:description" content="EffectiveObjective-C2.0 笔记 - 第七部分 7. 系统框架7.1 熟悉系统框架1. 框架：将一系列代码封装成动态库，并在其中放入描述其接口的头文件。  平时我们第三方框架用的是静态库，因为iOS 应用程序不允许其中包含动态库。  2. Foundation、CoreFoundation 框架平时用的比较多，“无缝桥接” 可以将这两种框架的对象平滑转换。 3. 常用框架：">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/12/iOS-book-EffectiveObjective-C2.0-chap7/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>EffectiveObjective-C2.0 笔记 - 第七部分 | Yun's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yun's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/12/iOS-book-EffectiveObjective-C2.0-chap7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yun's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">EffectiveObjective-C2.0 笔记 - 第七部分
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-10-12 21:43:22" itemprop="dateCreated datePublished" datetime="2018-10-12T21:43:22+08:00">2018-10-12</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2018-11-05 10:03:49" itemprop="dateModified" datetime="2018-11-05T10:03:49+08:00">2018-11-05</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>EffectiveObjective-C2.0 笔记 - 第七部分</strong></p>
+<h1 id="7-系统框架"><a href="#7-系统框架" class="headerlink" title="7. 系统框架"></a>7. 系统框架</h1><h2 id="7-1-熟悉系统框架"><a href="#7-1-熟悉系统框架" class="headerlink" title="7.1 熟悉系统框架"></a>7.1 熟悉系统框架</h2><p><strong>1. 框架：将一系列代码封装成动态库，并在其中放入描述其接口的头文件。</strong></p>
+<blockquote>
+<p>平时我们第三方框架用的是静态库，因为iOS 应用程序不允许其中包含动态库。</p>
+</blockquote>
+<p><strong>2. Foundation、CoreFoundation 框架平时用的比较多，“无缝桥接” 可以将这两种框架的对象平滑转换。</strong></p>
+<p><strong>3. 常用框架：</strong></p>
+<ul>
+<li>CFNetwork</li>
+<li>CoreAudio</li>
+<li>AVFoundation</li>
+<li>CoreData</li>
+<li>CoreText</li>
+</ul>
+<h2 id="7-2-多用块枚举，少用for-循环"><a href="#7-2-多用块枚举，少用for-循环" class="headerlink" title="7.2 多用块枚举，少用for 循环"></a>7.2 多用块枚举，少用for 循环</h2><p><strong>遍历collection 有四种方式。最基本的办法就是for 循环，其次是NSEnumerator 遍历法及快速遍历法，最新、最先进的方式则是 “块枚举法”。</strong></p>
+<p><strong>1. for 循环</strong></p>
+<p>简单粗暴，遍历数组还可以，但是对于遍历字典或者set，就不太友好。  </p>
+<p><strong>2. 使用Objective-C 1.0 的NSEnumerator 来遍历</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">NSArray *array = @[@&quot;A&quot;,@&quot;B&quot;,@&quot;C&quot;];</span><br><span class="line">NSEnumerator *enumerator = [array objectEnumerator];</span><br><span class="line">NSString *string;</span><br><span class="line">while ((string = [enumerator nextObject]) != nil) &#123;</span><br><span class="line">	NSLog(@&quot;%@&quot;,string);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种遍历使用相对比较统一，数组、字典和set 都可以这样子写，并且还有多种 “枚举器” 可供使用，例如反向遍历数组的枚举器。</p>
+<p><strong>3. 快速遍历</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for (&lt;#type *object#&gt; in &lt;#collection#&gt;) &#123;</span><br><span class="line">    &lt;#statements#&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>for in  这个更加简洁，如果某个类的对象支持快速遍历，那么就可以宣称自己遵从名为NSFastEnumeration 的协议，从而令开发者可以采用此语法来迭代改对象。此协议只定义了一个方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len;</span><br></pre></td></tr></table></figure>
+<p>由于NSEnumerator 对象也实现了NSFastEnumeration 协议，所以能用来执行快速遍历。但是快速遍历拿不到当前操作对象的下标。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">NSArray *array = @[@&quot;A&quot;,@&quot;B&quot;,@&quot;C&quot;];</span><br><span class="line">for (NSString *string in [array reverseObjectEnumerator]) &#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;,string);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>4. 基于块的遍历方式</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">NSArray *array = @[@&quot;A&quot;,@&quot;B&quot;,@&quot;C&quot;];</span><br><span class="line">[array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) &#123;</span><br><span class="line">    </span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[array enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) &#123;</span><br><span class="line">    </span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<p>“块枚举法” 本身就能通过GCD来并发执行遍历操作，无须另行编写代码。而采用其他遍历则无法轻易实现这一点。</p>
+<p>此方式对于其他相比，在遍历时候可以直接在块中获取更多信息，而且这种对于字典的遍历也是非常友好的，一次性可以返回键和值。并且还可以支持反向遍历。</p>
+<h2 id="7-3-对自定义其内存管理语义的collection使用无缝桥接"><a href="#7-3-对自定义其内存管理语义的collection使用无缝桥接" class="headerlink" title="7.3 对自定义其内存管理语义的collection使用无缝桥接"></a>7.3 对自定义其内存管理语义的collection使用无缝桥接</h2><p><strong>无缝桥接</strong></p>
+<p>使用 “无缝桥接” 计数，可以在定义于Foundation框架中的Objective-C类和定义于CoreFoundation框架中的C数据结构之间相互转换。</p>
+<p><strong>1. 三种转换方式</strong></p>
+<ul>
+<li>__bridge 只是声明类型转变，但是不做内存管理规则的转变</li>
+<li>__bridge_retained 表示将指针类型转变的同时，将内存管理的责任由原来的Objective-C 交给Core Foundation 来处理，也就是ARC 转变成 MRC</li>
+<li>__bridge_transfer 表示将管理的责任由Core Foundation 转交给Objective-C，即将MRC转变成ARC</li>
+</ul>
+<ol>
+<li>Foundation中字典对象无缝桥接：</li>
+</ol>
+<blockquote>
+<p>Foundation中字典对象，对其键的内存管理语义为 “拷贝”，而值的语义是 “保留”。只能通过强大的无缝桥接技术，否则无法改变其语义。</p>
+</blockquote>
+<p>   CoreFoundation 框架的字典类型是CFDictionary，可变版本是CFMutableDictionary。</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">//CFMutableDictionary 用CFDictionaryCreateMutable 来创建</span><br><span class="line">//用CFDictionaryCreateMutable 定义</span><br><span class="line">CFMutableDictionaryRef CFDictionaryCreateMutable (</span><br><span class="line">  CFAllocatorRef allocator, </span><br><span class="line">  CFIndex capacity, </span><br><span class="line">  const CFDictionaryKeyCallBacks *keyCallBacks, </span><br><span class="line">  const CFDictionaryValueCallBacks *valueCallBacks</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">/*CFAllocatorRef 表示将要使用的内存分配器，CoreFoundation 对象里的数据结构需要占用内存，而分配器负责分配及回收这些内存，一般传NULL，表示采用默认的分配器。</span><br><span class="line"></span><br><span class="line">CFIndex 表示字典的初始大小，跟我们Foundation 字典的创建一样，并不限制最大容量 就是预先分配内存</span><br><span class="line"></span><br><span class="line">最后两个参数都是指向结构体的指针，定义了很多回调函数，用于指示字典中的键和值遇到各种事件时应该执行何种操作。</span><br><span class="line"></span><br><span class="line">CFDictionaryKeyCallBacks 的结构体定义</span><br><span class="line">typedef struct &#123;</span><br><span class="line">    CFIndex				version;</span><br><span class="line">    CFDictionaryRetainCallBack		retain;</span><br><span class="line">    CFDictionaryReleaseCallBack		release;</span><br><span class="line">    CFDictionaryCopyDescriptionCallBack	copyDescription;</span><br><span class="line">    CFDictionaryEqualCallBack		equal;</span><br><span class="line">    CFDictionaryHashCallBack		hash;</span><br><span class="line">&#125; CFDictionaryKeyCallBacks;</span><br><span class="line"></span><br><span class="line">CFDictionaryValueCallBacks 的结构体定义</span><br><span class="line">typedef struct &#123;</span><br><span class="line">    CFIndex				version;</span><br><span class="line">    CFDictionaryRetainCallBack		retain;</span><br><span class="line">    CFDictionaryReleaseCallBack		release;</span><br><span class="line">    CFDictionaryCopyDescriptionCallBack	copyDescription;</span><br><span class="line">    CFDictionaryEqualCallBack		equal;</span><br><span class="line">&#125; CFDictionaryValueCallBacks;</span><br><span class="line"></span><br><span class="line">version 参数目前应设置为0，表示版本号；</span><br><span class="line">其他参数都是函数指针，例如，字典加入了新的键与值，那么就会调用retain 函数，定义如下：</span><br><span class="line">typedef const void *(*CFDictionaryRetainCallBack)(</span><br><span class="line">	CFAllocatorRef allocator, </span><br><span class="line">	const void *value</span><br><span class="line">);</span><br><span class="line">retain 是个函数指针，其所指向的函数接受两个参数，其类型分别是CFAllocatorRef、const void *。传给此函数的value 参数表示即将加入字典中的键或值。而返回的void * 则表示加到字典里的最终值。我们可以这样子实现：</span><br><span class="line">const void *CustomCallback（CFAllocatorRef allocator，const void *value）&#123;</span><br><span class="line">	return value;</span><br><span class="line">&#125;</span><br><span class="line">如果用它充当retain 回调函数来创建字典，那么该字典就不会 “保留” 键和值。然后再利用无缝桥接搭配起来，就可以创建特殊的NSDictionary 对象，跟我们普通的字典不一样。</span><br><span class="line"></span><br><span class="line">开发者可以直接在CoreFoundation 层创建字典，于是就能修改内存管理语义，对键执行 “保留” 而非 “拷贝” 操作了。</span><br></pre></td></tr></table></figure>
+<h2 id="7-4-构建缓存时选用NSCache而非-NSDictionay"><a href="#7-4-构建缓存时选用NSCache而非-NSDictionay" class="headerlink" title="7.4 构建缓存时选用NSCache而非 NSDictionay"></a>7.4 构建缓存时选用NSCache而非 NSDictionay</h2><p><strong>1. 实现缓存时应选用NSCache而非NSDictionary 对象。</strong></p>
+<blockquote>
+<p>NSCache 是专门来处理缓存的，在系统资源将要耗尽时，它可以自动删减缓存。而且是线程安全的，此外，它与字典不同，并不会拷贝健。</p>
+</blockquote>
+<p><strong>2. 可以给NSCache 对象设置上限</strong></p>
+<blockquote>
+<p>可以给NSCache 对象设置上限，用以限制缓存中的对象总个数及总成本，而这些尺度则定义了缓存删减其中对象的时机。但是绝对不要把这些尺度当成可靠的 “硬限制”，它们仅对NSCache其指导作用。</p>
+</blockquote>
+<p><strong>3. NSPurgeableData 与 NSCache 搭配使用</strong></p>
+<blockquote>
+<p> NSPurgeableData类是NSMutableData的子类，而且实现了NSDiscardableContent协议。将NSPurgeableData 与 NSCache 搭配使用，可实现自动清除数据的功能，也就是说，当NSPurgeableData 对象所占内存为系统丢弃时，该对象也会从缓存中移除。</p>
+</blockquote>
+<p><strong>4. 如果缓存使用得当，那么应用程序的响应速度就能提高。</strong></p>
+<blockquote>
+<p>只有那种 “重新计算起来很费事的” 数据，才值得放入缓存，比如那些需要从网络获取或从磁盘读取的数据。</p>
+</blockquote>
+<h2 id="7-5-精简initalize与load的实现代码"><a href="#7-5-精简initalize与load的实现代码" class="headerlink" title="7.5 精简initalize与load的实现代码"></a>7.5 精简initalize与load的实现代码</h2><p><strong>1. 在加载阶段，如果类实现了load 方法，那么系统就会调用它。分类里也可以定义此方法，类的load 方法要比分类中的先调用。与其他方法不同，load 方法不参与覆写机制。</strong></p>
+<ul>
+<li><p>对于加入运行期系统中的每个类及分类，必定会调用load这个方法，而且仅调用一次。意思就是程序启动的时候需要加载load方法，这个时候运行期系统也是出于 “脆弱状态”，在执行子类的load方法之前，必定会先执行所有超类的load 方法。</p>
+</li>
+<li><p>如果load 代码还依赖了其他类，那类的load 也必然会先执行，我们无法判断每个类的载入顺序，所以load 方法使用其他类是不安全的。</p>
+</li>
+<li><p>load 方法不遵从继承规则，如果某个类没实现load 方法，那么不管其各级超类是否实现此方法，系统都不会调用。</p>
+</li>
+<li><p>load 方法要实现的精简点，因为应用程序在执行load 方法会阻塞。load 一般作为调试用，很少用来做初始化操作。</p>
+</li>
+</ul>
+<p><strong>2. load 与initialize 方法都应该实现得精简一些，这有助于保持应用程序的响应能力，也能减少引入 “依赖环” 的几率。</strong></p>
+<ul>
+<li><p>想执行与类相关的初始化操作，可以使用 <code>+(void)initialize</code>  这个方法，它跟load 有以下几个区别：</p>
+<ul>
+<li>这个方法是在首次使用这个类的时候调用，类似 “惰性调用” ，只有用到这个类才会调用。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>运行期在执行该方法的时候，是出于正常状态的，此时是可以安全调用任意类的任意方法，而且运行期系统会确保initialize 方法一定在 “线程安全的环境” 中执行。其他线程都要先阻塞，等initialize 执行完。</li>
+<li>initialize 方法跟其他方法一样，某个类没有实现它，而超类方法实现了，那么就会运行超类的实现代码。</li>
+</ul>
+<ul>
+<li><p>也就是说initalize 与 load 的实现代码要精简些。</p>
+</li>
+<li><p>若某个全局状态无法在编译期初始化，则可以放在initalize 里来做。（例如Objectice-C 对象，创建实例之前必须先激活运行期系统）</p>
+</li>
+</ul>
+<h2 id="7-6-别忘了NSTimer会保留其目标对象"><a href="#7-6-别忘了NSTimer会保留其目标对象" class="headerlink" title="7.6 别忘了NSTimer会保留其目标对象"></a>7.6 别忘了NSTimer会保留其目标对象</h2><p><strong>1. 计时器放在运行循环里，它才能正常触发任务。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:</span><br></pre></td></tr></table></figure>
+<p><strong>2. 计时器保留环</strong></p>
+<p>   计时器会保留其目标对象，等到自身 “失效” 时再释放此对象，调用invalidate 方法可令计时器失效，另外，一次性的计时器在触发完任务之后也会失效。设置成重复执行模式的计时器，要注意 “保留环” 问题。</p>
+<p><strong>3. 如何解决外界不调用invalidate方法也不产生 “保留环” 的问题</strong>。</p>
+<p>   可以用块来解决这个问题，其实就是将timer的target 对象不要指向持有timer的对象，这里用的方法是让timer 的taerget 指向自己。</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">//定义</span><br><span class="line">+ (NSTimer *)my_scheduledTimerWithTimeInterval:(NSTimeInterval)ti</span><br><span class="line">                                         block:(void(^)())block</span><br><span class="line">                                       repeats:(BOOL)yesOrNo;</span><br><span class="line"></span><br><span class="line">//实现</span><br><span class="line">+ (NSTimer *)my_scheduledTimerWithTimeInterval:(NSTimeInterval)ti</span><br><span class="line">                                         block:(void(^)())block</span><br><span class="line">                                       repeats:(BOOL)yesOrNo &#123;</span><br><span class="line">    return [self scheduledTimerWithTimeInterval:ti</span><br><span class="line">                                         target:self</span><br><span class="line">                                       selector:@selector(my_blockInvoke:)</span><br><span class="line">                                       userInfo:[block copy]</span><br><span class="line">                                        repeats:yesOrNo];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)my_blockInvoke:(NSTimer *)timer &#123;</span><br><span class="line">    void (^block) () = timer.userInfo;</span><br><span class="line">    if (block) &#123;</span><br><span class="line">        block();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/Effective-Objective-C-2-0/" rel="tag"># Effective Objective-C 2.0</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/07/iOS-book-EffectiveObjective-C2.0-chap6/" rel="next" title="EffectiveObjective-C2.0 笔记 - 第六部分">
+                <i class="fa fa-chevron-left"></i> EffectiveObjective-C2.0 笔记 - 第六部分
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/03/iOS-adjust-iOS12/" rel="prev" title="iOS12 XCode10 适配">
+                iOS12 XCode10 适配 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Yun</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#7-系统框架"><span class="nav-number">1.</span> <span class="nav-text">7. 系统框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-熟悉系统框架"><span class="nav-number">1.1.</span> <span class="nav-text">7.1 熟悉系统框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-多用块枚举，少用for-循环"><span class="nav-number">1.2.</span> <span class="nav-text">7.2 多用块枚举，少用for 循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-对自定义其内存管理语义的collection使用无缝桥接"><span class="nav-number">1.3.</span> <span class="nav-text">7.3 对自定义其内存管理语义的collection使用无缝桥接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-4-构建缓存时选用NSCache而非-NSDictionay"><span class="nav-number">1.4.</span> <span class="nav-text">7.4 构建缓存时选用NSCache而非 NSDictionay</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-5-精简initalize与load的实现代码"><span class="nav-number">1.5.</span> <span class="nav-text">7.5 精简initalize与load的实现代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-6-别忘了NSTimer会保留其目标对象"><span class="nav-number">1.6.</span> <span class="nav-text">7.6 别忘了NSTimer会保留其目标对象</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yun</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Gemini</a> v6.4.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
