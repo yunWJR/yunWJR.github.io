@@ -277,6 +277,405 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/18/iOS-book-EffectiveObjective-C2.0-chap2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yun's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/18/iOS-book-EffectiveObjective-C2.0-chap2/" itemprop="url">
+                  EffectiveObjective-C2.0 笔记 - 第二部分
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-06-18 11:22:23" itemprop="dateCreated datePublished" datetime="2018-06-18T11:22:23+08:00">2018-06-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2018-10-10 17:03:19" itemprop="dateModified" datetime="2018-10-10T17:03:19+08:00">2018-10-10</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>EffectiveObjective-C2.0 笔记 - 第二部分</strong></p>
+<h1 id="2-1-属性"><a href="#2-1-属性" class="headerlink" title="2.1 属性"></a>2.1 属性</h1><p><strong>1. “对象”（object）就是 “基本构造单元”（building block），开发者可以通过对象来存储并传递数据。</strong></p>
+<blockquote>
+<p>在对象直接传递数据并执行任务的过程就叫做 “消息传递”（Messaging）。</p>
+</blockquote>
+<p><strong>2. 程序运行起来后，为其提供相关支持的代码叫做”运行期环境”(runtime)，它提供一些使得对象之间能够传递消息的重要函数。</strong></p>
+<blockquote>
+<p>理解运行期环境，可以帮你写出高效且易维护的代码。 </p>
+</blockquote>
+<p><strong>3. Oc编译采用“应用程序二进制接口”（Application Binary Interface，ABI）</strong></p>
+<blockquote>
+<p>把实例变量当作一种存储偏移量所用的 “特殊变量”（speacial variable），交由 “类对象”（class object）保管。偏移量会在运行期查找，这样子总能找到正确的偏移量，这是稳固。</p>
+</blockquote>
+<blockquote>
+<p>如果对象布局在编译器就固定了，访问变量时，编译器会使用 “偏移量”（offset）来计算，这个偏移量是 “硬编码”（hardcode），表示该变量距离存放对象的内存区域的起始地址有多远。 存在一个问题：如果代码使用了编译期计算出来的偏移量，那么修改类定义之后必须重新编译，否则就会出错。</p>
+</blockquote>
+<h3 id="property"><a href="#property" class="headerlink" title="@property"></a>@property</h3><p><strong>1. 用于声明属性，自动添加实例变量，以下划线开头，自动实现属性的读写方法。</strong></p>
+<p><strong>2. 在实现文件中可以通过@synthesize 语法来指定实例变量的名字</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@implementation EOCPerson</span><br><span class="line">@synthesize name = _myName;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p><strong>3. @dynamic 关键字会告诉编译器：不要自动创建实现属性所用的实例变量，也不要为其创建存取方法</strong></p>
+<h2 id="属性特质"><a href="#属性特质" class="headerlink" title="属性特质"></a>属性特质</h2><p>原子性、读写权限、内存管理语义、方法名、其他。</p>
+<h3 id="1、原子性"><a href="#1、原子性" class="headerlink" title="1、原子性"></a>1、原子性</h3><ul>
+<li><p><strong>atomic -默认</strong></p>
+<ul>
+<li>原子性，会生成读写锁，读写安全（线程不一定安全），占用资源、效率一般。</li>
+</ul>
+</li>
+<li><p><strong>nonatomic</strong> </p>
+<ul>
+<li>非原子、效率高、读写不安全</li>
+</ul>
+</li>
+</ul>
+<h3 id="2、读写权限"><a href="#2、读写权限" class="headerlink" title="2、读写权限"></a>2、读写权限</h3><ul>
+<li><p><strong>readwrite -默认</strong></p>
+<ul>
+<li>读写</li>
+</ul>
+</li>
+<li><p><strong>readonly</strong> </p>
+<ul>
+<li>只读</li>
+</ul>
+</li>
+</ul>
+<h3 id="3、内存管理"><a href="#3、内存管理" class="headerlink" title="3、内存管理"></a>3、内存管理</h3><p>MRC时，有assign、retain、copy，ARC加入了strong、weak</p>
+<ul>
+<li><p><strong>assign -值类型默认</strong></p>
+<ul>
+<li>简单赋值、用于值类型，如CGFloat、NSInteger等</li>
+</ul>
+</li>
+<li><p><strong>strong (同retain -MRC) -引用类型默认</strong></p>
+<ul>
+<li><p>强引用、用于引用类型</p>
+</li>
+<li><p>赋值时，保留新值，新值引用计数+1，释放旧值（引用计数-1）。</p>
+</li>
+<li><p>用于所有的实例变量和局部变量、其他常规对象引用。</p>
+</li>
+<li><p>注意：可变对象应该使用strong，如NSMultiString，NSMultiArray</p>
+</li>
+</ul>
+</li>
+<li><p><strong>copy</strong> </p>
+<ul>
+<li><p>复制、用于引用类型</p>
+</li>
+<li><p>赋值时，拷贝新值（新对象引用计数为1），释放旧值（引用计数-1），不改变新值（引用计数不变）。</p>
+</li>
+<li><p>copy的本质为复制该内存所存储的内容，重新创建一个对象赋给其相同的内容，对于实现了NSCopying协议的对象有效。</p>
+</li>
+<li><p>用于不可变对象：NSString、block、NSArray、NSDictionary等</p>
+</li>
+<li><p>注意：用于可变对象时，设置值后，变为不可变对象</p>
+</li>
+</ul>
+</li>
+<li><p><strong>weak</strong> </p>
+<ul>
+<li><p>弱引用、用于引用类型</p>
+</li>
+<li><p>赋值时、单纯的引用新对象地址，不改变新对象（引用计数不变），不改变旧对象（引用计数不变）</p>
+</li>
+<li><p>当引用对象释放后，其值置为nil</p>
+</li>
+</ul>
+</li>
+<li><p><strong>__unsafe_unretained</strong> </p>
+<ul>
+<li><p>类似assign、适用于引用类型、不安全的弱引用</p>
+</li>
+<li><p>功能类似于weak、对象摧毁后，不置nil、不安全，可用weak代替</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4、方法名"><a href="#4、方法名" class="headerlink" title="4、方法名"></a>4、方法名</h3><ul>
+<li><p><strong>getter = methodname</strong></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, getter = isOn) BOOL on;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>setter = methodname</strong></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, setter = setOnState) BOOL on;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="5、其他"><a href="#5、其他" class="headerlink" title="5、其他"></a>5、其他</h3><p>nonnull, null_resettable, nullable</p>
+<h1 id="2-2-对象访问"><a href="#2-2-对象访问" class="headerlink" title="2.2 对象访问"></a>2.2 对象访问</h1><p><strong>1. 对象访问有两种、一种是实例访问、一种是属性的读写方法访问。</strong></p>
+<ul>
+<li><p>一般可以这样做：读取时，通过实例读取、写入时，通过属性方法写入。初始化时，都用实例。</p>
+</li>
+<li><p>一般外部访问时，通过属性访问。</p>
+</li>
+<li><p>内部访问时、无特殊情况，通过实例访问。</p>
+</li>
+</ul>
+<p><strong>2. 具体情况应该根据他们的特点来定：</strong></p>
+<ul>
+<li><p>实例访问不通过属性方法派发、效率高。</p>
+</li>
+<li><p>实例访问、不触发“键值观测”，无法满足某些场景。</p>
+</li>
+<li><p>初始化方法中，尽量实例访问，避免子类重写设置方法，导致出错。</p>
+</li>
+<li><p>如果待初始化的实例声明在超类中，而我们又无法在子类直接访问此实例变量的话，那么就需要调用 “设置方法” 了。</p>
+</li>
+<li><p>在 “惰性初始化”（lazy initialization），必须通过 “获取方法” 来访问属性，不然实例变量永远不会初始化。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-(EOCBrain *)brain&#123;</span><br><span class="line">    if(!_brain)&#123;</span><br><span class="line">        _brain = [EOCBrain new];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return _brain;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="2-3-对象同等性"><a href="#2-3-对象同等性" class="headerlink" title="2.3 对象同等性"></a>2.3 对象同等性</h1><p><strong>1. == 与 isEqual</strong></p>
+<ul>
+<li><p><strong>==</strong></p>
+<ul>
+<li><p>== 用于值对象时，可以直接判断值是否相等。</p>
+</li>
+<li><p>== 用于引用对象时，是判断两个对象的指针是否相等（为同一个对象），不能判断其内容等同。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>isEqual</strong> </p>
+<ul>
+<li>用于引用类型、判断内容是否等同、常需要ovewrite该方法。</li>
+</ul>
+</li>
+</ul>
+<p><strong>2. NSObject 协议中有两个用于判断等同性的关键方法：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)isEqual:(id)object;</span><br><span class="line">- (NSUInteger)hash;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>如果 “isEqual” 方法判定两个对象相等，那么其hash 方法也必须返回同一个值。</p>
+</li>
+<li><p>但是，如果两个对象的hash 方法返回同一个值，那么 “isEqual” 方法未必会认为两者相等。</p>
+</li>
+</ul>
+<p><strong>hash方法实现的一些情况：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// 1-固定值</span><br><span class="line">- (NSUInteger)hash &#123;</span><br><span class="line">    return 12312312;</span><br><span class="line">&#125;</span><br><span class="line">// 这种会对collection使用这个对象产生性能问题。因为在collection 在检索哈希表的时，会用对象的哈希码来做索引，在set 集合中，会根据哈希码把对象分装到不同的数组里面，在添加新对象的时候，要根据其哈希码找对与之对应的数组，依次检查其中各个元素，看数组已有的对象是否和将要添加的新对象相等，如果相等，就说明添加的对象已经在set 集合中了，是添加失败的。（如果所有对象的hash 值对一样，这样子set 集合只会有一个数组，所有数据都在一起了，每次插入数据都会遍历这个数组，这样子就会出现性能问题）</span><br><span class="line"></span><br><span class="line">// 2-组合值</span><br><span class="line">- (NSUInteger)hash &#123;</span><br><span class="line">    NSString *stringToHash = [NSString stringWithFormat@&quot;%@:%@&quot;,_firstName,_lastNmae];</span><br><span class="line">    return [stringToHash hash];</span><br><span class="line">&#125;</span><br><span class="line">//这样子能在一定情况下保证返回不同的哈希码，但是这里会存在创建字符串的开销，会比返回单一值要慢</span><br><span class="line"></span><br><span class="line">// 3-位运算</span><br><span class="line">- (NSUInteger)hash &#123;</span><br><span class="line">    return [self.firstName hash] ^ [self.lastNmae hash];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// ^为逐位逻辑运算符，它表示逐位非或（如果只有一个位为1，那么结果为1；否则为0。）。</span><br><span class="line">//这样子可以保存较高的效率，又不会过于频繁的重复</span><br></pre></td></tr></table></figure>
+<p><strong>3. 特定类所具有的等同性判定方法</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">isEqualToString、isEqualToArray、isEqualToDictionary</span><br></pre></td></tr></table></figure>
+<p><strong>4. 容器中可变类的等同性</strong></p>
+<ul>
+<li>如果要把某个对象放入colloection ，其 hash 方法的生成策略就应该保证在放入colloection 后，hash 值不再改变。不然会出现问题。</li>
+</ul>
+<h1 id="2-4-类族模式"><a href="#2-4-类族模式" class="headerlink" title="2.4 类族模式"></a>2.4 类族模式</h1><p><strong>1. “类族” （class cluster）是一种很有用的模式（pattern），可以隐藏 “抽象基类” （abstract base class）背后的实现细节。</strong></p>
+<p><strong>2. 用户无须自己创建子类实例，只需要调用基类方法来创建即可。</strong></p>
+<p><strong>3. 如何创建类族</strong></p>
+<ul>
+<li><p>每个 “实体子类” 都从基类继承而来，“工厂模式” 是创建类族的办法之一，调用基类方法返回子类实例。</p>
+</li>
+<li><p>如果对象所属的类位于某个类族中，那么查询其类型信息要注意，你可能觉得自己创建了某个类的实例，然后实际上创建的却是其子类的实例。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-(BOOL) isKindOfClass: classObj; //判断是否是这个类或者这个类的子类的实例</span><br><span class="line">-(BOOL) isMemberOfClass: classObj; //判断是否是这个类的实例</span><br></pre></td></tr></table></figure>
+<h1 id="2-5-关联对象存放自定义数据"><a href="#2-5-关联对象存放自定义数据" class="headerlink" title="2.5 关联对象存放自定义数据"></a>2.5 关联对象存放自定义数据</h1><p><strong>1. 关联对象</strong> </p>
+<p>可以给某个对象关联许多其他对象，这些对象通过“键”来区分。存储对象值的时候，可以指明“存储策略”，用以维护相应的“内存管理语义”。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">OBJC_ASSOCIATION_ASSIGN --- assign</span><br><span class="line">OBJC_ASSOCIATION_RETAIN_NONATOMIC --- nonatomic, retain</span><br><span class="line">OBJC_ASSOCIATION_COPY_NONATOMIC --- nonatomic, copy</span><br><span class="line">OBJC_ASSOCIATION_RETAIN --- retain</span><br><span class="line">OBJC_ASSOCIATION_COPY --- copy</span><br></pre></td></tr></table></figure>
+<p>下列方法可以管理关联对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">void objc_setAssociatedObject (id object, void *key, id value, objc_AssociationPolicy policy)</span><br><span class="line">// 此方法以给定的键和策略为某对象设置关联对象值</span><br><span class="line"></span><br><span class="line">id objc_getAssociatedObject(id object, void *key) </span><br><span class="line">// 此方法根据给定的键从某个对象中获取相应的关联对象值</span><br><span class="line"></span><br><span class="line">void objc_removeAssociatedObject(id object) </span><br><span class="line">// 此方法移除指定对象的全部关联对象</span><br></pre></td></tr></table></figure>
+<p>若想令两个健匹配到相同的一个值，则二者必须是完全相同的指针才行。所以，在设置关联对象值时：<strong>通常使用静态全局变量做键</strong>。</p>
+<h1 id="2-6-消息"><a href="#2-6-消息" class="headerlink" title="2.6 消息"></a>2.6 消息</h1><h2 id="一-消息传递（objc-msgSend）"><a href="#一-消息传递（objc-msgSend）" class="headerlink" title="一. 消息传递（objc_msgSend）"></a>一. 消息传递（objc_msgSend）</h2><p><strong>1. 调用对象方法，在Objective-C 中叫做 “传递消息”（pass a message），消息有 “名称”（name）或“选择子”（selector），可以接受参数，而且可能还有返回值。</strong></p>
+<p>objc_megSend 的原型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 方法原型</span><br><span class="line">// messageName 叫做 selector（选择子），选择子和参数合起来称为&quot;消息&quot;。</span><br><span class="line">id returnValue = [receiveObject messageName:parameter];</span><br><span class="line"></span><br><span class="line">// 所有方法都是普通的 C 语言函数，方法转为标准的 C 语言函数如下：</span><br><span class="line">// 是一个 “参数个数可变的函数”，能够接受两个或两个以上的参数,</span><br><span class="line">// 第一个参数代表接收者，第二个参数代表选择子，后续参数就是参数。</span><br><span class="line">void objc_msgSend(id self,SEL cmd,...)</span><br></pre></td></tr></table></figure>
+<p><strong>2. objc_megSend 函数会依据接收者和选择子来调用适当的方法：</strong></p>
+<ul>
+<li>在接收者所属的类搜寻其 “方法列表”</li>
+<li>找不到的话，就沿着继承体系继续向上查找</li>
+<li>最终还是找不到相符的方法就执行 “消息转发”</li>
+</ul>
+<p><strong>3. 每个类里都有一张函数表，选择子的名称则是表的 “键”，对应的值都是指向函数的指针。objc_msgSend 等函数就是通过这个函数表来寻找应该执行的方法并执行跳转的。</strong></p>
+<p><strong>4. objc_msgSend 会将匹配结果缓存在 “快速映射表”（fast map）里面，每个类都有这样子的一块缓存，接下来还向该类发送一样的消息，那么执行起来就很快了。</strong></p>
+<p><strong>5. 这里有些特殊情况，需要由Objective-C 运行环境的另外一些函数来处理：</strong></p>
+<ul>
+<li>objc_msgSend_stret ：如果待发送的消息要返回结构体，那么可以交由此函数处理。只有当CPU 寄存器能够容纳得下消息返回类型时，这个函数才能处理此消息。若是返回值无法容纳于CPU 寄存器（比如说返回的结构体太大了），那么就由另外一个函数执行派发。此时，那个函数会通过分配在栈上的某个变量来处理消息所返回的结构体。</li>
+<li>objc_msgSend_fpret：如果消息返回的是浮点数，可以交由此函数处理。这个函数是为了处理x86 等架构CPU 中某些令人惊讶的奇怪状况。</li>
+<li>objc_msgSendSuper：如果要给超类发消息，那么就交由此函数处理。</li>
+</ul>
+<p><strong>6. 如果某函数的最后一项操作是调用另外一个函数，那么就可以运用 “尾调用优化” 技术。编译器会生成跳转至另外一个函数所需的指令码，而且不会向调用栈推入新的 “栈帧”。</strong></p>
+<h2 id="二、-消息转发"><a href="#二、-消息转发" class="headerlink" title="二、 消息转发"></a>二、 消息转发</h2><p>当对象接收到无法解读的消息后，就会启动 “消息转发”（message forwarding）机制，程序员可经由此过程告诉对象应该如何处理未知消息。</p>
+<p><strong>消息转发分为两大阶段：</strong></p>
+<h3 id="1-动态方法解析"><a href="#1-动态方法解析" class="headerlink" title="1. 动态方法解析"></a>1. 动态方法解析</h3><p>第一阶段选征询接收者，所属的类，看其是否能动态添加方法，以处理当前这个 “未知的选择子“（unknown seletor），这叫做 ”动态方法解析“（dynamic method resolution）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//表示这个类是否能新增一个方法来处理此选择子</span><br><span class="line">+ (BOOL)resolveClassMethod:(SEL)sel</span><br><span class="line">+ (BOOL)resolveInstanceMethod:(SEL)sel</span><br></pre></td></tr></table></figure>
+<h3 id="2-完整的消息转发机制"><a href="#2-完整的消息转发机制" class="headerlink" title="2. 完整的消息转发机制"></a>2. 完整的消息转发机制</h3><p>第二阶段涉及 ”完整的消息转发机制“（full forwarding mechanism）。</p>
+<blockquote>
+<p>如果运行期系统已经把第一阶段执行完了，那么接收者自己就无法再以动态新增方法的手段来响应包含该选择子的消息了。这里的第二阶段又分为下面两小步：</p>
+</blockquote>
+<ul>
+<li><p><strong>1) 备援的接收者</strong></p>
+<p>  首先，请接收者看看有没其他对象能处理这条消息；若有，则运行期系统会把消息转给那个对象，于是消息转发过程结束，一切正常。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (id)forwardingTargetForSelector:(SEL)aSelector</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>2) 若没有 ”备援的接收者“（replacement receiver），则启动完整的消息转发机制。</strong></p>
+<p>  运行期系统会把与消息有关的全部细节都封装到NSInvocation 对象中，再给接受者最后一次机会，令其设法解决当前还未处理的这条消息。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)forwardInvocation:(NSInvocation *)anInvocation</span><br></pre></td></tr></table></figure>
+<h1 id="2-7-方法调配"><a href="#2-7-方法调配" class="headerlink" title="2.7 方法调配"></a>2.7 方法调配</h1><p><strong>1. 不需要源代码，也不需要通过继承子类来覆写方法就能改变这个类本身的功能，新功能在本类的所有实例都生效，此方案称为 “方法调配”（method swizzling）。</strong></p>
+<p><strong>2. 每个类有个方法列表（函数指针 IMP），各自映射到自己的方法实现，只要我们能操作这个函数指针的指向，我们就可以动态的增加替换原有的方法。</strong></p>
+<p><strong>3. 互换两个已经写好的方法实现：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 获取方法实现：</span><br><span class="line">Method class_getInstanceMethod(Class cls, SEL name)</span><br><span class="line"></span><br><span class="line">// 调换方法实现</span><br><span class="line">void method_exchangeImplementations(Method m1, Method m2)</span><br></pre></td></tr></table></figure>
+<p><strong>4. 为已有方法增加新功能：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Method originalMethod = class_getInstanceMethod(class, originalSelector);</span><br><span class="line">Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);</span><br><span class="line"></span><br><span class="line">BOOL didAddMethod =</span><br><span class="line">class_addMethod(class,</span><br><span class="line">                originalSelector,</span><br><span class="line">                method_getImplementation(swizzledMethod),</span><br><span class="line">                method_getTypeEncoding(swizzledMethod));</span><br><span class="line"></span><br><span class="line">if (didAddMethod) &#123;</span><br><span class="line">    class_replaceMethod(class,</span><br><span class="line">                        swizzledSelector,</span><br><span class="line">                        method_getImplementation(originalMethod),</span><br><span class="line">                        method_getTypeEncoding(originalMethod));</span><br><span class="line">&#125; else &#123;</span><br><span class="line">   method_exchangeImplementations(originalMethod, swizzledMethod);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="2-8-理解-“类对象”-的用意"><a href="#2-8-理解-“类对象”-的用意" class="headerlink" title="2.8 理解 “类对象” 的用意"></a>2.8 理解 “类对象” 的用意</h1><p><strong>1. 每个Objective-C 对象实例都是指向某块内存数据的指针。</strong></p>
+<p><strong>2. Objective-C 对象所用的数据结构</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct objc_object &#123;</span><br><span class="line">    Class isa;</span><br><span class="line">&#125;;</span><br><span class="line">/// A pointer to an instance of a class.</span><br><span class="line">typedef struct objc_object *id;</span><br></pre></td></tr></table></figure>
+<p>每个对象结构体首个成员是Class 类的变量，定义了对象所属的类，通常称为 “is a” 指针。</p>
+<p><strong>3. Class 对象的数据结构定义</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">struct objc_class &#123;</span><br><span class="line">    Class isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line">#if !__OBJC2__</span><br><span class="line">    Class super_class                                        OBJC2_UNAVAILABLE;</span><br><span class="line">    const char *name                                         OBJC2_UNAVAILABLE;</span><br><span class="line">    long version                                             OBJC2_UNAVAILABLE;</span><br><span class="line">    long info                                                OBJC2_UNAVAILABLE;</span><br><span class="line">    long instance_size                                       OBJC2_UNAVAILABLE;</span><br><span class="line">    struct objc_ivar_list *ivars                             OBJC2_UNAVAILABLE;</span><br><span class="line">    struct objc_method_list **methodLists                    OBJC2_UNAVAILABLE;</span><br><span class="line">    struct objc_cache *cache                                 OBJC2_UNAVAILABLE;</span><br><span class="line">    struct objc_protocol_list *protocols                     OBJC2_UNAVAILABLE;</span><br><span class="line">#endif</span><br><span class="line">&#125; OBJC2_UNAVAILABLE;</span><br></pre></td></tr></table></figure>
+<p>Class 首个变量也是isa 指针，说明Class 本身也是Objective-C 对象，指向 “元类”（meta class）。</p>
+<p><strong>4. 在类继承体系中查询类型信息</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 判断对象是否为某个特定类的实例，不能判定 super 类</span><br><span class="line">isMemberOfClass</span><br><span class="line"></span><br><span class="line">// 判断出对象是否为某类或其派生类的实例</span><br><span class="line">isKindOfClass</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/16/iOS-book-EffectiveObjective-C2.0-chap1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -340,7 +739,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-10-10 16:35:43" itemprop="dateModified" datetime="2018-10-10T16:35:43+08:00">2018-10-10</time>
+                <time title="Modified: 2019-01-08 08:20:08" itemprop="dateModified" datetime="2019-01-08T08:20:08+08:00">2019-01-08</time>
               
             
           </span>
@@ -405,7 +804,7 @@
 <p>Oc 将堆内存管理抽象出来了，不需要用malloc 及free 来分配或释放对象所占内存，Oc<br>运行期环境把这部分工作抽象成一套内存管理架构，叫 ”引用计数“ 。一个例子</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSString *someString = @&quot;The string&quot;;</span><br><span class="line">NSString *anotherString = someString;</span><br></pre></td></tr></table></figure>
-<p><img src="http://ot8psglzx.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20180914225911.png" alt="image"></p>
+<p><img src="http://qnyunyun.yunsoho.cn/QQ%E6%88%AA%E5%9B%BE20180914225911.png" alt="image"></p>
 <p><strong>4. 能用C的结构体，不用对象，结构体比对象更有效率。</strong></p>
 <blockquote>
 <p>对象要分配空间，释放空间,而结构体不需要。结构体储存在栈空间。</p>
@@ -773,7 +1172,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-10-10 16:21:00" itemprop="dateModified" datetime="2018-10-10T16:21:00+08:00">2018-10-10</time>
+                <time title="Modified: 2019-01-08 08:20:08" itemprop="dateModified" datetime="2019-01-08T08:20:08+08:00">2019-01-08</time>
               
             
           </span>
@@ -834,8 +1233,8 @@
 <p>适用于部分设备安装（添加了 UDID 的设备）</p>
 </blockquote>
 <h3 id="二、操作步骤"><a href="#二、操作步骤" class="headerlink" title="二、操作步骤"></a>二、操作步骤</h3><p>本人采用Xcode 生成安装文件，步骤如下：</p>
-<h4 id="1-打开Xcode，的-Organizer，选择需要发布的应用"><a href="#1-打开Xcode，的-Organizer，选择需要发布的应用" class="headerlink" title="1. 打开Xcode，的 Organizer，选择需要发布的应用"></a>1. 打开Xcode，的 Organizer，选择需要发布的应用</h4><h4 id="2-点击-Export，选择-Ad-Hoc，点击-Next"><a href="#2-点击-Export，选择-Ad-Hoc，点击-Next" class="headerlink" title="2. 点击 Export，选择 Ad Hoc，点击 Next"></a>2. 点击 Export，选择 Ad Hoc，点击 Next</h4><h4 id="3-勾选如图选项：点击-Next"><a href="#3-勾选如图选项：点击-Next" class="headerlink" title="3. 勾选如图选项：点击 Next"></a>3. 勾选如图选项：点击 Next</h4><p><img src="http://ot8psglzx.bkt.clouddn.com/WX20180521-170859.png?imageMogr2/thumbnail/!70p" alt=""></p>
-<h4 id="4-填写相关项，需要-https-协议的链接，可用-github-仓库。"><a href="#4-填写相关项，需要-https-协议的链接，可用-github-仓库。" class="headerlink" title="4. 填写相关项，需要 https 协议的链接，可用 github 仓库。"></a>4. 填写相关项，需要 https 协议的链接，可用 github 仓库。</h4><p><img src="http://ot8psglzx.bkt.clouddn.com/WX20180521-171144.png?imageMogr2/thumbnail/!70p" alt=""></p>
+<h4 id="1-打开Xcode，的-Organizer，选择需要发布的应用"><a href="#1-打开Xcode，的-Organizer，选择需要发布的应用" class="headerlink" title="1. 打开Xcode，的 Organizer，选择需要发布的应用"></a>1. 打开Xcode，的 Organizer，选择需要发布的应用</h4><h4 id="2-点击-Export，选择-Ad-Hoc，点击-Next"><a href="#2-点击-Export，选择-Ad-Hoc，点击-Next" class="headerlink" title="2. 点击 Export，选择 Ad Hoc，点击 Next"></a>2. 点击 Export，选择 Ad Hoc，点击 Next</h4><h4 id="3-勾选如图选项：点击-Next"><a href="#3-勾选如图选项：点击-Next" class="headerlink" title="3. 勾选如图选项：点击 Next"></a>3. 勾选如图选项：点击 Next</h4><p><img src="http://qnyunyun.yunsoho.cn/WX20180521-170859.png?imageMogr2/thumbnail/!70p" alt=""></p>
+<h4 id="4-填写相关项，需要-https-协议的链接，可用-github-仓库。"><a href="#4-填写相关项，需要-https-协议的链接，可用-github-仓库。" class="headerlink" title="4. 填写相关项，需要 https 协议的链接，可用 github 仓库。"></a>4. 填写相关项，需要 https 协议的链接，可用 github 仓库。</h4><p><img src="http://qnyunyun.yunsoho.cn/WX20180521-171144.png?imageMogr2/thumbnail/!70p" alt=""></p>
 <h4 id="5-根据情况执行后续操作，得到manifest-plist文件。上传到服务器，可选择-git。"><a href="#5-根据情况执行后续操作，得到manifest-plist文件。上传到服务器，可选择-git。" class="headerlink" title="5. 根据情况执行后续操作，得到manifest.plist文件。上传到服务器，可选择 git。"></a>5. 根据情况执行后续操作，得到manifest.plist文件。上传到服务器，可选择 git。</h4><h4 id="6-生成下载地址：如："><a href="#6-生成下载地址：如：" class="headerlink" title="6. 生成下载地址：如："></a>6. 生成下载地址：如：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">itms-services://?action=download-manifest&amp;url=https://raw.githubusercontent.com/xxx/dis_ipa/master/manifest.plist</span><br></pre></td></tr></table></figure>
 <h4 id="7-手机上用-Safari-打开以上链接，进行安装。"><a href="#7-手机上用-Safari-打开以上链接，进行安装。" class="headerlink" title="7. 手机上用 Safari 打开以上链接，进行安装。"></a>7. 手机上用 Safari 打开以上链接，进行安装。</h4>
           
@@ -953,7 +1352,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-05-21 17:39:51" itemprop="dateModified" datetime="2018-05-21T17:39:51+08:00">2018-05-21</time>
+                <time title="Modified: 2019-01-08 08:20:08" itemprop="dateModified" datetime="2019-01-08T08:20:08+08:00">2019-01-08</time>
               
             
           </span>
@@ -1039,7 +1438,7 @@
 <p>如果将 weak 改为 strong，则会造成循环引用</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// self -&gt; AViewController</span><br><span class="line">BViewController *bVc = [BViewController new];</span><br><span class="line">bVc = self; </span><br><span class="line">[self.navigationController pushViewController: bVc animated:YES];</span><br><span class="line"></span><br><span class="line">   // 假如是 strong 的情况</span><br><span class="line">   // bVc.delegate ===&gt; AViewController (也就是 A 的引用计数 + 1)</span><br><span class="line">   // AViewController 本身又是引用了 &lt;BViewControllerDelegate&gt; ===&gt; delegate 引用计数 + 1</span><br><span class="line">   // 导致： AViewController &lt;======&gt; Delegate ，也就循环引用啦</span><br></pre></td></tr></table></figure>
 <h3 id="4）NSTimer"><a href="#4）NSTimer" class="headerlink" title="4）NSTimer"></a>4）NSTimer</h3><p>NSTimer 的 target 对传入的参数都是强引用（即使是 weak 对象）</p>
-<p><img src="http://ot8psglzx.bkt.clouddn.com/784630-28d5d03d2d902860.png?imageMogr2/thumbnail/!70p" alt=""></p>
+<p><img src="http://qnyunyun.yunsoho.cn/784630-28d5d03d2d902860.png?imageMogr2/thumbnail/!70p" alt=""></p>
 <p>解决办法: 《Effective Objective-C 》中的52条方法</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface NSTimer (YPQBlocksSupport)</span><br><span class="line"></span><br><span class="line">+ (NSTimer *)ypq_scheduledTimeWithTimeInterval:(NSTimeInterval)interval</span><br><span class="line">                                         block:(void(^)())block</span><br><span class="line">                                       repeats:(BOOL)repeats;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#import &quot;NSTimer+YPQBlocksSupport.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation NSTimer (YPQBlocksSupport)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">+ (NSTimer *)ypq_scheduledTimeWithTimeInterval:(NSTimeInterval)interval</span><br><span class="line">                                         block:(void(^)())block</span><br><span class="line">                                       repeats:(BOOL)repeats</span><br><span class="line">&#123;</span><br><span class="line">    return [self scheduledTimerWithTimeInterval:interval</span><br><span class="line">                                         target:self</span><br><span class="line">                                       selector:@selector(ypq_blockInvoke:) userInfo:[block copy]</span><br><span class="line">                                        repeats:repeats];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)ypq_blockInvoke:(NSTimer *)timer</span><br><span class="line">&#123;</span><br><span class="line">    void (^block)() = timer.userInfo;</span><br><span class="line">    if(block)</span><br><span class="line">    &#123;</span><br><span class="line">        block();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
 <p>使用方式：</p>
@@ -1343,7 +1742,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-10-10 16:16:44" itemprop="dateModified" datetime="2018-10-10T16:16:44+08:00">2018-10-10</time>
+                <time title="Modified: 2019-01-08 08:20:08" itemprop="dateModified" datetime="2019-01-08T08:20:08+08:00">2019-01-08</time>
               
             
           </span>
@@ -1397,7 +1796,7 @@
         
           
             <h1 id="UIViewController-生命周期方法与业务逻辑"><a href="#UIViewController-生命周期方法与业务逻辑" class="headerlink" title="UIViewController 生命周期方法与业务逻辑"></a>UIViewController 生命周期方法与业务逻辑</h1><p><strong>UIViewController 生命周期的主要包括9个方法：</strong></p>
-<p><img src="http://ot8psglzx.bkt.clouddn.com/VcLife.png?imageMogr2/thumbnail/!70p" alt=""></p>
+<p><img src="http://qnyunyun.yunsoho.cn/VcLife.png?imageMogr2/thumbnail/!70p" alt=""></p>
 <h2 id="init"><a href="#init" class="headerlink" title="init"></a>init</h2><blockquote>
 <p>默认初始化</p>
 </blockquote>
@@ -1613,7 +2012,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-09-26 17:03:42" itemprop="dateModified" datetime="2018-09-26T17:03:42+08:00">2018-09-26</time>
+                <time title="Modified: 2019-01-08 08:20:08" itemprop="dateModified" datetime="2019-01-08T08:20:08+08:00">2019-01-08</time>
               
             
           </span>
@@ -1666,29 +2065,29 @@
       
         
           
-            <h1 id="iOS11-适配"><a href="#iOS11-适配" class="headerlink" title="iOS11 适配"></a>iOS11 适配</h1><h2 id="1、启动页"><a href="#1、启动页" class="headerlink" title="1、启动页"></a>1、启动页</h2><p>如果启动页采用 Launch Imaged Sourc，则需要添加iPhoneX的启动图，不然整个 App 上下将有部分不能显示区域。</p>
+            <h1 id="iOS11-适配"><a href="#iOS11-适配" class="headerlink" title="iOS11 适配"></a>iOS11 适配</h1><h1 id="1、启动页"><a href="#1、启动页" class="headerlink" title="1、启动页"></a>1、启动页</h1><p>如果启动页采用 Launch Imaged Sourc，则需要添加iPhoneX的启动图，不然整个 App 上下将有部分不能显示区域。</p>
 <p>启动图的尺寸为：1125*2436px 即：375*812@3x</p>
-<h2 id="2、safeArea"><a href="#2、safeArea" class="headerlink" title="2、safeArea"></a>2、safeArea</h2><p>iOS11为UIViewController和UIView增加了两个新的属性safeAreaInsets和safeAreaLayoutGuide, 通过这两个属性我们可以获得安全区域的范围,<br>我们要做的是让那些不能被遮挡的内容和控件在安全区域范围内显示,</p>
+<h1 id="2、safeArea"><a href="#2、safeArea" class="headerlink" title="2、safeArea"></a>2、safeArea</h1><p>iOS11为UIViewController和UIView增加了两个新的属性safeAreaInsets和safeAreaLayoutGuide, 通过这两个属性我们可以获得安全区域的范围,<br>我们要做的是让那些不能被遮挡的内容和控件在安全区域范围内显示,</p>
 <ul>
 <li>safeAreaInsets 适用于手动计算.</li>
 <li>safeAreaLayoutGuide 适用于自动布局.</li>
 </ul>
-<h3 id="手动布局"><a href="#手动布局" class="headerlink" title="手动布局"></a>手动布局</h3><p>新增方法，用于在 SafeArea 改变时，重新布局</p>
+<h2 id="手动布局"><a href="#手动布局" class="headerlink" title="手动布局"></a>手动布局</h2><p>新增方法，用于在 SafeArea 改变时，重新布局</p>
 <ul>
 <li>(void)viewSafeAreaInsetsDidChange;</li>
 </ul>
-<h2 id="3、Masonry"><a href="#3、Masonry" class="headerlink" title="3、Masonry"></a>3、Masonry</h2><p><strong>由于引入了 safeArea，需要修改topLayoutGuide 和 bottomLayoutGuide。</strong></p>
+<h1 id="3、Masonry"><a href="#3、Masonry" class="headerlink" title="3、Masonry"></a>3、Masonry</h1><p><strong>由于引入了 safeArea，需要修改topLayoutGuide 和 bottomLayoutGuide。</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 对于</span><br><span class="line">make.top.equalTo(self.topLayoutGuide);</span><br><span class="line">make.bottom.equalTo(self.bottomLayoutGuide);</span><br><span class="line"></span><br><span class="line">// 可直接改为</span><br><span class="line">make.top.equalTo(self.view);</span><br><span class="line">make.bottom.equalTo(self.view);</span><br></pre></td></tr></table></figure>
 <p><strong>针对 iOS11,可以引入 safeArea</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">if (@available(iOS 11.0, *)) &#123;</span><br><span class="line">    // crash </span><br><span class="line">    // make.edges.equalTo(self.view.mas_safeAreaLayoutGuide);</span><br><span class="line">    </span><br><span class="line">    // error: self.view.mas_safeAreaLayoutGuide is self.view.mas_safeAreaLayoutGuideBottom</span><br><span class="line"></span><br><span class="line">    //ok</span><br><span class="line">    make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);</span><br><span class="line">    make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);</span><br><span class="line">    make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);</span><br><span class="line">    make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    make.edges.equalTo(self.view);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>新增的 safeArea示例</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">[view1 mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">    make.edges.equalTo(self.view.mas_safeArea).inset(10.0);</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[view2 mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">    make.center.equalTo(self.view.mas_safeArea);</span><br><span class="line">    make.width.height.equalTo(self.view.mas_safeArea).sizeOffset(CGSizeMake(- 40.0, - 40.0));</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[view3 mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">    make.center.equalTo(self.view.mas_safeArea);</span><br><span class="line">    make.width.equalTo(self.view.mas_safeArea).sizeOffset(CGSizeMake(- 60.0, - 60.0));</span><br><span class="line">    make.height.equalTo(self.view.mas_safeArea).sizeOffset(CGSizeMake(- 60.0, - 60.0));</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[leftTopView mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">    make.left.top.equalTo(self.view.mas_safeArea);</span><br><span class="line">    make.width.height.equalTo(@(size));</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[rightTopView mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">    make.right.equalTo(self.view.mas_safeAreaRight);</span><br><span class="line">    make.top.equalTo(self.view.mas_safeAreaTop);</span><br><span class="line">    make.width.height.equalTo(@(size));</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[leftBottomView mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">    make.left.equalTo(self.view.mas_safeAreaLeft);</span><br><span class="line">    make.bottom.equalTo(self.view.mas_safeAreaBottom);</span><br><span class="line">    make.width.height.equalTo(@(size));</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[rightBottomView mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">    make.right.bottom.equalTo(self.view.mas_safeArea);</span><br><span class="line">    make.width.height.equalTo(@(size));</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[leftView mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">    make.left.centerY.equalTo(self.view.mas_safeArea);</span><br><span class="line">    make.width.height.equalTo(@(size));</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[rightView mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">    make.right.equalTo(self.view.mas_safeAreaRight);</span><br><span class="line">    make.centerY.equalTo(self.view.mas_safeAreaCenterY);</span><br><span class="line">    make.width.height.equalTo(@(size));</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[topView mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">    make.top.equalTo(self.view.mas_safeAreaTop);</span><br><span class="line">    make.centerX.equalTo(self.view.mas_safeAreaCenterX);</span><br><span class="line">    make.width.height.equalTo(@(size));</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[bottomView mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">    make.bottom.centerX.equalTo(self.view.mas_safeArea);</span><br><span class="line">    make.width.height.equalTo(@(size));</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[centerView mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">    make.center.equalTo(self.view.mas_safeArea);</span><br><span class="line">    make.width.height.equalTo(@(size));</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
-<h2 id="4、prefersLargeTitles"><a href="#4、prefersLargeTitles" class="headerlink" title="4、prefersLargeTitles"></a>4、prefersLargeTitles</h2><p>该属性简单理解为<strong>大标题</strong>，当设置为 YES 时，导航栏高度将变为：96px，正常情况下为：44px；</p>
+<h1 id="4、prefersLargeTitles"><a href="#4、prefersLargeTitles" class="headerlink" title="4、prefersLargeTitles"></a>4、prefersLargeTitles</h1><p>该属性简单理解为<strong>大标题</strong>，当设置为 YES 时，导航栏高度将变为：96px，正常情况下为：44px；</p>
 <p>应该如果要设置该属性，则需要在实例 Vc 中去获取导航栏的高度。</p>
 <p>如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.navigationController.navigationBar.prefersLargeTitles = YES;</span><br><span class="line">self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAutomatic;</span><br></pre></td></tr></table></figure>
-<p><img src="http://ot8psglzx.bkt.clouddn.com/1281817-20171120105905915-716853123.png?imageMogr2/thumbnail/!70p" alt=""></p>
-<h2 id="5、UITableView"><a href="#5、UITableView" class="headerlink" title="5、UITableView"></a>5、UITableView</h2><p>UITableView莫名奇妙的偏移20pt或者64pt，</p>
+<p><img src="http://qnyunyun.yunsoho.cn/1281817-20171120105905915-716853123.png?imageMogr2/thumbnail/!70p" alt=""></p>
+<h1 id="5、UITableView"><a href="#5、UITableView" class="headerlink" title="5、UITableView"></a>5、UITableView</h1><p>UITableView莫名奇妙的偏移20pt或者64pt，</p>
 <p>还有某些界面UITableView的sectionHeader、sectionFooter高度与设置不符的问题。</p>
 <p>在iOS11中如果不实现</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- tableView: viewForHeaderInSection: </span><br><span class="line">- tableView: viewForFooterInSection:</span><br></pre></td></tr></table></figure>
@@ -2218,7 +2617,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-count">20</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2324,7 +2723,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
