@@ -1047,7 +1047,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-05-24 10:03:50" itemprop="dateModified" datetime="2019-05-24T10:03:50+08:00">2019-05-24</time>
+                <time title="Modified: 2019-05-24 10:35:19" itemprop="dateModified" datetime="2019-05-24T10:35:19+08:00">2019-05-24</time>
               
             
           </span>
@@ -1591,6 +1591,234 @@
 <p><code>Specified key was too long; max key length is 767 bytes</code></p>
 <p>原来是因为指定字段长度过长。未指定长度的字符串，默认为255 varchar，utf8mb4字符集每个 varchar 为4bytes，即为总长255x4=1020bytes，大于了767bytes。</p>
 <p>因此，unique 字段的最大长度为767/4 = 191 varchar。（注：utf8mb4字符集）</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/13/hackintosh-summary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yun's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/13/hackintosh-summary/" itemprop="url">
+                  Hackintosh 黑苹果总结
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-01-13 18:22:42" itemprop="dateCreated datePublished" datetime="2019-01-13T18:22:42+08:00">2019-01-13</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-05-24 11:38:51" itemprop="dateModified" datetime="2019-05-24T11:38:51+08:00">2019-05-24</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Hackintosh/" itemprop="url" rel="index"><span itemprop="name">Hackintosh</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Hackintosh-黑苹果总结"><a href="#Hackintosh-黑苹果总结" class="headerlink" title="Hackintosh 黑苹果总结"></a>Hackintosh 黑苹果总结</h1><blockquote>
+<p>个人用黑苹果开发iOS、java多年。之所以选择黑苹果，还是因为 Macbook 性能太弱，而且发热严重。这几年，基本随着 Mac系统更新，也会更新系统（不然无法更新最新的Xcode，纯 java 开发倒是无所谓）。只有一次打开【文件保险箱】功能挂了（下面有说明，千万不要打开该选项），其他时候都没问题。分享其中的一些经验，给愿意尝试黑苹果的朋友。</p>
+</blockquote>
+<ul>
+<li><p>个人黑苹果电脑的配置：</p>
+<p>  电脑一：台式机（i7-87000k 华擎 Z370M-ITX 16G GT750ti）</p>
+<p>  电脑二：台式机（i5-4590 华硕 b85m 8G）</p>
+<p>  电脑三：联想 Y700笔记本（i5-6300 8G GT960M）</p>
+</li>
+<li><p>帮人配的电脑：</p>
+<p>  电脑一：台式机（i7-77000 华擎 deskmini 16G）</p>
+<p>  电脑二：台式机（i5-7500 华硕 B150 8G）</p>
+<p>  <a href="https://github.com/yunWJR/Hackintosh_List" target="_blank" rel="noopener">EIF 分享-包括以上提到的几种配置机型</a></p>
+</li>
+</ul>
+<h2 id="一、哪些电脑可以安装黑苹果"><a href="#一、哪些电脑可以安装黑苹果" class="headerlink" title="一、哪些电脑可以安装黑苹果"></a>一、哪些电脑可以安装黑苹果</h2><h3 id="1、笔记本"><a href="#1、笔记本" class="headerlink" title="1、笔记本"></a>1、笔记本</h3><p>如何确定笔记本可以安装：</p>
+<p>1）论坛（tonymacx86、pcbeta）搜索笔记本型号，看有安装成功的案例没。</p>
+<p>2）看CPU，如果 CPU 的型号与苹果已经发布的笔记本相同或类似（类似定义为同代 CPU），那么 CPU 应该没问题。</p>
+<p>3）看显卡：如果笔记本有独显，那么独显基本是不能使用的，只能使用集显。偶尔少数笔记本有独显，主板不能屏蔽独显，导致无法安装。</p>
+<p>4）以上满足的话，可以尝试安装。</p>
+<h3 id="2、台式机"><a href="#2、台式机" class="headerlink" title="2、台式机"></a>2、台式机</h3><p>如何确定台式机可以安装：</p>
+<p>1）论坛（tonymacx86、pcbeta）搜索台式机配置，看有安装成功的案例没。</p>
+<p>2）看CPU，如果CPU的型号与苹果已经发布的iMac或 Mac mini相同或类似（类似定义为同代 CPU），那么 CPU 应该没问题。</p>
+<blockquote>
+<p> 基本都常见的 intel 台式机 CPU 都可以安装。最新的 AMD 都 CPU 也有大神放出内核，可以安装。</p>
+</blockquote>
+<p>3）看显卡：如果有独显，比较新的 AMD 显卡都可以支持，N 卡一般也支持，有 WebDriver（目前10.14还没有 webdriver）。</p>
+<blockquote>
+<p>强烈建议入 AMD 显卡，原生支持，升级无忧。 </p>
+<p>特别注意 RX580(2048P)不能驱动，慎入。</p>
+</blockquote>
+<p>4）主板：一般都支持，技嘉的一般支持原生电源管理，比较好。华擎的支持比较到位，曾经几块主板专门出过安装黑苹果的 BIOS，良心。</p>
+<p>5）网卡：一般 intel 的有线网卡都支持，无线的话，选择 苹果电脑用过的型号（BCM94352Z，淘宝上买），容易驱动。</p>
+<h3 id="3、建议"><a href="#3、建议" class="headerlink" title="3、建议"></a>3、建议</h3><p>1）如果买新电脑</p>
+<p>笔记本可以买没有独显的，因为有也一版用不上。先查下哪些比较好安装的机型，照着买就行。</p>
+<p>台式机可以参考 <a href="https://www.tonymacx86.com/buyersguide/building-a-customac-hackintosh-the-ultimate-buyers-guide/" target="_blank" rel="noopener">tonymacx86</a>上的配置，都很容易安装。</p>
+<p>2）最好配2块以上硬盘。</p>
+<p>一块安装 Mac。另外一块安装 Windows，或者作为备份盘（TimeMachine）。如果作为生成环境使用，建议单独配置一块硬盘作为 TimeMachine 的备份盘。</p>
+<p>3）如果要独显，最好选 AMD 的卡，可以很好的原生驱动。</p>
+<p>4）如果配无线，最好选 Mac 电脑上用过的型号，容易驱动。</p>
+<h2 id="二、安装流程"><a href="#二、安装流程" class="headerlink" title="二、安装流程"></a>二、安装流程</h2><h3 id="最简方式："><a href="#最简方式：" class="headerlink" title="最简方式："></a>最简方式：</h3><p>1、Mac 上 AppStore 中下载 Mac 系统</p>
+<p>2、制作安装镜像到 U 盘，可以借助工具 <a href="http://diskmakerx.com/" target="_blank" rel="noopener">DiskMaker</a></p>
+<p>3、制作 EFI 启动分区，可以制作在 U 盘上，也可以制作在硬盘上。</p>
+<p>4、放入 EFI 分区启动文件（kext 和 config 配置文件等）</p>
+<p>5、设置好 BIOS 选项</p>
+<p>6、从 EFI 启动安装</p>
+<p>7、完善安装（各硬件驱动）</p>
+<p>8、完善 EFI，可将稳定的 EIF 文件，放入 Mac 分区的 EFI 分区。从 Mac 分区启动。</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>1、不要随意升级 Mac 新版本，可能造成 kext 不兼容。</p>
+<p>2、最好配一块备份盘，用 TimeMachine 备份。TimeMachine 确实好用。</p>
+<p>3、一般不要去动 SLE 下的系统kext，也尽量不要把 kext 放入 SLE 下面，补丁 kext 都可以放在 EFI 下的 kext 中调试。</p>
+<p>4、千万不要打开『安全与隐私』中的 【<strong>文件保险箱</strong>】功能，该功能与硬件相关，打开后，黑苹果就GG。</p>
+<p>5、config 中的硬件 ID 尽量用同一个（同一台机子），新机子第一次安装时，随机生成一个。频繁更改 ID，会让你重新登录 AppleId。</p>
+<h3 id="可以参考的网站"><a href="#可以参考的网站" class="headerlink" title="可以参考的网站"></a>可以参考的网站</h3><p><a href="https://www.tonymacx86.com/" target="_blank" rel="noopener">tonymacx86 - 国外很活跃度黑苹果网站，还有配置推荐</a></p>
+<p><a href="http://bbs.pcbeta.com/forum.php?mod=forumdisplay&amp;fid=558&amp;filter=author&amp;orderby=dateline" target="_blank" rel="noopener">pcbeta - 国内活跃度黑苹果网站</a></p>
+<p><a href="https://sourceforge.net/projects/cloverefiboot/" target="_blank" rel="noopener">cloverefiboot - clover项目现在地址</a></p>
+<p><a href="https://bitbucket.org/RehabMan/" target="_blank" rel="noopener">RehabMan bitbucket -  RehabMan的 kext下载</a></p>
+<p><a href="https://github.com/RehabMan" target="_blank" rel="noopener">RehabMan git - RehabMan的 kext下载和一些配置信息</a></p>
+<p><a href="https://github.com/acidanthera" target="_blank" rel="noopener">acidanthera git - 作者写了很多有用的 kext</a></p>
 
           
         
@@ -2695,273 +2923,6 @@
 <p><a href="https://blog.csdn.net/wxs0124/article/details/80613847" target="_blank" rel="noopener">参考链接</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">+ (NSString *)getIphoneXNetWorkStates &#123;    </span><br><span class="line">    UIApplication *app = [UIApplication sharedApplication];</span><br><span class="line">    id statusBar = [[app valueForKeyPath:@&quot;statusBar&quot;] valueForKeyPath:@&quot;statusBar&quot;];</span><br><span class="line">    id one = [statusBar valueForKeyPath:@&quot;regions&quot;];</span><br><span class="line">    id two = [one valueForKeyPath:@&quot;trailing&quot;];</span><br><span class="line">    NSArray *three = [two valueForKeyPath:@&quot;displayItems&quot;];</span><br><span class="line">    NSString *state = @&quot;无网络&quot;;</span><br><span class="line">    for (UIView *view in three) &#123;</span><br><span class="line">        //alert: iOS12.0 情况下identifier的变成了类&quot;_UIStatusBarIdentifier&quot;而不是NSString，所以会在调用“isEqualToString”方法时发生crash，</span><br><span class="line">        //修改前</span><br><span class="line">//        NSString *identifier = [view valueForKeyPath:@&quot;identifier&quot;];</span><br><span class="line">        //修改后</span><br><span class="line">        NSString *identifier = [[view valueForKeyPath:@&quot;identifier&quot;] description];</span><br><span class="line">        if ([identifier isEqualToString:@&quot;_UIStatusBarWifiItem.signalStrengthDisplayIdentifier&quot;]) &#123;</span><br><span class="line">            id item = [view valueForKeyPath:@&quot;_item&quot;];</span><br><span class="line"></span><br><span class="line">            //alert: 这个问题和上边一样itemId是_UIStatusBarIdentifier 类型，不是string</span><br><span class="line">            NSString *itemId = [[item valueForKeyPath:@&quot;identifier&quot;] description];</span><br><span class="line">            if ([itemId isEqualToString:@&quot;_UIStatusBarWifiItem&quot;]) &#123;</span><br><span class="line">                state = @&quot;WIFI&quot;;</span><br><span class="line">            &#125;</span><br><span class="line">            state = @&quot;不确定&quot;;</span><br><span class="line"></span><br><span class="line">        &#125; else if ([identifier isEqualToString:@&quot;_UIStatusBarCellularItem.typeDisplayIdentifier&quot;]) &#123;</span><br><span class="line">            UIView *statusBarStringView = [view valueForKeyPath:@&quot;_view&quot;];</span><br><span class="line">            // 4G/3G/E</span><br><span class="line">            state = [statusBarStringView valueForKeyPath:@&quot;text&quot;];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return state;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="iOS12新功能"><a href="#iOS12新功能" class="headerlink" title="iOS12新功能"></a>iOS12新功能</h2><h3 id="1-刘海屏判断"><a href="#1-刘海屏判断" class="headerlink" title="1. 刘海屏判断"></a>1. 刘海屏判断</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#define isNotchMobile ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? (CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size)||CGSizeEqualToSize(CGSizeMake(1242, 2688), [[UIScreen mainScreen] currentMode].size)||CGSizeEqualToSize(CGSizeMake(828, 1792), [[UIScreen mainScreen] currentMode].size)) : NO)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/12/iOS-book-EffectiveObjective-C2.0-chap7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Yun">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yun's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/12/iOS-book-EffectiveObjective-C2.0-chap7/" itemprop="url">
-                  EffectiveObjective-C2.0 笔记 - 第七部分
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2018-10-12 21:43:22" itemprop="dateCreated datePublished" datetime="2018-10-12T21:43:22+08:00">2018-10-12</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2018-11-05 10:03:49" itemprop="dateModified" datetime="2018-11-05T10:03:49+08:00">2018-11-05</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>EffectiveObjective-C2.0 笔记 - 第七部分</strong></p>
-<h1 id="7-系统框架"><a href="#7-系统框架" class="headerlink" title="7. 系统框架"></a>7. 系统框架</h1><h2 id="7-1-熟悉系统框架"><a href="#7-1-熟悉系统框架" class="headerlink" title="7.1 熟悉系统框架"></a>7.1 熟悉系统框架</h2><p><strong>1. 框架：将一系列代码封装成动态库，并在其中放入描述其接口的头文件。</strong></p>
-<blockquote>
-<p>平时我们第三方框架用的是静态库，因为iOS 应用程序不允许其中包含动态库。</p>
-</blockquote>
-<p><strong>2. Foundation、CoreFoundation 框架平时用的比较多，“无缝桥接” 可以将这两种框架的对象平滑转换。</strong></p>
-<p><strong>3. 常用框架：</strong></p>
-<ul>
-<li>CFNetwork</li>
-<li>CoreAudio</li>
-<li>AVFoundation</li>
-<li>CoreData</li>
-<li>CoreText</li>
-</ul>
-<h2 id="7-2-多用块枚举，少用for-循环"><a href="#7-2-多用块枚举，少用for-循环" class="headerlink" title="7.2 多用块枚举，少用for 循环"></a>7.2 多用块枚举，少用for 循环</h2><p><strong>遍历collection 有四种方式。最基本的办法就是for 循环，其次是NSEnumerator 遍历法及快速遍历法，最新、最先进的方式则是 “块枚举法”。</strong></p>
-<p><strong>1. for 循环</strong></p>
-<p>简单粗暴，遍历数组还可以，但是对于遍历字典或者set，就不太友好。  </p>
-<p><strong>2. 使用Objective-C 1.0 的NSEnumerator 来遍历</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">NSArray *array = @[@&quot;A&quot;,@&quot;B&quot;,@&quot;C&quot;];</span><br><span class="line">NSEnumerator *enumerator = [array objectEnumerator];</span><br><span class="line">NSString *string;</span><br><span class="line">while ((string = [enumerator nextObject]) != nil) &#123;</span><br><span class="line">	NSLog(@&quot;%@&quot;,string);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这种遍历使用相对比较统一，数组、字典和set 都可以这样子写，并且还有多种 “枚举器” 可供使用，例如反向遍历数组的枚举器。</p>
-<p><strong>3. 快速遍历</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for (&lt;#type *object#&gt; in &lt;#collection#&gt;) &#123;</span><br><span class="line">    &lt;#statements#&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>for in  这个更加简洁，如果某个类的对象支持快速遍历，那么就可以宣称自己遵从名为NSFastEnumeration 的协议，从而令开发者可以采用此语法来迭代改对象。此协议只定义了一个方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len;</span><br></pre></td></tr></table></figure>
-<p>由于NSEnumerator 对象也实现了NSFastEnumeration 协议，所以能用来执行快速遍历。但是快速遍历拿不到当前操作对象的下标。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">NSArray *array = @[@&quot;A&quot;,@&quot;B&quot;,@&quot;C&quot;];</span><br><span class="line">for (NSString *string in [array reverseObjectEnumerator]) &#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;,string);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>4. 基于块的遍历方式</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">NSArray *array = @[@&quot;A&quot;,@&quot;B&quot;,@&quot;C&quot;];</span><br><span class="line">[array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) &#123;</span><br><span class="line">    </span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[array enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) &#123;</span><br><span class="line">    </span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
-<p>“块枚举法” 本身就能通过GCD来并发执行遍历操作，无须另行编写代码。而采用其他遍历则无法轻易实现这一点。</p>
-<p>此方式对于其他相比，在遍历时候可以直接在块中获取更多信息，而且这种对于字典的遍历也是非常友好的，一次性可以返回键和值。并且还可以支持反向遍历。</p>
-<h2 id="7-3-对自定义其内存管理语义的collection使用无缝桥接"><a href="#7-3-对自定义其内存管理语义的collection使用无缝桥接" class="headerlink" title="7.3 对自定义其内存管理语义的collection使用无缝桥接"></a>7.3 对自定义其内存管理语义的collection使用无缝桥接</h2><p><strong>无缝桥接</strong></p>
-<p>使用 “无缝桥接” 计数，可以在定义于Foundation框架中的Objective-C类和定义于CoreFoundation框架中的C数据结构之间相互转换。</p>
-<p><strong>1. 三种转换方式</strong></p>
-<ul>
-<li>__bridge 只是声明类型转变，但是不做内存管理规则的转变</li>
-<li>__bridge_retained 表示将指针类型转变的同时，将内存管理的责任由原来的Objective-C 交给Core Foundation 来处理，也就是ARC 转变成 MRC</li>
-<li>__bridge_transfer 表示将管理的责任由Core Foundation 转交给Objective-C，即将MRC转变成ARC</li>
-</ul>
-<ol>
-<li>Foundation中字典对象无缝桥接：</li>
-</ol>
-<blockquote>
-<p>Foundation中字典对象，对其键的内存管理语义为 “拷贝”，而值的语义是 “保留”。只能通过强大的无缝桥接技术，否则无法改变其语义。</p>
-</blockquote>
-<p>   CoreFoundation 框架的字典类型是CFDictionary，可变版本是CFMutableDictionary。</p>
-   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">//CFMutableDictionary 用CFDictionaryCreateMutable 来创建</span><br><span class="line">//用CFDictionaryCreateMutable 定义</span><br><span class="line">CFMutableDictionaryRef CFDictionaryCreateMutable (</span><br><span class="line">  CFAllocatorRef allocator, </span><br><span class="line">  CFIndex capacity, </span><br><span class="line">  const CFDictionaryKeyCallBacks *keyCallBacks, </span><br><span class="line">  const CFDictionaryValueCallBacks *valueCallBacks</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">/*CFAllocatorRef 表示将要使用的内存分配器，CoreFoundation 对象里的数据结构需要占用内存，而分配器负责分配及回收这些内存，一般传NULL，表示采用默认的分配器。</span><br><span class="line"></span><br><span class="line">CFIndex 表示字典的初始大小，跟我们Foundation 字典的创建一样，并不限制最大容量 就是预先分配内存</span><br><span class="line"></span><br><span class="line">最后两个参数都是指向结构体的指针，定义了很多回调函数，用于指示字典中的键和值遇到各种事件时应该执行何种操作。</span><br><span class="line"></span><br><span class="line">CFDictionaryKeyCallBacks 的结构体定义</span><br><span class="line">typedef struct &#123;</span><br><span class="line">    CFIndex				version;</span><br><span class="line">    CFDictionaryRetainCallBack		retain;</span><br><span class="line">    CFDictionaryReleaseCallBack		release;</span><br><span class="line">    CFDictionaryCopyDescriptionCallBack	copyDescription;</span><br><span class="line">    CFDictionaryEqualCallBack		equal;</span><br><span class="line">    CFDictionaryHashCallBack		hash;</span><br><span class="line">&#125; CFDictionaryKeyCallBacks;</span><br><span class="line"></span><br><span class="line">CFDictionaryValueCallBacks 的结构体定义</span><br><span class="line">typedef struct &#123;</span><br><span class="line">    CFIndex				version;</span><br><span class="line">    CFDictionaryRetainCallBack		retain;</span><br><span class="line">    CFDictionaryReleaseCallBack		release;</span><br><span class="line">    CFDictionaryCopyDescriptionCallBack	copyDescription;</span><br><span class="line">    CFDictionaryEqualCallBack		equal;</span><br><span class="line">&#125; CFDictionaryValueCallBacks;</span><br><span class="line"></span><br><span class="line">version 参数目前应设置为0，表示版本号；</span><br><span class="line">其他参数都是函数指针，例如，字典加入了新的键与值，那么就会调用retain 函数，定义如下：</span><br><span class="line">typedef const void *(*CFDictionaryRetainCallBack)(</span><br><span class="line">	CFAllocatorRef allocator, </span><br><span class="line">	const void *value</span><br><span class="line">);</span><br><span class="line">retain 是个函数指针，其所指向的函数接受两个参数，其类型分别是CFAllocatorRef、const void *。传给此函数的value 参数表示即将加入字典中的键或值。而返回的void * 则表示加到字典里的最终值。我们可以这样子实现：</span><br><span class="line">const void *CustomCallback（CFAllocatorRef allocator，const void *value）&#123;</span><br><span class="line">	return value;</span><br><span class="line">&#125;</span><br><span class="line">如果用它充当retain 回调函数来创建字典，那么该字典就不会 “保留” 键和值。然后再利用无缝桥接搭配起来，就可以创建特殊的NSDictionary 对象，跟我们普通的字典不一样。</span><br><span class="line"></span><br><span class="line">开发者可以直接在CoreFoundation 层创建字典，于是就能修改内存管理语义，对键执行 “保留” 而非 “拷贝” 操作了。</span><br></pre></td></tr></table></figure>
-<h2 id="7-4-构建缓存时选用NSCache而非-NSDictionay"><a href="#7-4-构建缓存时选用NSCache而非-NSDictionay" class="headerlink" title="7.4 构建缓存时选用NSCache而非 NSDictionay"></a>7.4 构建缓存时选用NSCache而非 NSDictionay</h2><p><strong>1. 实现缓存时应选用NSCache而非NSDictionary 对象。</strong></p>
-<blockquote>
-<p>NSCache 是专门来处理缓存的，在系统资源将要耗尽时，它可以自动删减缓存。而且是线程安全的，此外，它与字典不同，并不会拷贝健。</p>
-</blockquote>
-<p><strong>2. 可以给NSCache 对象设置上限</strong></p>
-<blockquote>
-<p>可以给NSCache 对象设置上限，用以限制缓存中的对象总个数及总成本，而这些尺度则定义了缓存删减其中对象的时机。但是绝对不要把这些尺度当成可靠的 “硬限制”，它们仅对NSCache其指导作用。</p>
-</blockquote>
-<p><strong>3. NSPurgeableData 与 NSCache 搭配使用</strong></p>
-<blockquote>
-<p> NSPurgeableData类是NSMutableData的子类，而且实现了NSDiscardableContent协议。将NSPurgeableData 与 NSCache 搭配使用，可实现自动清除数据的功能，也就是说，当NSPurgeableData 对象所占内存为系统丢弃时，该对象也会从缓存中移除。</p>
-</blockquote>
-<p><strong>4. 如果缓存使用得当，那么应用程序的响应速度就能提高。</strong></p>
-<blockquote>
-<p>只有那种 “重新计算起来很费事的” 数据，才值得放入缓存，比如那些需要从网络获取或从磁盘读取的数据。</p>
-</blockquote>
-<h2 id="7-5-精简initalize与load的实现代码"><a href="#7-5-精简initalize与load的实现代码" class="headerlink" title="7.5 精简initalize与load的实现代码"></a>7.5 精简initalize与load的实现代码</h2><p><strong>1. 在加载阶段，如果类实现了load 方法，那么系统就会调用它。分类里也可以定义此方法，类的load 方法要比分类中的先调用。与其他方法不同，load 方法不参与覆写机制。</strong></p>
-<ul>
-<li><p>对于加入运行期系统中的每个类及分类，必定会调用load这个方法，而且仅调用一次。意思就是程序启动的时候需要加载load方法，这个时候运行期系统也是出于 “脆弱状态”，在执行子类的load方法之前，必定会先执行所有超类的load 方法。</p>
-</li>
-<li><p>如果load 代码还依赖了其他类，那类的load 也必然会先执行，我们无法判断每个类的载入顺序，所以load 方法使用其他类是不安全的。</p>
-</li>
-<li><p>load 方法不遵从继承规则，如果某个类没实现load 方法，那么不管其各级超类是否实现此方法，系统都不会调用。</p>
-</li>
-<li><p>load 方法要实现的精简点，因为应用程序在执行load 方法会阻塞。load 一般作为调试用，很少用来做初始化操作。</p>
-</li>
-</ul>
-<p><strong>2. load 与initialize 方法都应该实现得精简一些，这有助于保持应用程序的响应能力，也能减少引入 “依赖环” 的几率。</strong></p>
-<ul>
-<li><p>想执行与类相关的初始化操作，可以使用 <code>+(void)initialize</code>  这个方法，它跟load 有以下几个区别：</p>
-<ul>
-<li>这个方法是在首次使用这个类的时候调用，类似 “惰性调用” ，只有用到这个类才会调用。</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>运行期在执行该方法的时候，是出于正常状态的，此时是可以安全调用任意类的任意方法，而且运行期系统会确保initialize 方法一定在 “线程安全的环境” 中执行。其他线程都要先阻塞，等initialize 执行完。</li>
-<li>initialize 方法跟其他方法一样，某个类没有实现它，而超类方法实现了，那么就会运行超类的实现代码。</li>
-</ul>
-<ul>
-<li><p>也就是说initalize 与 load 的实现代码要精简些。</p>
-</li>
-<li><p>若某个全局状态无法在编译期初始化，则可以放在initalize 里来做。（例如Objectice-C 对象，创建实例之前必须先激活运行期系统）</p>
-</li>
-</ul>
-<h2 id="7-6-别忘了NSTimer会保留其目标对象"><a href="#7-6-别忘了NSTimer会保留其目标对象" class="headerlink" title="7.6 别忘了NSTimer会保留其目标对象"></a>7.6 别忘了NSTimer会保留其目标对象</h2><p><strong>1. 计时器放在运行循环里，它才能正常触发任务。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:</span><br></pre></td></tr></table></figure>
-<p><strong>2. 计时器保留环</strong></p>
-<p>   计时器会保留其目标对象，等到自身 “失效” 时再释放此对象，调用invalidate 方法可令计时器失效，另外，一次性的计时器在触发完任务之后也会失效。设置成重复执行模式的计时器，要注意 “保留环” 问题。</p>
-<p><strong>3. 如何解决外界不调用invalidate方法也不产生 “保留环” 的问题</strong>。</p>
-<p>   可以用块来解决这个问题，其实就是将timer的target 对象不要指向持有timer的对象，这里用的方法是让timer 的taerget 指向自己。</p>
-   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">//定义</span><br><span class="line">+ (NSTimer *)my_scheduledTimerWithTimeInterval:(NSTimeInterval)ti</span><br><span class="line">                                         block:(void(^)())block</span><br><span class="line">                                       repeats:(BOOL)yesOrNo;</span><br><span class="line"></span><br><span class="line">//实现</span><br><span class="line">+ (NSTimer *)my_scheduledTimerWithTimeInterval:(NSTimeInterval)ti</span><br><span class="line">                                         block:(void(^)())block</span><br><span class="line">                                       repeats:(BOOL)yesOrNo &#123;</span><br><span class="line">    return [self scheduledTimerWithTimeInterval:ti</span><br><span class="line">                                         target:self</span><br><span class="line">                                       selector:@selector(my_blockInvoke:)</span><br><span class="line">                                       userInfo:[block copy]</span><br><span class="line">                                        repeats:yesOrNo];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)my_blockInvoke:(NSTimer *)timer &#123;</span><br><span class="line">    void (^block) () = timer.userInfo;</span><br><span class="line">    if (block) &#123;</span><br><span class="line">        block();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
