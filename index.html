@@ -277,6 +277,1192 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/15/server-performance/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yun's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/15/server-performance/" itemprop="url">
+                  服务的性能概述、优化及测试工具
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-15 21:33:11" itemprop="dateCreated datePublished" datetime="2019-04-15T21:33:11+08:00">2019-04-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-05-24 10:31:59" itemprop="dateModified" datetime="2019-05-24T10:31:59+08:00">2019-05-24</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="服务的性能概述、优化及测试工具"><a href="#服务的性能概述、优化及测试工具" class="headerlink" title="服务的性能概述、优化及测试工具"></a>服务的性能概述、优化及测试工具</h1><h1 id="一、服务性能及优化"><a href="#一、服务性能及优化" class="headerlink" title="一、服务性能及优化"></a>一、服务性能及优化</h1><p>一般服务器的组成结构主要包括以下5部分：客户端、网关、服务、数据库以及各个系统之间的宽带。</p>
+<p><img src="http://qnyunyun.yunsoho.cn/sys.png?imageMogr2/thumbnail/!100p" alt=""></p>
+<h2 id="1、客户端"><a href="#1、客户端" class="headerlink" title="1、客户端"></a>1、客户端</h2><h3 id="1-1-减少请求频率和次数"><a href="#1-1-减少请求频率和次数" class="headerlink" title="1.1. 减少请求频率和次数"></a>1.1. 减少请求频率和次数</h3><ul>
+<li>配置数据做本地缓存，避免多次请求。对实时性要求高的缓存数据，采用增量更新。</li>
+<li>提交修改前作检查，避免没有修改内容，也提交到服务器。</li>
+<li>业务非必须的情况下，避免并发请求，采用懒加载。（如：多页数据分别加载、图片显示时才加载等）</li>
+</ul>
+<h3 id="1-2-减少带宽占用"><a href="#1-2-减少带宽占用" class="headerlink" title="1.2. 减少带宽占用"></a>1.2. 减少带宽占用</h3><ul>
+<li>请求数据进行压缩（json 压缩），减少带宽占用。</li>
+</ul>
+<h2 id="2、网关"><a href="#2、网关" class="headerlink" title="2、网关"></a>2、网关</h2><ul>
+<li><p>采用高性能网关（nginx 等）</p>
+</li>
+<li><p>启用数据压缩（如果服务端没有实现）</p>
+</li>
+<li><p>分流，限流</p>
+</li>
+</ul>
+<h2 id="3、服务"><a href="#3、服务" class="headerlink" title="3、服务"></a>3、服务</h2><h3 id="3-1-服务架构"><a href="#3-1-服务架构" class="headerlink" title="3.1. 服务架构"></a>3.1. 服务架构</h3><p>单服务性能瓶颈后，可以做集群，也可以做微服务。</p>
+<ul>
+<li>单服务：如果能满足正常业务，可以不调整。</li>
+<li>集群：单服务不能满足时，可采用多个单服务的集群。实现初级扩展，可以快速提高服务处理能力。</li>
+<li>微服务：需要服务拆分，可能涉及夸数据库事务处理等。</li>
+</ul>
+<h3 id="3-2-服务性能"><a href="#3-2-服务性能" class="headerlink" title="3.2. 服务性能"></a>3.2. 服务性能</h3><p>提高单个服务的性能</p>
+<ul>
+<li>基础框架：JAVA 的springboot，go等</li>
+<li>Web应用服务器：tomcat、undertow 等</li>
+<li>各应用组件的选择：json、日志等</li>
+</ul>
+<h3 id="3-3-缓存能力"><a href="#3-3-缓存能力" class="headerlink" title="3.3. 缓存能力"></a>3.3. 缓存能力</h3><p>1、热点数据做缓存，利用缓存、缓解数据库压力，提高性能</p>
+<h3 id="3-4-异步消息"><a href="#3-4-异步消息" class="headerlink" title="3.4. 异步消息"></a>3.4. 异步消息</h3><p>1、并发高的业务，可采用消息队列缓冲；</p>
+<p>2、与主体逻辑不相关的业务，可以采用消息进行通知。(如邮件、短信等)</p>
+<h2 id="4、数据库"><a href="#4、数据库" class="headerlink" title="4、数据库"></a>4、数据库</h2><h3 id="4-1-数据库性能匹配"><a href="#4-1-数据库性能匹配" class="headerlink" title="4.1. 数据库性能匹配"></a>4.1. 数据库性能匹配</h3><p>设计的数据库类型，id 等，需要符合数据引擎的特性，提高性能。</p>
+<ul>
+<li>MySql的 InnoDb最好采用自增 id</li>
+<li>使用索引，提高查询效率，索引使用遵循原则</li>
+</ul>
+<h3 id="4-2-数据库集群"><a href="#4-2-数据库集群" class="headerlink" title="4.2. 数据库集群"></a>4.2. 数据库集群</h3><ul>
+<li>对于读性能要求高的业务，可以采用读写分离</li>
+<li>对于数据量大的业务，可以考虑分库分表</li>
+</ul>
+<h2 id="5、带宽"><a href="#5、带宽" class="headerlink" title="5、带宽"></a>5、带宽</h2><ul>
+<li>网关-服务-数据库 尽量在同一内网中。</li>
+<li>提高客户端-网关的宽带。</li>
+<li>分离对象业务：将对象数据，存储于专门的对象服务器。</li>
+</ul>
+<h1 id="二、优化方案"><a href="#二、优化方案" class="headerlink" title="二、优化方案"></a>二、优化方案</h1><h2 id="1、对象资源内容"><a href="#1、对象资源内容" class="headerlink" title="1、对象资源内容"></a>1、对象资源内容</h2><p>对于图片、视频、音频等资源，不应该放在服务中。占用服务带宽和CPU资源。</p>
+<p>对象应该存放在专门的对象服务器中。</p>
+<p>1、七牛对象服务。</p>
+<p>2、自建服务器。</p>
+<h2 id="2、热点资源缓存"><a href="#2、热点资源缓存" class="headerlink" title="2、热点资源缓存"></a>2、热点资源缓存</h2><p>做缓存，一般可采用 redis</p>
+<p>1）用户数据和认证数据 token</p>
+<p>2）接口验证数据（公司信息，项目信息），配置数据。</p>
+<p>3）最近都热点数据（日报、组织架构等），设置过期时间</p>
+<p>4）持久化数据（验证通过的单子，数据永远不会变），消息（生成就不会变）。设置过期时间</p>
+<p>5）树结构设计 idPath(路径：|1.2.3)，可以按照 like 搜索所有子节点。更新修改的次数比较多。</p>
+<h2 id="3、提高硬件配置"><a href="#3、提高硬件配置" class="headerlink" title="3、提高硬件配置"></a>3、提高硬件配置</h2><p>CPU、内存、宽带</p>
+<h2 id="4、jvm-优化"><a href="#4、jvm-优化" class="headerlink" title="4、jvm 优化"></a>4、jvm 优化</h2><p>工作日志：</p>
+<p>Xms Xmx 可设置成一样，避免内容波动。16G设置为8G。</p>
+<p>Xmn 新生代：2G</p>
+<p>-Xss128k 线程大小</p>
+<p>-XX:newRatio = 2;</p>
+<p>1）4调整到2，响应时间快，老年代的减少，由缓存弥补。<br>2）吞吐量大，老年代大。</p>
+<p>整合服务：</p>
+<p>Xms Xmx 根据业务大小设置。</p>
+<h2 id="5、mysql"><a href="#5、mysql" class="headerlink" title="5、mysql"></a>5、mysql</h2><h3 id="1）设计原则"><a href="#1）设计原则" class="headerlink" title="1）设计原则"></a>1）设计原则</h3><ul>
+<li><p>索引，最左原则。最多没有超过3个。消息，架构，日志。</p>
+</li>
+<li><p>like 最好不要用左匹配，不能使用到索引</p>
+</li>
+<li><p>id 自增，聚镞 不适合 uuid</p>
+</li>
+</ul>
+<h3 id="2）连接池"><a href="#2）连接池" class="headerlink" title="2）连接池"></a>2）连接池</h3><p>1）durid 阿里开源，性能好，有监控</p>
+<p>2）HikariCP 速度比 durid 快，小巧</p>
+<h2 id="6、传输格式"><a href="#6、传输格式" class="headerlink" title="6、传输格式"></a>6、传输格式</h2><p>一般采用 REST 接口，数据格式为json</p>
+<p>1）json 压缩，去掉换行，空格等；</p>
+<p>2）容器压缩，tomcat 进行压缩。</p>
+<p>3）nginx 进行 gzip 压缩。</p>
+<p>如果对数据大小要求更高，可采用 gRPC。</p>
+<h1 id="三、性能测试工具"><a href="#三、性能测试工具" class="headerlink" title="三、性能测试工具"></a>三、性能测试工具</h1><h1 id="性能测试工具"><a href="#性能测试工具" class="headerlink" title="性能测试工具"></a>性能测试工具</h1><h2 id="1、wrk"><a href="#1、wrk" class="headerlink" title="1、wrk"></a>1、wrk</h2><p><a href="https://github.com/wg/wrk" target="_blank" rel="noopener">https://github.com/wg/wrk</a></p>
+<p>wrk是轻量化的http性能测试工具，采用线程+网络异步IO模型，网络异步IO可以使得系统使用很少的线程模拟大量的网络连接以增大并发量、提高压力。</p>
+<ul>
+<li>操作简单、易于使用</li>
+<li>只支持简单测试、只支持单机测试</li>
+<li>适用于初期测试，评判系统的 QPS 水平</li>
+</ul>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./wrk  -t 8 -c 1000 -d 10s http://www.baidu.com</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-t（–thread） 需要模拟的线程数；不宜过大，</li>
+<li>-c（connection） 需要模拟的连接数；</li>
+<li>–timeout 超时的时间；-d（–duration） 测试的持续时间</li>
+</ul>
+<h2 id="2、jmeter"><a href="#2、jmeter" class="headerlink" title="2、jmeter"></a>2、jmeter</h2><p>jmeter同样采用线程并发机制，但其主要依靠增加线程数提高并发量，当单机模拟数以千计的并发用户时，对于CPU和内存的消耗比较大。与上述wrk相比，jmeter本身具有以下优点和缺点：</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>①界面可视化操作，可以使用录制脚本方式对较为复杂的用户流建模，还可以创建断言来验证测试行为是否通过；</p>
+<p>②表格、图形、结果树等多类可视化数据分析和报告输出，举例如下；</p>
+<p>③支持http、ftp、tcp等多种协议类型测试；</p>
+<p>④支持分布式压力测试，但对于上万的用户并发测试需要多台测试机支持，资源要求比较大；</p>
+<p>⑤可以用于测试固定吞吐量下的系统性能，例如在100QPS（QPS：每秒查询率）下系统的响应时间和资源消耗；</p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>jmeter的GUI模式消耗资源较大，当需要测试高负载时，需要先使用GUI工具来生成XML测试计划，然后在非GUI模式下导入测试计划运行测试，并且关闭不需要的侦听器（收集数据与展示测量的组件），因为侦听器也会消耗掉本用于生成负载的大量资源。测试结束后后，需要将原始结果数据导入GUI以才能查看结果。</p>
+<h2 id="3、locust"><a href="#3、locust" class="headerlink" title="3、locust"></a>3、locust</h2><p>locust是一个的简单易用的分布式负载测试工具，主要用来对网站进行负载压力测试。locust使用python语言开发，测试资源消耗远远小于java语言开发的jmeter。且其支持分布式部署测试，能够轻松模拟百万级用户并发测试。</p>
+<p>与jmeter和wrk相比，locust具有以下优缺点：</p>
+<h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><p>①不同与wrk和jmeter使用线程数提高并发量，locust借助于协程实现对用户的模拟，相同物理资源（机器cpu、内存等）配置下locust能支持的并发用户数相比jmeter可以提升一个数量级；</p>
+<p>②相比wrk对复杂场景测试的捉襟见肘和jmeter需要界面点击录制复杂场景的麻烦，locust只需用户使用python编写用户场景完成测试；</p>
+<p>③不同与jmeter复杂的用户使用界面，locust的界面干净整洁，可以实时显示测试的相关细节（如发送请求数、失败数和当前发送请求速度等）；</p>
+<p>④locust虽然是面向web应用测试的，但是它可以用来测试几乎所有系统。给locust编写一个客户端，可以满足你所有的测试要求；</p>
+<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><p>同wrk一样，locust测试结果输出不如jmeter的测试结果展示类型多；</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/03/mq-summary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yun's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/03/mq-summary/" itemprop="url">
+                  消息队列概述
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-03 22:12:32" itemprop="dateCreated datePublished" datetime="2019-04-03T22:12:32+08:00">2019-04-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-05-24 10:11:33" itemprop="dateModified" datetime="2019-05-24T10:11:33+08:00">2019-05-24</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="消息队列概述"><a href="#消息队列概述" class="headerlink" title="消息队列概述"></a>消息队列概述</h1><p>消息队列中间件是分布式系统中重要的组件，主要解决应用解耦，异步消息，流量削锋等问题，实现高性能，高可用，可伸缩和最终一致性架构。目前使用较多的消息队列有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ</p>
+<h2 id="1、应用场景"><a href="#1、应用场景" class="headerlink" title="1、应用场景"></a>1、应用场景</h2><p>消息队列的主要应用场景有：异步处理，应用解耦，流量削锋、日志处理和消息通讯。</p>
+<h3 id="1-1-异步处理"><a href="#1-1-异步处理" class="headerlink" title="1.1 异步处理"></a>1.1 异步处理</h3><p>将不是业务的必须逻辑，采用消息进行异步处理：</p>
+<blockquote>
+<p>如：用户注册后，需要发注册成功邮件和注册成功短信。邮件和短信可以写入消息队列，异步执行。</p>
+</blockquote>
+<h3 id="1-2-应用解耦"><a href="#1-2-应用解耦" class="headerlink" title="1.2 应用解耦"></a>1.2 应用解耦</h3><p>将接口调用，解耦为消息通知。</p>
+<blockquote>
+<p>用户下单后，订单系统需要通知库存系统。传统的做法是，订单系统调用库存系统的接口。如果库存系统失败，那么整个订单将失败。</p>
+<p>如果订单完成后，采用将后续处理写入队列，由其他系统自行处理。以及解耦。</p>
+</blockquote>
+<h3 id="1-3-流量削锋"><a href="#1-3-流量削锋" class="headerlink" title="1.3 流量削锋"></a>1.3 流量削锋</h3><p>流量过大，导致流量暴增，应用挂掉，可以用消息队列缓冲，一般在秒杀或团抢活动中使用广泛。</p>
+<blockquote>
+<p>用户的请求，服务器接收后，首先写入消息队列。假如消息队列长度超过最大数量，则直接抛弃用户请求或跳转到错误页面。</p>
+<p>秒杀业务根据消息队列中的请求信息，再做后续处理。</p>
+</blockquote>
+<h3 id="1-4-日志处理"><a href="#1-4-日志处理" class="headerlink" title="1.4 日志处理"></a>1.4 日志处理</h3><p>日志处理是指将消息队列用在日志处理中，比如Kafka的应用，解决大量日志传输的问题。架构简化如下</p>
+<p><img src="http://images2015.cnblogs.com/blog/270324/201607/270324-20160730152810934-1818295010.png" alt=""></p>
+<ul>
+<li>日志采集客户端，负责日志数据采集，定时写受写入Kafka队列</li>
+<li>Kafka消息队列，负责日志数据的接收，存储和转发</li>
+<li>日志处理应用：订阅并消费kafka队列中的日志数据 </li>
+</ul>
+<h3 id="1-5-消息通讯"><a href="#1-5-消息通讯" class="headerlink" title="1.5 消息通讯"></a>1.5 消息通讯</h3><p>消息通讯是指，消息队列一般都内置了高效的通信机制，因此也可以用在纯的消息通讯。比如实现点对点消息队列，或者聊天室等</p>
+<ul>
+<li><p>客户端A和客户端B使用同一队列，进行消息通讯。</p>
+</li>
+<li><p>客户端A，客户端B，客户端N订阅同一主题，进行消息发布和接收。实现类似聊天室效果。</p>
+</li>
+</ul>
+<h2 id="2、MQ-框架对比"><a href="#2、MQ-框架对比" class="headerlink" title="2、MQ 框架对比"></a>2、MQ 框架对比</h2><p><a href="https://blog.csdn.net/u010486495/article/details/80179504" target="_blank" rel="noopener">https://blog.csdn.net/u010486495/article/details/80179504</a></p>
+<p><img src="http://qnyunyun.yunsoho.cn/20160506134211236.png?imageMogr2/thumbnail/!100p" alt=""></p>
+<ul>
+<li>在面向服务架构中，推荐 RabbitMQ</li>
+<li>日志消息，推荐 Kafka，高吞吐量。</li>
+</ul>
+<h3 id="1）Kafka"><a href="#1）Kafka" class="headerlink" title="1）Kafka"></a>1）Kafka</h3><p>Kafka是linkedin开源的MQ系统，主要特点是基于Pull的模式来处理消息消费，追求高吞吐量，一开始的目的就是用于日志收集和传输，0.8开始支持复制，不支持事务，适合产生大量数据的互联网服务的数据收集业务。</p>
+<h3 id="2）RabbitMQ"><a href="#2）RabbitMQ" class="headerlink" title="2）RabbitMQ"></a>2）RabbitMQ</h3><p>RabbitMQ是使用Erlang语言开发的开源消息队列系统，基于AMQP协议来实现。AMQP的主要特征是面向消息、队列、路由（包括点对点和发布/订阅）、可靠性、安全。AMQP协议更多用在企业系统内，对数据一致性、稳定性和可靠性要求很高的场景，对性能和吞吐量的要求还在其次。</p>
+<p>RocketMQ是阿里开源的消息中间件，它是纯Java开发，具有高吞吐量、高可用性、适合大规模分布式系统应用的特点。RocketMQ思路起源于Kafka，但并不是Kafka的一个Copy，它对消息的可靠传输及事务性做了优化，目前在阿里集团被广泛应用于交易、充值、流计算、消息推送、日志流式处理、binglog分发等场景。</p>
+<h3 id="3）ZeroMQ"><a href="#3）ZeroMQ" class="headerlink" title="3）ZeroMQ"></a>3）ZeroMQ</h3><p>ZeroMQ只是一个网络编程的Pattern库，将常见的网络请求形式（分组管理，链接管理，发布订阅等）模式化、组件化，简而言之socket之上、MQ之下。对于MQ来说，网络传输只是它的一部分，更多需要处理的是消息存储、路由、Broker服务发现和查找、事务、消费模式（ack、重投等）、集群服务等。</p>
+<h3 id="4）区别"><a href="#4）区别" class="headerlink" title="4）区别"></a>4）区别</h3><p>RabbitMQ/Kafka/ZeroMQ 都能提供消息队列服务，但有很大的区别。<br>在面向服务架构中通过消息代理（比如 RabbitMQ / Kafka等），使用生产者-消费者模式在服务间进行异步通信是一种比较好的思想。</p>
+<p>因为服务间依赖由强耦合变成了松耦合。消息代理都会提供持久化机制，在消费者负载高或者掉线的情况下会把消息保存起来，不会丢失。就是说生产者和消费者不需要同时在线，这是传统的请求-应答模式比较难做到的，需要一个中间件来专门做这件事。其次消息代理可以根据消息本身做简单的路由策略，消费者可以根据这个来做负载均衡，业务分离等。</p>
+<p>缺点也有，就是需要额外搭建消息代理集群（但优点是大于缺点的 ） 。</p>
+<p>ZeroMQ 和 RabbitMQ/Kafka 不同，它只是一个异步消息库，在套接字的基础上提供了类似于消息代理的机制。使用 ZeroMQ 的话，需要对自己的业务代码进行改造，不利于服务解耦。</p>
+<p>RabbitMQ 支持 AMQP（二进制），STOMP（文本），MQTT（二进制），HTTP（里面包装其他协议）等协议。</p>
+<p>Kafka 使用自己的协议。<br>Kafka 自身服务和消费者都需要依赖 Zookeeper。</p>
+<p>RabbitMQ 在有大量消息堆积的情况下性能会下降，Kafka不会。毕竟AMQP设计的初衷不是用来持久化海量消息的，而Kafka一开始是用来处理海量日志的。</p>
+<p>总的来说，RabbitMQ 和 Kafka 都是十分优秀的分布式的消息代理服务，只要合理部署，不作，基本上可以满足生产条件下的任何需求。</p>
+<h2 id="3、示例"><a href="#3、示例" class="headerlink" title="3、示例"></a>3、示例</h2><h3 id="2-1-电商系统"><a href="#2-1-电商系统" class="headerlink" title="2.1 电商系统"></a>2.1 电商系统</h3><p><img src="http://images2015.cnblogs.com/blog/270324/201608/270324-20160801102300309-25949110.jpg" alt=""></p>
+<p>消息队列采用高可用，可持久化的消息中间件。比如Active MQ，Rabbit MQ，Rocket Mq。</p>
+<p>（1）应用将主干逻辑处理完成后，写入消息队列。消息发送是否成功可以开启消息的确认模式。（消息队列返回消息接收成功状态后，应用再返回，这样保障消息的完整性）</p>
+<p>（2）扩展流程（发短信，配送处理）订阅队列消息。采用推或拉的方式获取消息并处理。</p>
+<p>（3）消息将应用解耦的同时，带来了数据一致性问题，可以采用最终一致性方式解决。比如主数据写入数据库，扩展应用根据消息队列，并结合数据库方式实现基于消息队列的后续处理。</p>
+<h3 id="2-2-日志收集系统"><a href="#2-2-日志收集系统" class="headerlink" title="2.2 日志收集系统"></a>2.2 日志收集系统</h3><p><img src="http://images2015.cnblogs.com/blog/270324/201608/270324-20160801102309481-1983324345.jpg" alt=""></p>
+<p>分为Zookeeper注册中心，日志收集客户端，Kafka集群和Storm集群（OtherApp）四部分组成。<br>Zookeeper注册中心，提出负载均衡和地址查找服务<br>日志收集客户端，用于采集应用系统的日志，并将数据推送到kafka队列<br>Kafka集群：接收，路由，存储，转发等消息处理<br>Storm集群：与OtherApp处于同一级别，采用拉的方式消费队列中的数据</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://blog.csdn.net/HD243608836/article/details/80217591" target="_blank" rel="noopener">https://blog.csdn.net/HD243608836/article/details/80217591</a></p>
+<p><a href="https://blog.csdn.net/u010486495/article/details/80179504" target="_blank" rel="noopener">https://blog.csdn.net/u010486495/article/details/80179504</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/17/jvm-optimize/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yun's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/17/jvm-optimize/" itemprop="url">
+                  jvm 调优
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-03-17 20:12:22" itemprop="dateCreated datePublished" datetime="2019-03-17T20:12:22+08:00">2019-03-17</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-05-24 10:03:48" itemprop="dateModified" datetime="2019-05-24T10:03:48+08:00">2019-05-24</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="jvm-调优"><a href="#jvm-调优" class="headerlink" title="jvm 调优"></a>jvm 调优</h1><h2 id="1、查看进程-jvm-状态"><a href="#1、查看进程-jvm-状态" class="headerlink" title="1、查看进程 jvm 状态"></a>1、查看进程 jvm 状态</h2><p>查看进程 pid</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jps</span><br></pre></td></tr></table></figure>
+<p>查看 jvm 分布</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmap -heap &lt;pid&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="2、参数设置"><a href="#2、参数设置" class="headerlink" title="2、参数设置"></a>2、参数设置</h2><ul>
+<li>-Xms 初始内存</li>
+<li>-Xmx 最大内存</li>
+<li>-Xmn 新生代内存</li>
+</ul>
+<p>Xms与Xmx 最好一样，避免内存波动。单击可设置为物理内存的80%<br>Xmn 最好不要太大，会影响老生代，Sun官方推荐配置为整个堆的3/8</p>
+<ul>
+<li><p>-Xss128k 每个线程大小</p>
+</li>
+<li><p>-XX:NewRatio=4 年轻与年老大比值。4为 1：4，表示年轻代占比1/5。</p>
+</li>
+</ul>
+<h3 id="1）年轻代大小选择"><a href="#1）年轻代大小选择" class="headerlink" title="1）年轻代大小选择"></a>1）年轻代大小选择</h3><ul>
+<li>响应时间优先的应用：尽可能设大，直到接近系统的最低响应时间限制（根据实际情况选择）。</li>
+</ul>
+<p>在此种情况下，年轻代收集发生的频率也是最小的。同时，减少到达年老代的对象。</p>
+<ul>
+<li>吞吐量优先的应用：尽可能的设置大，可能到达Gbit的程度。</li>
+</ul>
+<p>因为对响应时间没有要求，垃圾收集可以并行进行，一般适合8CPU以上的应用。</p>
+<h3 id="2）年老代大小选择"><a href="#2）年老代大小选择" class="headerlink" title="2）年老代大小选择"></a>2）年老代大小选择</h3><p>响应时间优先的应用：年老代使用并发收集器，所以其大小需要小心设置，一般要考虑并发会话率和会话持续时间等一些参数。如果堆设置小了，可以会造成内存碎片、高回收频率以及应用暂停而使用传统的标记清除方式；如果堆大了，则需要较长的收集时间。最优化的方案，一般需要参考以下数据获得：</p>
+<ul>
+<li>并发垃圾收集信息</li>
+<li>持久代并发收集次数</li>
+<li>传统GC信息</li>
+<li>花在年轻代和年老代回收上的时间比例</li>
+<li>减少年轻代和年老代花费的时间，一般会提高应用的效率</li>
+</ul>
+<h3 id="3）吞吐量优先的应用"><a href="#3）吞吐量优先的应用" class="headerlink" title="3）吞吐量优先的应用"></a>3）吞吐量优先的应用</h3><p>一般吞吐量优先的应用都有一个很大的年轻代和一个较小的年老代。原因是，这样可以尽可能回收掉大部分短期对象，减少中期的对象，而年老代尽存放长期存活对象。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://fjding.iteye.com/blog/2319808" target="_blank" rel="noopener">https://fjding.iteye.com/blog/2319808</a></p>
+<p><a href="https://github.com/crossoverJie/JCSprout/blob/master/MD/MemoryAllocation.md" target="_blank" rel="noopener">https://github.com/crossoverJie/JCSprout/blob/master/MD/MemoryAllocation.md</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/16/jvm-summary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yun's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/16/jvm-summary/" itemprop="url">
+                  jvm 内存 概述
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-03-16 13:21:11" itemprop="dateCreated datePublished" datetime="2019-03-16T13:21:11+08:00">2019-03-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-05-24 10:03:50" itemprop="dateModified" datetime="2019-05-24T10:03:50+08:00">2019-05-24</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="jvm-内存-概述"><a href="#jvm-内存-概述" class="headerlink" title="jvm 内存 概述"></a>jvm 内存 概述</h1><p>JVM是Java Virtual Machine（Java虚拟机）的缩写，JVM是一种用于计算设备的规范，它是一个虚构出来的计算机，是通过在实际的计算机上仿真模拟各种计算机功能来实现的。</p>
+<h2 id="一、运行时数据区域"><a href="#一、运行时数据区域" class="headerlink" title="一、运行时数据区域"></a>一、运行时数据区域</h2><p>Java 虚拟机在执行 Java 程序的过程中会把它管理的内存划分成若干个不同的数据区域。</p>
+<p><img src="http://incdn1.b0.upaiyun.com/2019/01/f86d06376bc82eb44dd4d5f93030c970.jpg" alt=""></p>
+<p><img src="https://uploadfiles.nowcoder.com/files/20190110/7380095_1547132982664_4685968-2502bef3bd1d1692.png" alt=""></p>
+<p>线程私有的：</p>
+<ul>
+<li>程序计数器</li>
+<li>虚拟机栈</li>
+<li>本地方法栈</li>
+</ul>
+<p>线程共享的：</p>
+<ul>
+<li>堆</li>
+<li>方法区</li>
+<li>直接内存</li>
+</ul>
+<h3 id="1、程序计数器-Program-Counter-Register"><a href="#1、程序计数器-Program-Counter-Register" class="headerlink" title="1、程序计数器 Program Counter Register"></a>1、程序计数器 Program Counter Register</h3><p>Register 的命名源于CPU的寄存器，CPU只有把数据装载到寄存器才能够运行</p>
+<p>寄存器存储指令相关的现场信息，由于CPU时间片轮限制，众多线程在并发执行过程中，任何一个确定的时刻，一个处理器或者多核处理器中的一个内核，只会执行某个线程中的一条指令。这样必然导致经常中断或恢复，如何保证分毫无差呢?</p>
+<p>程序计数器是一块较小的内存空间，可以看作是当前线程所执行的字节码的行号指示器。字节码解释器工作时通过改变这个计数器的值来选取下一条需要执行的字节码指令，分支、循环、跳转、异常处理、线程恢复等功能都需要依赖这个计数器来完。</p>
+<p>另外，为了线程切换后能恢复到正确的执行位置，每条线程都需要有一个独立的程序计数器，各线程之间计数器互不影响，独立存储，我们称这类内存区域为“线程私有”的内存。</p>
+<h4 id="主要的两个作用"><a href="#主要的两个作用" class="headerlink" title="主要的两个作用"></a>主要的两个作用</h4><ul>
+<li><p>字节码解释器通过改变程序计数器来依次读取指令，从而实现代码的流程控制，如：顺序执行、选择、循环、异常处理。</p>
+</li>
+<li><p>在多线程的情况下，程序计数器用于记录当前线程执行的位置，从而当线程被切换回来的时候能够知道该线程上次运行到哪儿了。</p>
+</li>
+</ul>
+<h4 id="如果当前线程正在执行的是"><a href="#如果当前线程正在执行的是" class="headerlink" title="如果当前线程正在执行的是"></a>如果当前线程正在执行的是</h4><ul>
+<li>Java方法</li>
+</ul>
+<p>计数器记录的就是当前线程正在执行的字节码指令的地址</p>
+<ul>
+<li>本地方法</li>
+</ul>
+<p>那么程序计数器值为undefined</p>
+<p>注意：程序计数器是唯一不会出现 OutOfMemoryError 的内存区域，它的生命周期随着线程的创建而创建，随着线程的结束而死亡。</p>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>一块较小的内存空间</li>
+<li>线程私有。每条线程都有一个独立的程序计数器。</li>
+<li>是唯一一个不会出现OOM的内存区域。</li>
+<li>生命周期随着线程的创建而创建，随着线程的结束而死亡。</li>
+</ul>
+<h3 id="2、Java-虚拟机栈-VM-Stack"><a href="#2、Java-虚拟机栈-VM-Stack" class="headerlink" title="2、Java 虚拟机栈 VM Stack"></a>2、Java 虚拟机栈 VM Stack</h3><p>相对于基于寄存器的运行环境来说，JVM是基于栈结构的运行环境</p>
+<p>栈结构移植性更好，可控性更强</p>
+<p>JVM中的虚拟机栈是描述Java方法执行的内存区域，它是线程私有的</p>
+<p>栈中的元素用于支持虚拟机进行方法调用，每个方法从开始调用到执行完成的过程，就是栈帧从入栈到出栈的过程</p>
+<p>在活动线程中，只有位于栈顶的帧才是有效的，称为当前栈帧</p>
+<p>正在执行的方法称为当前方法</p>
+<p>栈帧是方法运行的基本结构</p>
+<p>在执行引擎运行时，所有指令都只能针对当前栈帧进行操作</p>
+<p>StackOverflowError表示请求的栈溢出，导致内存耗尽，通常出现在递归方法中</p>
+<p>JVM能够横扫千军，虚拟机栈就是它的心腹大将，当前方法的栈帧，都是正在战斗的战场，其中的操作栈是参与战斗的士兵</p>
+<p><img src="https://uploadfiles.nowcoder.com/files/20190111/7380095_1547140255170_4685968-a6b55efe15a7a9ed.png" alt=""></p>
+<p><img src="https://img-blog.csdn.net/20180226235717764?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYnJ1Y2UxMjg=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt=""></p>
+<p><strong>局部变量表</strong></p>
+<ul>
+<li>存放方法参数和局部变量</li>
+<li>相对于类属性变量的准备阶段和初始化阶段来说，局部变量没有准备阶段，必须显式初始化</li>
+<li>如果是非静态方法，则在index[0]位置上存储的是方法所属对象的实例引用，随后存储的是参数和局部变量</li>
+<li>字节码指令中的STORE指令就是将操作栈中计算完成的局部变量写回局部变量表的存储空间内</li>
+</ul>
+<p><strong>操作栈</strong></p>
+<ul>
+<li>操作栈是一个初始状态为空的桶式结构栈</li>
+<li>在方法执行过程中，会有各种指令往栈中写入和提取信息</li>
+<li>JVM的执行引擎是基于栈的执行引擎，其中的栈指的就是操作栈</li>
+<li>字节码指令集的定义都是基于栈类型的,栈的深度在方法元信息的stack属性中</li>
+</ul>
+<p>Java虚拟机栈是描述Java方法运行过程的内存模型</p>
+<p>Java虚拟机栈会为每一个即将运行的Java方法创建“栈帧”</p>
+<p>用于存储该方法在运行过程中所需要的一些信息</p>
+<ul>
+<li><p>局部变量表</p>
+<p>  存放基本数据类型变量、引用类型的变量、returnAddress类型的变量</p>
+</li>
+<li><p>操作数栈</p>
+</li>
+<li>动态链接</li>
+<li>当前方法的常量池指针</li>
+<li>当前方法的返回地址</li>
+<li>方法出口等信息</li>
+</ul>
+<p>每一个方法从被调用到执行完成的过程,都对应着一个个栈帧在JVM栈中的入栈和出栈过程</p>
+<blockquote>
+<p>注意：人们常说，Java的内存空间分为“栈”和“堆”，栈中存放局部变量，堆中存放对象。<br>这句话不完全正确！这里的“堆”可以这么理解，但这里的“栈”就是现在讲的虚拟机栈,或者说Java虚拟机栈中的局部变量表部分.<br>真正的Java虚拟机栈是由一个个栈帧组成，而每个栈帧中都拥有：局部变量表、操作数栈、动态链接、方法出口信息.</p>
+</blockquote>
+<h4 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>局部变量表的创建是在方法被执行的时候,随着栈帧的创建而创建.</li>
+<li>而且表的大小在编译期就确定,在创建的时候只需分配事先规定好的大小即可.</li>
+<li>在方法运行过程中,表的大小不会改变</li>
+</ul>
+<h4 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h4><p>Java 虚拟机栈会出现两种异常：StackOverFlowError 和 OutOfMemoryError。</p>
+<ul>
+<li>StackOverFlowError： 若Java虚拟机栈的内存大小不允许动态扩展，那么当线程请求栈的深度超过当前Java虚拟机栈的最大深度的时候，就抛出StackOverFlowError异常。</li>
+<li>OutOfMemoryError： 若 Java 虚拟机栈的内存大小允许动态扩展，且当线程请求栈时内存用完了，无法再动态扩展了，此时抛出OutOfMemoryError异常。</li>
+</ul>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>Java 虚拟机栈也是线程私有的，每个线程都有各自的Java虚拟机栈，而且随着线程的创建而创建，随着线程的死亡而死亡。</p>
+<p>虚拟机栈通过压/出栈的方式，对每个方法对应的活动栈帧进行运算处理，方法正常执行结束，肯定会跳转到另一个栈帧上<br>在执行的过程中，如果出现异常，会进行异常回溯，返回地址通过异常处理表确定<br>栈帧在整个JVM体系中的地位颇高,包括局部变量表、操作栈、动态连接、方法返回地址等</p>
+<p>Java 内存可以粗糙的区分为堆内存（Heap）和栈内存（Stack）其中栈就是现在说的虚拟机栈，或者说是虚拟机栈中局部变量表部分。 （实际上，Java虚拟机栈是由一个个栈帧组成，而每个栈帧中都拥有局部变量表、操作数栈、动态链接、方法出口信息）</p>
+<p>局部变量表主要存放了编译器可知的各种数据类型（boolean、byte、char、short、int、float、long、double）、对象引用（reference类型，它不同于对象本身，可能是一个指向对象起始地址的引用指针，也可能是指向一个代表对象的句柄或其他与此对象相关的位置）。</p>
+<h3 id="3、本地方法栈-Native-Method-Stack"><a href="#3、本地方法栈-Native-Method-Stack" class="headerlink" title="3、本地方法栈 Native Method Stack"></a>3、本地方法栈 Native Method Stack</h3><p>和虚拟机栈所发挥的作用非常相似，区别是： </p>
+<p>虚拟机栈为虚拟机执行 Java 方法 （也就是字节码）服务，而本地方法栈则为虚拟机使用到的 Native 方法服务。</p>
+<p>在 HotSpot 虚拟机中和 Java 虚拟机栈合二为一。</p>
+<p>本地方法被执行的时候，在本地方法栈也会创建一个栈帧，用于存放该本地方法的局部变量表、操作数栈、动态链接、出口信息。</p>
+<p>方法执行完毕后相应的栈帧也会出栈并释放内存空间，也会出现 StackOverFlowError 和 OutOfMemoryError 两种异常。</p>
+<h3 id="4、Java堆-Java-Heap"><a href="#4、Java堆-Java-Heap" class="headerlink" title="4、Java堆 Java Heap"></a>4、Java堆 Java Heap</h3><p>Heap是OOM故障最主要的发源地，它存储着几乎所有的实例对象，堆由垃圾收集器自动回收，堆区由各子线程共享使用</p>
+<p>通常情况下，它占用的空间是所有内存区域中最大的，但如果无节制地创建大量对象，也容易消耗完所有的空间</p>
+<p>堆的内存空间既可以固定大小，也可运行时动态地调整，通过如下参数设定初始值和最大值，比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-Xms256M. -Xmx1024M</span><br></pre></td></tr></table></figure>
+<p>其中-X表示它是JVM运行参数</p>
+<ul>
+<li>ms是memory start的简称 最小堆容量</li>
+<li>mx是memory max的简称 最大堆容量</li>
+</ul>
+<p>但是在通常情况下，服务器在运行过程中，堆空间不断地扩容与回缩，势必形成不必要的系统压力，所以在线上生产环境中，JVM的Xms和Xmx设置成<strong>一样大小</strong>，避免在GC后调整堆大小时带来的额外压力</p>
+<p><img src="http://incdn1.b0.upaiyun.com/2019/01/19307619b4ddae3ef19002bc6ac51b5c.png" alt=""></p>
+<p><img src="https://img-blog.csdn.net/20181005183314708?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3lpbmd6aWlzbWU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt=""></p>
+<p>堆分成两大块:新生代和老年代</p>
+<p>对象产生之初在新生代，步入暮年时进入老年代，但是老年代也接纳在新生代无法容纳的超大对象</p>
+<p>新生代= 1个Eden区+ 2个Survivor区</p>
+<p>绝大部分对象在Eden区生成，当Eden区装填满的时候，会触发Young GC。垃圾回收的时候，在Eden区实现清除策略，没有被引用的对象则直接回收。依然存活的对象会被移送到Survivor区，这个区真是名副其实的存在</p>
+<p>Survivor 区分为S0和S1两块内存空间，送到哪块空间呢?每次Young GC的时候，将存活的对象复制到未使用的那块空间，然后将当前正在使用的空间完全清除，交换两块空间的使用状态</p>
+<p>如果YGC要移送的对象大于Survivor区容量上限，则直接移交给老年代</p>
+<p>假如一些没有进取心的对象以为可以一直在新生代的Survivor区交换来交换去，那就错了。每个对象都有一个计数器，每次YGC都会加1。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:MaxTenuringThreshold</span><br></pre></td></tr></table></figure>
+<p>参数能配置计数器的值到达某个阈值的时候，对象从新生代晋升至老年代。如果该参数配置为1,那么从新生代的Eden区直接移至老年代。默认值是15，可以在Survivor 区交换14次之后，晋升至老年代</p>
+<p>若Survivor区无法放下，或者超大对象的阈值超过上限，则尝试在老年代中进行分配;</p>
+<p>如果老年代也无法放下，则会触发Full Garbage Collection(Full GC);</p>
+<p>如果依然无法放下，则抛OOM.</p>
+<h4 id="GC分类"><a href="#GC分类" class="headerlink" title="GC分类"></a>GC分类</h4><ul>
+<li><p>Partial GC：并不收集整个GC堆的模式</p>
+<ul>
+<li>Young GC：只收集young gen的GC，eden区分配满的时候触发</li>
+<li>Old GC：只收集old gen的GC。只有CMS的concurrent collection是这个模式</li>
+<li>Mixed GC：收集整个young gen以及部分old gen的GC。只有G1有这个模式</li>
+</ul>
+</li>
+<li><p>Full GC：收集整个堆，包括young gen、old gen、perm gen（如果存在的话）等所有部分的模式。</p>
+</li>
+</ul>
+<h4 id="特点-2"><a href="#特点-2" class="headerlink" title="特点"></a>特点</h4><ul>
+<li><p>Java虚拟机所需要管理的内存中最大的一块.</p>
+</li>
+<li><p>堆内存物理上不一定要连续,只需要逻辑上连续即可,就像磁盘空间一样.</p>
+</li>
+<li><p>堆是垃圾回收的主要区域,所以也被称为GC堆.</p>
+</li>
+<li><p>堆的大小既可以固定也可以扩展,但主流的虚拟机堆的大小是可扩展的(通过-Xmx和-Xms控制),因此当线程请求分配内存,但堆已满,且内存已满无法再扩展时,就抛出OutOfMemoryError.</p>
+</li>
+<li><p>线程共享</p>
+</li>
+<li>整个Java虚拟机只有一个堆,所有的线程都访问同一个堆.</li>
+<li>它是被所有线程共享的一块内存区域,在虚拟机启动时创建.</li>
+<li>而程序计数器、Java虚拟机栈、本地方法栈都是一个线程对应一个</li>
+</ul>
+<h4 id="其他-1"><a href="#其他-1" class="headerlink" title="其他"></a>其他</h4><ol>
+<li><p>JAVA对象优先在Eden区分配，当Eden区没有足够的空间时触发一次Minor GC ，触发Minor GC时，Eden和from区中的存活对象会被复制到to区，然后from和to交换指针，以保证下次Minor GC时，to区还是空的，如果survival区无法容纳的对象将通过分配担保机制直接进入老年区</p>
+</li>
+<li><p>分配担保机制可以通过HandlePromotionFailure配置，如果不允许的话，则直接发生FULL GC</p>
+</li>
+<li><p>新生代(Young Generation)的最大大小将根据总堆的最大大小和NewRatio参数的值来计算。参数的“不受限制”默认值MaxNewSize意味着计算值不受限制，MaxNewSize除非MaxNewSize在命令行中指定了值</p>
+</li>
+<li><p>一般情况下，不允许-XX:Newratio值小于1，即Old要比Young大</p>
+</li>
+<li><p>大对象直接进入老年区的判断是根据PretenureSizeThreshold设置的阈值，所谓大对象时指需要大量连续内存空间的Java对象，最典型的大对象就是那种很长的字符串以及数组（笔者列出的例子中的byte[]数组就是典型的大对象）</p>
+</li>
+<li><p>发生full GC的条件是：</p>
+</li>
+</ol>
+<ul>
+<li>（1）调用System.gc时，系统建议执行Full GC，但是不必然执行</li>
+<li>（2）老年代空间不足</li>
+<li>（3）方法区空间不足</li>
+<li>（4）通过Minor GC后进入老年代的平均大小大于老年代的可用内存</li>
+<li>（5）由Eden区、From Space区向To Space区复制时，对象大小大于To Space可用内存，则把该对象转存到老年代，且老年代的可用内存小于该对象大小</li>
+</ul>
+<ol>
+<li>对象存活判断</li>
+</ol>
+<ul>
+<li>引用计数：每个对象有一个引用计数属性，新增一个引用时计数加1，引用释放时计数减1，计数为0时可以回收。此方法简单，无法解决对象相互循环引用的问题  </li>
+<li>可达性分析：从GC Roots开始向下搜索，搜索所走过的路径称为引用链。当一个对象到GC Roots没有任何引用链相连时，则证明此对象是不可用的，不可达对象  </li>
+</ul>
+<ol>
+<li>GC Roots对象包括</li>
+</ol>
+<ul>
+<li>虚拟机栈(栈帧中的本地变量表)中引用的对象  </li>
+<li>方法区中类静态属性引用的对象</li>
+<li>方法区中常量引用的对象  </li>
+<li>本地方法栈中JNI(即一般说的Native方法)引用的对象</li>
+<li>已启动且未停止的java线程</li>
+</ul>
+<h3 id="5、方法区-Method-Area"><a href="#5、方法区-Method-Area" class="headerlink" title="5、方法区 Method Area"></a>5、方法区 Method Area</h3><p>方法区与 Java 堆一样，是各个线程共享的内存区域，它用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。虽然Java虚拟机规范把方法区描述为堆的一个逻辑部分，但是它却有一个别名叫做 Non-Heap（非堆），目的应该是与 Java 堆区分开来。</p>
+<p>HotSpot 虚拟机中方法区也常被称为 “永久代”，本质上两者并不等价。仅仅是因为 HotSpot 虚拟机设计团队用永久代来实现方法区而已，这样 HotSpot 虚拟机的垃圾收集器就可以像管理 Java 堆一样管理这部分内存了。但是这并不是一个好主意，因为这样更容易遇到内存溢出问题。</p>
+<p>相对而言，垃圾收集行为在这个区域是比较少出现的，但并非数据进入方法区后就“永久存在”了。</p>
+<h4 id="特点-3"><a href="#特点-3" class="headerlink" title="特点"></a>特点</h4><p><strong>线程共享</strong></p>
+<ul>
+<li>方法区是堆的一个逻辑部分,因此和堆一样,都是线程共享的.整个虚拟机中只有一个方法区.</li>
+</ul>
+<p><strong>永久代</strong></p>
+<ul>
+<li>方法区中的信息一般需要长期存在，而且它又是堆的逻辑分区，因此用堆的划分方法，我们把方法区称为永久代.</li>
+</ul>
+<p><strong>内存回收效率低</strong></p>
+<ul>
+<li>Java虚拟机规范对方法区的要求比较宽松,可以不实现垃圾收集.</li>
+<li>方法区中的信息一般需要长期存在,回收一遍内存之后可能只有少量信息无效.</li>
+<li>对方法区的内存回收的主要目标是:对常量池的回收和对类型的卸载</li>
+</ul>
+<p>和堆一样，允许固定大小，也允许可扩展的大小，还允许不实现垃圾回收。</p>
+<p>当方法区内存空间无法满足内存分配需求时,将抛出OutOfMemoryError异常.</p>
+<h3 id="5-1、运行时常量池-Runtime-Constant-Pool"><a href="#5-1、运行时常量池-Runtime-Constant-Pool" class="headerlink" title="5.1、运行时常量池 Runtime Constant Pool"></a>5.1、运行时常量池 Runtime Constant Pool</h3><p>运行时常量池是方法区的一部分。</p>
+<p>方法区中存放三种数据：类信息、常量、静态变量、即时编译器编译后的代码.其中常量存储在运行时常量池中.</p>
+<p>java文件被编译之后生成的.class文件中除了包含：类的版本、字段、方法、接口等信息外，还有一项就是常量池</p>
+<p>常量池中存放编译时期产生的各种字面量和符号引用，.class文件中的常量池中的所有的内容在类被加载后存放到方法区的运行时常量池中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int age = 21; //age是一个变量，可以被赋值；21就是一个字面值常量，不能被赋值；</span><br><span class="line">int final pai = 3.14; //pai就是一个符号常量，一旦被赋值之后就不能被修改。</span><br></pre></td></tr></table></figure>
+<p>Class文件中除了有类的版本、字段、方法、接口等描述信息外,还有一项信息是常量池( Constant pool table)，用于存放编译期生成的各种字面量和符号引用，这部分内容将在类加载后进入运行时常量池中存放。运行时常量池相对于class文件常量池的另外一个特性是具备动态性，java语言并不要求常量一定只有编译器才产生，也就是并非预置入class文件中常量池的内容才能进入方法区运行时常量池，运行期间也可能将新的常量放入池中。</p>
+<p>在近三个JDK版本（6、7、8）中， 运行时常量池的所处区域一直在不断的变化，</p>
+<ul>
+<li>JDK6时它是方法区的一部分</li>
+<li>7又把他放到了堆内存中</li>
+<li>8之后出现了元空间，它又回到了方法区。</li>
+</ul>
+<p>其实，这也说明了官方对“永久代”的优化从7就已经开始了</p>
+<p><img src="http://incdn1.b0.upaiyun.com/2019/01/6b19f9fdeaa517c2e84370525a63c659.jpg" alt=""></p>
+<h4 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h4><ul>
+<li>class文件中的常量池具有动态性.</li>
+<li>Java并不要求常量只能在编译时候产生,Java允许在运行期间将新的常量放入方法区的运行时常量池中.</li>
+<li>String类中的intern()方法就是采用了运行时常量池的动态性.当调用 intern 方法时,如果池已经包含一个等于此 String 对象的字符串,则返回池中的字符串.否则,将此 String 对象添加到池中,并返回此 String 对象的引用.</li>
+</ul>
+<h4 id="异常-1"><a href="#异常-1" class="headerlink" title="异常"></a>异常</h4><p>运行时常量池是方法区的一部分,所以会受到方法区内存的限制,因此当常量池无法再申请到内存时就会抛出OutOfMemoryError异常.</p>
+<p>我们一般在一个类中通过public static final来声明一个常量。这个类被编译后便生成Class文件，这个类的所有信息都存储在这个class文件中。</p>
+<p>当这个类被Java虚拟机加载后，class文件中的常量就存放在方法区的运行时常量池中。而且在运行期间，可以向常量池中添加新的常量。如：String类的intern()方法就能在运行期间向常量池中添加字符串常量。</p>
+<p>当运行时常量池中的某些常量没有被对象引用，同时也没有被变量引用，那么就需要垃圾收集器回收。</p>
+<h3 id="6、直接内存-Direct-Memory"><a href="#6、直接内存-Direct-Memory" class="headerlink" title="6、直接内存 Direct Memory"></a>6、直接内存 Direct Memory</h3><p>直接内存不是虚拟机运行时数据区的一部分,也不是JVM规范中定义的内存区域,但在JVM的实际运行过程中会频繁地使用这块区域.而且也会抛OOM</p>
+<p>在JDK 1.4中加入了NIO(New Input／Output)类,引入了一种基于管道和缓冲区的IO方式,它可以使用Native函数库直接分配堆外内存,然后通过一个存储在堆里的DirectByteBuffer对象作为这块内存的引用来操作堆外内存中的数据.<br>这样能在一些场景中显著提升性能,因为避免了在Java堆和Native堆中来回复制数据.</p>
+<blockquote>
+<p>综上看来</p>
+<p>程序计数器、Java虚拟机栈、本地方法栈是线程私有的，即每个线程都拥有各自的程序计数器、Java虚拟机栈、本地方法区。并且他们的生命周期和所属的线程一样。<br>而堆、方法区是线程共享的，在Java虚拟机中只有一个堆、一个方法栈。并在JVM启动的时候就创建，JVM停止才销毁。</p>
+</blockquote>
+<h3 id="7、元空间-Metaspace"><a href="#7、元空间-Metaspace" class="headerlink" title="7、元空间 Metaspace"></a>7、元空间 Metaspace</h3><p>在JDK8，元空间的前身Perm区已经被淘汰,在JDK7及之前的版本中，只有Hotspot才有Perm区(永久代),它在启动时固定大小,很难进行调优,并且Full GC时会移动类元信息</p>
+<p>在某些场景下,如果动态加载类过多,容易产生Perm区的OOM.</p>
+<p>为解决该问题，需要设定运行参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:MaxPermSize= l280m</span><br></pre></td></tr></table></figure>
+<p>如果部署到新机器上，往往会因为JVM参数没有修改导致故障再现。不熟悉此应用的人排查问题时往往苦不堪言，除此之外，永久代在GC过程中还存在诸多问题</p>
+<p>所以，JDK8使用元空间替换永久代，区别于永久代，元空间在本地内存中分配.<br>也就是说，只要本地内存足够，它不会出现像永久代中java.lang.OutOfMemoryError: PermGen space</p>
+<p>默认情况下，“元空间”的大小可以动态调整，或者使用新参数MaxMetaspaceSize来限制本地内存分配给类元数据的大小.</p>
+<p>在JDK8里，Perm 区所有内容中</p>
+<ul>
+<li><p>字符串常量移至堆内存</p>
+</li>
+<li><p>其他内容包括类元信息、字段、静态属性、方法、常量等都移动至元空间</p>
+</li>
+</ul>
+<h4 id="特点-4"><a href="#特点-4" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>充分利用了Java语言规范：类及相关的元数据的生命周期与类加载器的一致</li>
+<li>每个类加载器都有它的内存区域-元空间</li>
+<li>只进行线性分配</li>
+<li>不会单独回收某个类（除了重定义类 RedefineClasses 或类加载失败）</li>
+<li>没有GC扫描或压缩</li>
+<li>元空间里的对象不会被转移</li>
+<li>如果GC发现某个类加载器不再存活，会对整个元空间进行集体回收</li>
+</ul>
+<h4 id="GC"><a href="#GC" class="headerlink" title="GC"></a>GC</h4><ul>
+<li>Full GC时，指向元数据指针都不用再扫描，减少了Full GC的时间</li>
+<li>很多复杂的元数据扫描的代码（尤其是CMS里面的那些）都删除了</li>
+<li><p>元空间只有少量的指针指向Java堆</p>
+<p>  这包括：类的元数据中指向java.lang.Class实例的指针;数组类的元数据中，指向java.lang.Class集合的指针。</p>
+</li>
+<li><p>没有元数据压缩的开销</p>
+</li>
+<li>减少了GC Root的扫描（不再扫描虚拟机里面的已加载类的目录和其它的内部哈希表）</li>
+<li>G1回收器中，并发标记阶段完成后就可以进行类的卸载</li>
+</ul>
+<h4 id="元空间内存分配模型"><a href="#元空间内存分配模型" class="headerlink" title="元空间内存分配模型"></a>元空间内存分配模型</h4><ul>
+<li>绝大多数的类元数据的空间都在本地内存中分配</li>
+<li>用来描述类元数据的对象也被移除</li>
+<li>为元数据分配了多个映射的虚拟内存空间</li>
+<li><p>为每个类加载器分配一个内存块列表</p>
+<ul>
+<li>块的大小取决于类加载器的类型</li>
+<li>Java反射的字节码存取器（sun.reflect.DelegatingClassLoader ）占用内存更小</li>
+</ul>
+</li>
+<li><p>空闲块内存返还给块内存列表</p>
+</li>
+<li>当元空间为空，虚拟内存空间会被回收</li>
+<li>减少了内存碎片</li>
+</ul>
+<p>最后,从线程共享的角度来看</p>
+<ul>
+<li>堆和元空间是所有线程共享的</li>
+<li>虚拟机栈、本地方法栈、程序计数器是线程内部私有的</li>
+</ul>
+<p>从这个角度看一下Java内存结构</p>
+<p><img src="https://uploadfiles.nowcoder.com/files/20190111/7380095_1547140255227_4685968-aa2e002ac2fec675.png" alt=""></p>
+<h3 id="8、从GC角度看Java堆"><a href="#8、从GC角度看Java堆" class="headerlink" title="8、从GC角度看Java堆"></a>8、从GC角度看Java堆</h3><p>堆和方法区都是线程共享的区域，主要用来存放对象的相关信息。我们知道，一个接口中的多个实现类需要的内存可能不一样，一个方法中的多个分支需要的内存也可能不一样，我们只有在程序运行期间才能知道会创建哪些对象，因此， 这部分的内存和回收都是动态的，垃圾收集器所关注的就是这部分内存（本节后续所说的“内存”分配与回收也仅指这部分内存）。而在JDK1.7和1.8对这部分内存的分配也有所不同，下面我们来详细看一下</p>
+<p><img src="https://uploadfiles.nowcoder.com/files/20190110/7380095_1547132982545_4685968-3d30d129baba9f06.png" alt=""></p>
+<h2 id="二、JVM关闭"><a href="#二、JVM关闭" class="headerlink" title="二、JVM关闭"></a>二、JVM关闭</h2><ul>
+<li>正常关闭：当最后一个非守护线程结束或调用了System.exit或通过其他特定于平台的方式,比如ctrl+c。</li>
+<li>强制关闭：调用Runtime.halt方法，或在操作系统中直接kill（发送single信号）掉JVM进程。</li>
+<li>异常关闭：运行中遇到RuntimeException 异常等</li>
+</ul>
+<p>在某些情况下，我们需要在JVM关闭时做一些扫尾的工作，比如删除临时文件、停止日志服务。为此JVM提供了关闭钩子（shutdown hocks）来做这些事件。</p>
+<p>Runtime类封装java应用运行时的环境，每个java应用程序都有一个Runtime类实例，使用程序能与其运行环境相连。</p>
+<p>关闭钩子本质上是一个线程（也称为hock线程），可以通过Runtime的addshutdownhock （Thread hock）向主jvm注册一个关闭钩子。hock线程在jvm正常关闭时执行，强制关闭不执行。</p>
+<p>对于在jvm中注册的多个关闭钩子，他们会并发执行，jvm并不能保证他们的执行顺序。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.nowcoder.com/discuss/151138?type=1" target="_blank" rel="noopener">https://www.nowcoder.com/discuss/151138?type=1</a></p>
+<p><a href="http://www.importnew.com/31126.html/jvm-1" target="_blank" rel="noopener">http://www.importnew.com/31126.html/jvm-1</a></p>
+<p><a href="https://blog.csdn.net/yingziisme/article/details/82946084" target="_blank" rel="noopener">https://blog.csdn.net/yingziisme/article/details/82946084</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/11/spring-jpa-unique-invalid/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1814,1179 +3000,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/07/iOS-book-EffectiveObjective-C2.0-chap6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Yun">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yun's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/07/iOS-book-EffectiveObjective-C2.0-chap6/" itemprop="url">
-                  EffectiveObjective-C2.0 笔记 - 第六部分
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2018-10-07 21:11:45" itemprop="dateCreated datePublished" datetime="2018-10-07T21:11:45+08:00">2018-10-07</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-01-08 08:20:08" itemprop="dateModified" datetime="2019-01-08T08:20:08+08:00">2019-01-08</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>EffectiveObjective-C2.0 笔记 - 第六部分</strong></p>
-<h1 id="6-块与大中枢派发"><a href="#6-块与大中枢派发" class="headerlink" title="6. 块与大中枢派发"></a>6. 块与大中枢派发</h1><h2 id="6-1-理解-“块”-这一概念"><a href="#6-1-理解-“块”-这一概念" class="headerlink" title="6.1 理解 “块” 这一概念"></a>6.1 理解 “块” 这一概念</h2><p><strong>一、块的基础知识</strong></p>
-<p>块是C、C++、Objective-C 中的词法闭包。</p>
-<p><strong>1. 块用 “^” 符号来表示，后面跟着一对花括号，括号里面是块的实现代码。</strong></p>
-<blockquote>
-<p>块其实就是个值，与 int，flout，Objective-C对象一样，而且自有其相关类型，可以赋值给变量；块类型的语法和函数指针类似。</p>
-</blockquote>
-   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">^&#123;</span><br><span class="line">	//block implementation herer	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//块类型的语法结构如下</span><br><span class="line">//return_type (^block_name)(parameters)</span><br><span class="line">void (^oneBlock)() = ^&#123;</span><br><span class="line">	//block implementation herer	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>2. 在声明块的范围内，所有变量都可以被其捕获。</strong></p>
-<blockquote>
-<p>默认情况下被块捕获的变量是不可以在块里修改的，不过可以在声明变量的时候加上__block 修饰符，这样子就可以在块内修改了。</p>
-</blockquote>
-<blockquote>
-<p>如果块所捕获的变量是对象类型，那么就会自动保留它，在系统释放这个块的时候，也会将其一并释放。</p>
-</blockquote>
-<blockquote>
-<p>块总能修改实例变量，所以在声明时无须加__block。不过如果通过读取或写入操作捕获了实例变量，那么也会自动把self 变量一并捕获了，因为实例变量是与self 所指代的实例关联在一起的。</p>
-</blockquote>
-<blockquote>
-<p>如果 self 所指代的那个对象同时也保留了块，那么这种情况通常就会导致”保留环”。</p>
-</blockquote>
-<p><strong>二、块的内部结构</strong></p>
-<p><strong>1. 块本身也是对象，在存放块对象的内存区域中，首个变量是指向Class 对象的指针(isa 指针)。</strong></p>
-<p>   <img src="http://qnyunyun.yunsoho.cn/adadsa.png" alt=""></p>
-<p><strong>2. invoke 变量是这个函数指针，指向块的实现代码。</strong></p>
-<blockquote>
-<p>函数原型至少要接受一个void* 型的参数，此参数代表块。为什么要把块对象作为参数传进来呢，因为在执行块的时候，要从内存中把这些捕获到的变量读出来。</p>
-</blockquote>
-<blockquote>
-<p>descriptor 变量是指向结构体的指针，这个结构体包含块的一些信息。</p>
-</blockquote>
-<p><strong>三、全局块、栈块及堆块</strong></p>
-<p><strong>1. 定义块的时候，其所占的内存区域是分配在栈中，意思就是，块只在定义它的那个范围内有效。</strong></p>
-   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">void (^block)();</span><br><span class="line">if(***)&#123;</span><br><span class="line">	block = ^()&#123;</span><br><span class="line">		NSLog(@&quot;Block A&quot;);</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">	block = ^()&#123;</span><br><span class="line">		NSLog(@&quot;Block B&quot;);</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;</span><br><span class="line">block();</span><br></pre></td></tr></table></figure>
-<ul>
-<li>栈块</li>
-</ul>
-<blockquote>
-<p>定义在if else 语句中的两个块都分配在栈内存中，编译器会给每个块分配好栈内存，然而等离开了相应的范围之后，编译器有可能把分配给块内存覆写掉。所以这里执行block() 有危险。</p>
-</blockquote>
-<ul>
-<li>堆块</li>
-</ul>
-<blockquote>
-<p>为了解决这个问题，可以给块发送copy 消息以拷贝之。这样子的话，就可以把块从栈复制到堆可。一旦复制到堆上，块就成了带引用计数的对象了，后续的复制操作都不会真的执行复制，只是递增块对象的引用计数。</p>
-</blockquote>
-<ul>
-<li>全局块</li>
-</ul>
-<blockquote>
-<p>全局块声明在全局内存里，而且也不能被系统回收，相当于单例。由于运行该块所需的全部信息在编译期确定，所以可以把它作为全局块，这是一种优化技术：若把如此简单的块当成复杂的块来处理，那就会在复制及丢弃该块时执行一些无谓的操作。</p>
-</blockquote>
-   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">void (^block)() = ^()&#123;</span><br><span class="line">		NSLog(@&quot;Block A&quot;);</span><br><span class="line">	&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="6-2-为常用的块类型创建-typedef"><a href="#6-2-为常用的块类型创建-typedef" class="headerlink" title="6.2 为常用的块类型创建 typedef"></a>6.2 为常用的块类型创建 typedef</h2><p><strong>1. 每个块都具备其 “固定类型”，因而可将其赋值给适当类型的变量。</strong></p>
-<p><strong>2. 由于块类型的语法比较复杂难记，我们可以给块类型起个别名。</strong></p>
-<blockquote>
-<p>用C 语言中的 “类型定义” 的特性。typedef 关键字用于给类型起个易读的别名。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typedef int(^EOCSomeBlock)(BOOL flag, int value);</span><br><span class="line"></span><br><span class="line">EOCSomeBlock block = ^(BOOL flag, int value)&#123;</span><br><span class="line">	//to do</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="6-3-块降低代码分散程度"><a href="#6-3-块降低代码分散程度" class="headerlink" title="6.3 块降低代码分散程度"></a>6.3 块降低代码分散程度</h2><p><strong>场景：</strong></p>
-<blockquote>
-<p>异步方法执行完任务，需要以某种手段通知相关代码。经常使用的技巧是设计一个委托协议，令关注此事件的对象遵从该协议，对象成了delegate 之后，就可以在相关事件发生时得到通知了。</p>
-</blockquote>
-<p><strong>使用块来写的话，代码会更清晰，使得代码更加紧致。</strong></p>
-<h2 id="6-4-用块引用其所属对象时不要出现保留环"><a href="#6-4-用块引用其所属对象时不要出现保留环" class="headerlink" title="6.4 用块引用其所属对象时不要出现保留环"></a>6.4 用块引用其所属对象时不要出现保留环</h2><p><strong>1. 如果块所捕获的对象直接或间接地保留了块本身，那么就得当心保留环问题。</strong></p>
-<p><strong>2. 一定要找个合适的时机解除保留环，而不能把责任推给API的调用者。</strong></p>
-<h2 id="6-5-多用派发队列，少用同步锁"><a href="#6-5-多用派发队列，少用同步锁" class="headerlink" title="6.5 多用派发队列，少用同步锁"></a>6.5 多用派发队列，少用同步锁</h2><p><strong>1. 同步锁</strong></p>
-<blockquote>
-<p>如果有多个线程要执行同一份代码，那么有时可能会出问题，这种情况下，通常要使用锁来实现某种同步机制。在GCD 出现之前，有两种办法：</p>
-</blockquote>
-<ul>
-<li><p>采用内置的 “同步块”（synchronization block）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (void)synchronizedMethod &#123;</span><br><span class="line">	@synchronized(self)&#123;</span><br><span class="line">		//safe</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">这种写法会根据给定的对象，自动创建一个锁，并等待块中的代码执行完毕，执行到代码结尾，锁就释放了。</span><br><span class="line"></span><br><span class="line">但是，滥用 @synchronized(self) 则会降低代码效率，因为共用同一个锁的那些同步块，都必须按顺序执行。</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>直接使用NSLock 对象，也可以使用NSRecursiveLock “递归锁”，线程能多次持有该锁，而且不会出现死锁。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">_lock = [[NSLock alloc] init];</span><br><span class="line"></span><br><span class="line">- (void)synchronizedMethod &#123;</span><br><span class="line">	[_lock lock];</span><br><span class="line">	//safe</span><br><span class="line">	[_lock unlock];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><strong>2. 对于上面两种方法，有些缺陷，同步块会导致死锁，直接使用锁对象，遇到死锁，就会非常麻烦。</strong></p>
-<p><strong>3. GCD以更简单、更高效的形式为代码加锁。</strong></p>
-<p><strong>例子：</strong></p>
-<blockquote>
-<p>属性是开发者经常需要同步的地方，可以使用atomic 特质来修饰属性，来保证其原子性，每次肯定可以从中获取到有效值，然而在同一个线程上多次调用获取方法(getter)，每次获取到结果未必相同，在两次访问操作之间，其他线程可能会写入新的属性值。</p>
-</blockquote>
-<p>   使用 “串行同步队列”，将读取操作及写入操作都安排在同一个队列里，即可保证数据同步。</p>
-   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">_syncQueue = dispatch_queue_create(&quot;com.yun.syncQueue&quot;, NULL);</span><br><span class="line"></span><br><span class="line">- (NSString *)name &#123;</span><br><span class="line">    __block NSString *rstName;</span><br><span class="line">    dispatch_sync(_syncQueue, ^&#123;</span><br><span class="line">        rstName = _name;</span><br><span class="line">    &#125;);</span><br><span class="line">    return rstName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)setName:(NSString *)name &#123;</span><br><span class="line">    dispatch_sync(_syncQueue, ^&#123;</span><br><span class="line">        _name = name;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>上面是用串行同步队列来保证数据同步：把设置操作与获取操作都安排在序列化的串行同步队列里执行，这样子，所有针对属性的访问操作都是同步的了。</p>
-</blockquote>
-<blockquote>
-<p>进一步优化，设置方法不一定非得是同步的，因为不需要返回值。这样子可以提高设置方法的执行速度，而读取操作与写入操作依然会按照顺序执行。</p>
-</blockquote>
-<p><strong>优化：多个获取方法可以并发执行，而获取方法与设置方法不能并发执行。</strong></p>
-<p>   我们还可以使用并发队列来实现,现在都是在并发队列上面执行任务，但是顺序不能控制，我们可以用栅栏(barrier)来解决。</p>
-<p>   这两个函数可以向队列派发块，将其作为栅栏来使用：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dispatch_barrier_sync(dispatch_queue_t queue,^(void)block)</span><br><span class="line">dispatch_barrier_async(dispatch_queue_t queue,^(void)block)</span><br></pre></td></tr></table></figure>
-<p>   在队列中，栅栏块必须单独执行，不能与其他块并行，这只对并发队列有意义，因为串行队列中的块总是按照顺序逐个执行的。并发队列如果发现接下来要处理的块是栅栏块，那么就一直要等到当前所有的并发块都执行完毕，才会单独执行这个栅栏块。执行完栅栏块，再按照正常方式向下处理。<br>   */</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">-----&gt; 现在并发队列 还不能满足要求</span><br><span class="line">_syncQueue1 = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);</span><br><span class="line">- (NSString *)name &#123;</span><br><span class="line">    __block NSString * rstName;</span><br><span class="line">    dispatch_sync(_syncQueue1, ^&#123;</span><br><span class="line">        rstName = _name;</span><br><span class="line">    &#125;);</span><br><span class="line">    return rstName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)setName:(NSString *)name &#123;</span><br><span class="line">    dispatch_async(_syncQueue1, ^&#123;</span><br><span class="line">        _name = name;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-----&gt; 转换写法 用栅栏块控制属性的设置方法 不能并行</span><br><span class="line">_syncQueue1 = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);</span><br><span class="line">- (NSString *)name &#123;</span><br><span class="line">    __block NSString * rstName;</span><br><span class="line">    dispatch_sync(_syncQueue1, ^&#123;</span><br><span class="line">        rstName = _name;</span><br><span class="line">    &#125;);</span><br><span class="line">    return rstName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)setName:(NSString *)name &#123;</span><br><span class="line">    dispatch_barrier_async(_syncQueue1, ^&#123;</span><br><span class="line">        _name = name;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="6-6-多用GCD，少用performSelector-方法"><a href="#6-6-多用GCD，少用performSelector-方法" class="headerlink" title="6.6 多用GCD，少用performSelector 方法"></a>6.6 多用GCD，少用performSelector 方法</h2><p><strong>建议用GCD 替代performSelector，对于performSelector 遇到的问题，我们都可以用GCD 解决</strong></p>
-<ol>
-<li><p>performSelector 可以任意调用方法，还可以延迟调用，还可以指定运行方法所用的线程，这些由 Objective-C 的动态性决定。</p>
-</li>
-<li><p>但是如果是动态来调用performSelector 方法的时候，编译器都不知道执行的选择子是什么，必须到了运行期才能确定，这种情况在ARC下会报警告，因为编译器不知道方法名，所以不能运用ARC内存管理规则来判定返回值是否应该释放，对于这种情况ARC不会帮我们添加任何释放操作。</p>
-</li>
-<li><p>performSelector 方法调用的时候对于返回类型只能是void或对象类型，对于有返回值的需要自己做多次转换，对于参数的也最多只能传2个，介于此performSelector 还是比较不方便的。</p>
-</li>
-<li><p>如果想把任务放在另一个线程上执行，那么最好不要用performSeletor  系列方法，而是应该把任务封装到块里，然后调用大中枢派发机制的相关方法来实现。</p>
-</li>
-</ol>
-<h2 id="6-7-掌握GCD-及操作队列的使用时机"><a href="#6-7-掌握GCD-及操作队列的使用时机" class="headerlink" title="6.7 掌握GCD 及操作队列的使用时机"></a>6.7 掌握GCD 及操作队列的使用时机</h2><p><strong>1. 使用NSOperation执行后台任务</strong></p>
-<ul>
-<li><p>GCD在很多地方特别优秀，但是在执行后台任务时，GCD不一定是最佳方式，还有一种技术叫做NSOperationQueue，开发者可以把操作以NSOperation子类的形式放在队列中，而这些操作也可以并发执行。</p>
-</li>
-<li><p>GCD是纯C的API，操作队列的则是Objective-C的对象。用NSOperationQueue类的“addOperationWithBlock” 方法搭配NSBlockOperation类操作队列，其语法与纯GCD方式非常类似。使用NSOperation及NSOperationQueue 的好处如下：</p>
-</li>
-</ul>
-<p><strong>1) 取消某个操作。</strong></p>
-<blockquote>
-<p>如果使用操作队列，那么想取消操作是很容易的。运行任务之前，可以在NSOperation 对象调用cancel 方法，该方法会设置对象内的标识位，用以表明此任务不需执行，不过，已经启动的任务无法取消。若不是操作队列，而是把块安排到GCD 队列，那就无法取消了。那套架构是 “安排好任务之后就不管了”。开发者可以在应用层自己来实现取消功能，不过这样子做需要编写很多代码，而那些代码其实已经由操作队列实现好了。</p>
-</blockquote>
-<p><strong>2. 指定操作间的依赖关系。</strong></p>
-<blockquote>
-<p>一个操作可以依赖其他多个操作。开发者能够指定操作之间的依赖关系，使特定的操作必须在另外一个操作顺序执行完毕方可执行，比方说，从服务器下载并处理文件的动作，可以用操作来表示，而在处理其他文件之前，必须先下载 “清单文件”。后续的下载操作，都要依赖于先下载清单文件这一操作。如果操作队列允许并发的话，那么后续的多个下载操作就可以同时执行，但前提是它们所依赖的那个清单文件下载操作已经执行完毕。</p>
-</blockquote>
-<p><strong>3. 通过键值观测机制监控NSOperation对象的属性。</strong></p>
-<blockquote>
-<p>NSOperation 对象有许多属性都适合通过键值观测机制（KVO）来监听，比如可以通过isCancalled 属性来判断任务是否取消。如果想在某个任务变更期状态时得到通知，或是想用比GCD 更为精细的方式来控制所要执行的任务，那么键值观测机制会很有用。</p>
-</blockquote>
-<p><strong>4. 制定操作的优先级。</strong></p>
-<blockquote>
-<p>操作的优先级表示此操作与队列其他操作之间的优先关系。优先级高的操作先执行，优先级低的后执行。操作队列的调度算法已经比较成熟。反之，GCD 则没有直接实现此功能的办法，GCD 的队列有优先级，但是是针对整个队列来说的，而不是针对每个块来说的。对于优先级这一点，操作队列所提供的功能比GCD 更为便利。</p>
-</blockquote>
-<p><strong>5. 重用NSOperation 对象。</strong></p>
-<blockquote>
-<p>系统内置类一些NSOperation 的子类供开发者调用，要是不想用这些固有子类的话，那就得自己来创建了。这些类就是普通的Objective-C 对象，能够存放任何信息。对象在执行时可以充分利用存于其中的信息，而且还可以随意调用定义在类中的方法。这比派发队列中哪些简单的块要强大。这些NSOperation 类可以在代码中多次使用。</p>
-</blockquote>
-<h2 id="6-8-通过Dispatch-Group机制，根据系统资源状况来执行任务"><a href="#6-8-通过Dispatch-Group机制，根据系统资源状况来执行任务" class="headerlink" title="6.8 通过Dispatch Group机制，根据系统资源状况来执行任务"></a>6.8 通过Dispatch Group机制，根据系统资源状况来执行任务</h2><p><strong>1. 一系列任务可归入一个dispatch group之中。开发者可以在这组任务执行完毕时获得通知。</strong></p>
-<p><strong>2. 通过dispatch group，可以在并发式派发队列里同时执行多项任务。此时GCD会根据系统资源状况来调度这些并发执行的任务。开发者若自己实现此功能，则需编写大量代码。</strong></p>
-<h2 id="6-9-使用dispatch-once来执行只需运行一次的线程安全代码"><a href="#6-9-使用dispatch-once来执行只需运行一次的线程安全代码" class="headerlink" title="6.9 使用dispatch_once来执行只需运行一次的线程安全代码"></a>6.9 使用dispatch_once来执行只需运行一次的线程安全代码</h2><ol>
-<li>只需执行一次的线程安全代码时，使用dispatch_once。</li>
-</ol>
-<blockquote>
-<p>经常需要编写 “只需执行一次的线程安全代码”。通常使用GCD 所提供的dispatch_once 函数，很容易就能实现此功能。</p>
-</blockquote>
-<blockquote>
-<p>使用dispatch_once 可以简化代码，并且彻底保证线程安全</p>
-</blockquote>
-<ol>
-<li>单例示例</li>
-</ol>
-<blockquote>
-<p>对于单例我们创建唯一实例，之前都是用@synchronized 加锁来解决多线程的问题，GCD 提供了一个更加简单的方法来实现。    </p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//单例</span><br><span class="line">+(instancetype)shareInstance&#123;</span><br><span class="line">    static EOCClass *shareInstance;</span><br><span class="line">    static dispatch_once_t onceToken;</span><br><span class="line">    dispatch_once(&amp;onceToken, ^&#123;</span><br><span class="line">        shareInstance = [EOCClass new];</span><br><span class="line">    &#125;);</span><br><span class="line">    return shareInstance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="6-10-不要使用dispatch-get-current-queue"><a href="#6-10-不要使用dispatch-get-current-queue" class="headerlink" title="6.10 不要使用dispatch_get_current_queue"></a>6.10 不要使用dispatch_get_current_queue</h2><ol>
-<li><p>dispatch_get_current_queue 函数的行为常常与开发者所预期的不同。此函数已经废弃(iOS 6.0起废除)，只应做调试之用。</p>
-</li>
-<li><p>由于派发队列是按层级来组织的，所以无法单用某个队列对象来描述 “当前队列” 这一概念。</p>
-</li>
-<li><p>dispatch_get_current_queue 函数用于解决由不可重入的代码引发的死锁，然而能用此函数的解决的问题，通常也能改用 “队列特定数据” 来解决。</p>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/03/iOS-book-EffectiveObjective-C2.0-chap5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Yun">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yun's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/03/iOS-book-EffectiveObjective-C2.0-chap5/" itemprop="url">
-                  EffectiveObjective-C2.0 笔记 - 第五部分
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2018-10-03 22:12:32" itemprop="dateCreated datePublished" datetime="2018-10-03T22:12:32+08:00">2018-10-03</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2018-11-05 10:03:49" itemprop="dateModified" datetime="2018-11-05T10:03:49+08:00">2018-11-05</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>EffectiveObjective-C2.0 笔记 - 第五部分</strong></p>
-<h1 id="5-内存管理"><a href="#5-内存管理" class="headerlink" title="5 内存管理"></a>5 内存管理</h1><h2 id="5-1-理解引用计数"><a href="#5-1-理解引用计数" class="headerlink" title="5.1 理解引用计数"></a>5.1 理解引用计数</h2><h3 id="1、引用计数"><a href="#1、引用计数" class="headerlink" title="1、引用计数"></a>1、引用计数</h3><p>Objective-C 语言使用引用计数来管理内存，每个对象都有个可以递增递减的计数器，用以表示当前有多少个事物想令此对象继续存活下去。当这个计数器归零那么这个对象就会被释放。</p>
-<blockquote>
-<p>查看引用计数的方法叫做 retainCount 但是实际并不建议使用这个方法调试代码</p>
-</blockquote>
-<p>NSObject 协议声明下面三个方法用于操作计数器，以递增或递减其值：</p>
-<ul>
-<li>retain 递增保留计数</li>
-<li>release 递减保留计数</li>
-<li>autorelease 待稍后清理 “自动释放池” 时，再递减保留计数</li>
-</ul>
-<p>在调用release 之后，对象所占的内存可能会被回收，这样子在调用对象的方法就可能使程序崩溃，这里 “可能” 的意思是对象所占的内存在 “解除分配” （deallocated）之后，只是放回 “可用内存池”（avaiable pool）。若果执行方法时尚未覆写对象，那么对象仍然有效。</p>
-<p>为避免在不经意间使用无效对象，一般在调用完release 之后都会清空指针，保证不会出现可能指向无效对象的指针，这种指针通常被称为 “悬挂指针”（dangling pointer）。</p>
-<p>所有的对象最终都间接或直接的被一个根对象所引用，macOS 应用是 NSApplication 对象，iOS 则是 UIApplication 对象，这两个对象都是应用启动时创建的单例</p>
-<h3 id="2、自动释放池-autorelease"><a href="#2、自动释放池-autorelease" class="headerlink" title="2、自动释放池 autorelease"></a>2、自动释放池 autorelease</h3><p>调用release 会立刻递减对象的保留计数（这里可能会令系统回收此对象），调用autorelease 方法，并不会马上减少对象的引用计数，而是在下一次 Event Loop（事件循环）时减少，以达到延迟释放对象的效果。</p>
-<p>autorelease 能延长对象声明周期，使其在跨越方法调用边界后依然可以存活一段时间。</p>
-<p>调用 release 并不会使对象被释放，对象释放被释放取决于引用计数是否为 0</p>
-<h2 id="5-2-以-ARC-简化引用计数"><a href="#5-2-以-ARC-简化引用计数" class="headerlink" title="5.2 以 ARC 简化引用计数"></a>5.2 以 ARC 简化引用计数</h2><p><strong>1. 内存泄漏：</strong></p>
-<blockquote>
-<p>没有正确的释放已经不再使用的内存。</p>
-</blockquote>
-<p><strong>2. ARC自用引用计数</strong></p>
-<p><strong>1) ARC 只是自动为代码添加内存管理相关的代码</strong></p>
-<blockquote>
-<p>ARC 是通过在编译时在我们的代码中插入对应的内存管理代码，并且只适用于 Objective-C 的代码，使用ARC 时，引用计数实际上还是要执行的，只是保留与释放操作是由ARC 自动添加的。</p>
-</blockquote>
-<p><strong>2) 在 ARC 下，不允许调用内存管理方法 retain，release，autorelease，dealloc</strong></p>
-<blockquote>
-<p>ARC会自动执行以下等操作，所以在ARC下调用这些内存管理方法是<strong>非法的</strong>。</p>
-</blockquote>
-<ul>
-<li>retain</li>
-<li>release</li>
-<li>autorelease</li>
-<li>dealloc</li>
-</ul>
-<blockquote>
-<p>ARC 在调用这些方法时，并不是普通的Objective-C 消息派发机制，而是直接调用其底层的C 语言函数，这样子性能会更好。</p>
-</blockquote>
-<p><strong>3. 使用ARC 时必须遵循的方法命名规则</strong></p>
-<p>将内存管理语义在方法名中表示出来，若方法名以下列词语开头，则返回的对象归调用者所有：</p>
-<ul>
-<li>alloc</li>
-<li>new</li>
-<li>copy</li>
-<li>mutableCopy</li>
-</ul>
-<p><strong>4. 变量的内存管理语义</strong></p>
-<p><strong>1) ARC 也会处理局部变量与实例变量的内存管理。</strong></p>
-<p><strong>2 )我们通常会给局部变量加上修饰符来打破 “块”（block）所引入的 “保留环”（retain cycle）。</strong></p>
-<p>变量内存管理语义修饰符</p>
-<ul>
-<li>__strong：默认，强引用，表示需要保留这个值</li>
-<li>__weak：弱引用，表示不保留这个值，并且如果系统回收这个对象，那么在获取此变量的值的时候会的到 nil</li>
-<li>__unsafe_unretained：不安全的引用，不保留此值，系统回收这个对象的时候，不会清空变量的值</li>
-<li>__autoreleasing：把对象“按引用传递”给方法时使用，表示此值在方法返回时自动释放</li>
-</ul>
-<p><strong>5. ARC 如何清理实例变量</strong></p>
-<p>对实例变量进行内存管理，必须在 “回收分配给对象的内存” 时生成必要的清理代码。凡事具备强引用的变量，都必须释放，ARC 会在dealloc 方法中插入这些代码。</p>
-<ul>
-<li>ARC 只负责管理Objective-C 对象的内存</li>
-</ul>
-<blockquote>
-<p>ARC 会借用Objective-C++ 的一项特性来生成清理代码，在回收对象时，待回收对象会调用所有C++ 对象的析构函数，编译器如果发现某个对象里含有C++ 对象，就会生成名为.cxx_desteuct 的方法，ARC 借助此特性，在该方法中生成清理内存所需的代码。</p>
-</blockquote>
-<ul>
-<li>对于非Objective-C 的对象，需要我们手动清理。</li>
-</ul>
-<blockquote>
-<p>如 CoreFoundation 对象不归ARC 管理，开发者必须适时调用CFRetain/CFRelease。</p>
-</blockquote>
-<p><strong>6. 覆写内存管理方法</strong></p>
-<p>非ARC 时可以覆写内存管理方法，在ARC 下禁止覆写内存管理方法，会干扰到ARC 分析对象生命周期的工作。</p>
-<h2 id="5-3-在-dealloc-方法中只释放引用，并解除监听"><a href="#5-3-在-dealloc-方法中只释放引用，并解除监听" class="headerlink" title="5.3 在 dealloc 方法中只释放引用，并解除监听"></a>5.3 在 dealloc 方法中只释放引用，并解除监听</h2><p>对象在经历生命周期后，最终会为系统回收，这时候就要执行dealloc 方法。每个对象生命周期内，此方法只会调用一次，也就是保留计数为0 的时候，绝对不能自己调用dealloc 方法，运行期会在适当的时候调用，一旦调用，对象就不再有效了，后续的方法调用均是无效的。</p>
-<p>dealloc 方法主要是释放对象所拥有的引用，也就是把Objective-C 对象都释放掉，ARC 会通过自动生成的.cxx_desteuct 方法，在dealloc 中为你自动添加这些释放代码。但是其他非Objective-C 对象就需要自己手动释放了。</p>
-<p><strong>1. dealloc 方法中需要做的事情：</strong></p>
-<ul>
-<li>释放对象所拥有的引用，持有的对象(ARC 下自动加入施放代码)</li>
-<li>清理观察者</li>
-<li>清理通知</li>
-<li>如果不使用 ARC，那么需要调用 [super dealloc] 方法</li>
-</ul>
-<p><strong>2. dealloc 方法中不适合做的事情：</strong></p>
-<ul>
-<li>释放开销较大或系统内稀缺的资源（文件描述符，套接字，大量内存等）</li>
-</ul>
-<blockquote>
-<p>因为 dealloc 方法并不会在特定时机调用，一般对于使用这样资源的对象都需要提供名字类似 open 和 close 的方法处理申请和释放资源的行为</p>
-</blockquote>
-<ul>
-<li>执行异步任务</li>
-</ul>
-<blockquote>
-<p>异步方法执行后，对象可能已经施放</p>
-</blockquote>
-<ul>
-<li>尽量不要去调用方法，包括属性的存取方法</li>
-</ul>
-<blockquote>
-<p>在dealloc 里尽量不要去调用方法，包括属性的存取方法，因为在这些方法可能会被覆写，并在其中做一些无法在回收阶段安全执行的操作。</p>
-</blockquote>
-<h2 id="5-4-编写-“异常安全代码”-时留意内存管理问题"><a href="#5-4-编写-“异常安全代码”-时留意内存管理问题" class="headerlink" title="5.4 编写 “异常安全代码” 时留意内存管理问题"></a>5.4 编写 “异常安全代码” 时留意内存管理问题</h2><p><strong>1. C++ 和 Objective-C 的异常互相兼容，可以相互抛出捕获</strong></p>
-<blockquote>
-<p>纯C 中没有异常，C++与Objective-C 都支持异常，在运行期系统中C++与Objective-C 异常相互兼容，也就是说，从其中一门语言里抛出的异常能用另外一门语言所编写的 “异常处理程序” 来捕获。</p>
-</blockquote>
-<p><strong>2. 捕获异常时，一定要注意将try 块内创建的对象清理干净。</strong></p>
-<blockquote>
-<p>Objective-C 错误模型表明，异常只应发生严重错误后抛出，发生异常如何管理内存很重要，在try 块中保留某个对象的，但是在释放它之前抛出异常了，这时候就无法正常释放了，这时候需要借助@finally 块来保证释放对象的代码一定会执行，且只执行一次。</p>
-</blockquote>
-<p><strong>3. 默认情况下，ARC 不生成安全处理异常所需的清理代码。</strong></p>
-<blockquote>
-<p>在ARC 不会自动生成处理异常中的代码，因为这样子需要加入大量的样板代码，以便追踪待清理的对象，从而在抛出异常时将其释放。可以这段代码会严重运行期的性能，还会增加应用程序的大小。</p>
-</blockquote>
-<blockquote>
-<p>可以通过<code>-fobjc-arc-exceptions</code> 这个编译编织来开启这个功能，但是这个功能不应该作为生成这种安全处理异常所用的附加代码，应该是让代码处于Objective-C++模式。</p>
-</blockquote>
-<h2 id="5-5-以弱引用避免保留环"><a href="#5-5-以弱引用避免保留环" class="headerlink" title="5.5 以弱引用避免保留环"></a>5.5 以弱引用避免保留环</h2><p><strong>1. 相互引用和对象引用环</strong></p>
-<blockquote>
-<p>几个对象都以某种方式互相引用，从而形成 “环”，这种情况通常会泄漏内存，因为没有东西引用环中对象，这样子环里的对象互相引用，不会被系统回收，会导致内存泄漏。</p>
-</blockquote>
-<p><strong>2. 避免保留环的最佳方式就是弱引用</strong></p>
-<ul>
-<li>非 ARC 的情况下使用 assign 或者 unsafe_unretained 来修饰弱引用属性</li>
-<li>ARC 的情况下使用 weak 来修饰弱引用的属性，因为 weak 的属性在对象被释放后会自动设置为 nil</li>
-</ul>
-<blockquote>
-<p>一般来说，如果不拥有某对象，就不要保留它，这条规则对collection 例外，collection 虽然不直接拥有其内容，但是它要代表自己所属的那个对象来保留这些元素。</p>
-</blockquote>
-<h2 id="5-6-以-“自动释放池块”-降低内存峰值"><a href="#5-6-以-“自动释放池块”-降低内存峰值" class="headerlink" title="5.6 以 “自动释放池块” 降低内存峰值"></a>5.6 以 “自动释放池块” 降低内存峰值</h2><p><strong>1. 释放对象有两种方式：</strong></p>
-<p><strong>1) 一种是调用release 方法，使其保留计数立即递减</strong></p>
-<blockquote>
-<p>ARC下不能主动调用</p>
-</blockquote>
-<p><strong>2) 一种是调用autorelease 方法</strong></p>
-<blockquote>
-<p>将对象放入 “自动释放池” 中，自动释放池用于存放那些需要稍后某个时刻释放的对象，清空（drain）自动释放池时，系统会向其中的对象发送release 消息。</p>
-</blockquote>
-<blockquote>
-<p>创建自动释放池，系统会自动创建一些线程，这些线程默认都有自动释放池，每次执行 “事件循环”时，都会将其清空。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@autoreleasepool &#123;</span><br><span class="line">//...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>2. 内存峰值：</strong></p>
-<blockquote>
-<p>是指应用程序在某个特定时段内的最大内存用量。如：循环创建大量对象的时候</p>
-</blockquote>
-<ul>
-<li>对象有可能会放在自动释放池里面，需要等到线程执行下一次事件循环才会清空，这里会导致应用程序所占内存会持续增加，等到临时对象释放的时候，内存用量又会突然下降。我们现在就想把这个内存峰值给降低下来。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for (int i = 0;i &lt; 100000;i++)&#123;</span><br><span class="line">    @autorelease&#123;</span><br><span class="line">        NSObject *object = [NSObject new];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="5-7用-“僵尸对象”-调试内存管理问题"><a href="#5-7用-“僵尸对象”-调试内存管理问题" class="headerlink" title="5.7用 “僵尸对象” 调试内存管理问题"></a>5.7用 “僵尸对象” 调试内存管理问题</h2><p><strong>1. 僵尸对象用于调试代码是否会使用到已经被销毁的对象</strong></p>
-<blockquote>
-<p>向已回收的对象发送消息是不安全的，是否崩溃这个是看对象所占的内存有没有为其他内容所覆写。</p>
-</blockquote>
-<ul>
-<li>Cocoa 提供 “僵尸对象”（Zombie Object）这个非常方便的功能，开启后，运行期系统会把已经回收的实例转换成特殊的 “僵尸对象”，而不会真正回收它们。这个对象所在的核心内无法重用，因此不可能遭到覆写，僵尸对象收到消息后，会抛出异常。</li>
-</ul>
-<p><strong>2. XCODE 设置</strong></p>
-<blockquote>
-<p>Xcode Scheme 中的Enable Zombie Objects 选项，打开会将NSZombieEnabled 环境变量设成YES。</p>
-</blockquote>
-<ul>
-<li><p>系统在即将回收时，会执行一个附加步骤，将对象转换成僵尸对象，而不彻底回收。僵尸类是从名为<em>NSZombie</em> 的模版类复制出来的。<em>NSZombie</em> 类并未实现任何方法，此类没有超类，因此跟NSObject 一样，也是一个 “根类”，该类只有一个实例变量，叫做isa，所以发给他的消息都要经过 “完整的消息转发机制” 。</p>
-</li>
-<li><p>在完整的消息转发机制中，<strong><em>forwarding</em></strong> 是核心，检查接受消息的对象所属的类名，若是<em>NSZombie</em> ，则表示消息接受者是僵尸对象，需要特殊处理。</p>
-</li>
-<li><p>系统在回收对象时，可以不将其真的回收，而是把它转化成僵尸对象。通过环境变量NSZombieEnabled 可开启此功能。</p>
-</li>
-<li><p>系统会修改对象的isa 指针，令其指向特殊的僵尸类，从而使该对象变成僵尸对象。僵尸类能够响应所有的选择子，响应方式为：打印一条包含消息内容及其接受者的消息，然后终止应用程序。</p>
-</li>
-</ul>
-<h2 id="5-8-不要使用-retainCount"><a href="#5-8-不要使用-retainCount" class="headerlink" title="5.8 不要使用 retainCount"></a>5.8 不要使用 retainCount</h2><p><strong>1. retainCount 在反映调用者有多少对象引用，以及调试内存管理都没有任何帮助</strong></p>
-<ul>
-<li>每个对象都有一个计数器，其表明还有多少个其他对象想令此对象继续存活。在ARC retainCount 这个方法已经废弃了，但是在非ARC 中也不应该调用这个方法，因为这个保留计数只是返回某个时间点的值，并不会联系上下文给出真正有用的值。</li>
-</ul>
-<p><strong>2. retainCount 在 ARC 环境下将会编译错误</strong></p>
-<ul>
-<li><p>retainCount 可能永远不返回0，因为系统有时候会优化对象的释放行为，在保留计数为1的时候就把它回收了。</p>
-</li>
-<li><p>不应该依靠保留计数的具体址来编码。</p>
-</li>
-<li><p>对象的保留计数看似有用，实则不然，因为任何给定时间点上的 “绝对保留计数”（absolute retain count）都无法反映对象生命期的全貌。</p>
-</li>
-<li><p>引入ARC 之后，retainCount 方式就正式废止了，在ARC 下调用方法会导致编译器报错。</p>
-</li>
-</ul>
-<p><strong>3. 发布版本时，一定关闭此功能</strong></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/24/iOS-book-EffectiveObjective-C2.0-chap4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Yun">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yun's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/24/iOS-book-EffectiveObjective-C2.0-chap4/" itemprop="url">
-                  EffectiveObjective-C2.0 笔记 - 第四部分
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2018-09-24 20:11:32" itemprop="dateCreated datePublished" datetime="2018-09-24T20:11:32+08:00">2018-09-24</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2018-11-05 10:03:49" itemprop="dateModified" datetime="2018-11-05T10:03:49+08:00">2018-11-05</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>EffectiveObjective-C2.0 笔记 - 第四部分</strong></p>
-<h1 id="4-协议与分类"><a href="#4-协议与分类" class="headerlink" title="4 协议与分类"></a>4 协议与分类</h1><h2 id="4-1-通过委托与数据源协议进行对象间通信"><a href="#4-1-通过委托与数据源协议进行对象间通信" class="headerlink" title="4.1 通过委托与数据源协议进行对象间通信"></a>4.1 通过委托与数据源协议进行对象间通信</h2><p><strong>1. 协议（protocol）类似 java 的接口（interface）。Objective-C 不支持多重继承，但我们可以把某个类应该实现的方法定义在一系列的协议里面。</strong></p>
-<ol>
-<li>Objective-C 可以使用 “委托模式”（Delegate pattern）的编程设计模式来实现对象间的通信：</li>
-</ol>
-<blockquote>
-<p>定义一套接口，某对象若想接受另一个对象的委托，则需遵从此接口，以便成为其 “委托对象”（delegate）。Objective-C 一般利用 “协议” 机制来实现此模式。</p>
-</blockquote>
-<p>定义协议：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">//采用 “驼峰法” 命名，最后加上 Delegate 一词</span><br><span class="line">@protocol EOCNetworkingFetcherDelegate&lt;NSObject&gt;</span><br><span class="line"></span><br><span class="line">// 可选实现的方法</span><br><span class="line">@optional</span><br><span class="line">- (void)newworkingFetcher:(EOCNetworkingFetcher *)fetcher</span><br><span class="line">            didRecevieData:(NSData *)data;</span><br><span class="line"></span><br><span class="line">// 必须实现的方法</span><br><span class="line">@required</span><br><span class="line">- (void)newworkingFetcher:(EOCNetworkingFetcher *)fetcher</span><br><span class="line">         didFailWithError:(NSError *)error;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@interface EOCNetworkingFetcher : NSObject</span><br><span class="line"></span><br><span class="line">// weak，避免循环引用</span><br><span class="line">@property (nonatomic,weak) id delegate;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<p><strong>3. 如果要在委托对象上调用可选方法，那么必须提前使用类型信息查询方法，判断这个委托对象能否响应相关的选择子。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">NSData *data;</span><br><span class="line">if([_delegate respondsToSelector:@selector(networkFetcher:didRecevieData:)])&#123;</span><br><span class="line">    [_delegate networkFetcher:self didRecevieData:data];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>4. delegate 里的方法也可以用于从委托对象中获取信息（数据源模式）。</strong></p>
-<p><strong>5. 在实现委托模式和数据源模式的时，协议中的方法是可选的，我们就会写出大量这种判断代码：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if([_delegate respondsToSelector:@selector(networkFetcher:didRecevieData:)])&#123;</span><br><span class="line">    [_delegate networkFetcher:self didRecevieData:data];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>每次调用方法都会判断一次，其实除了第一次检测的结构有用，后续的检测很有可能都是多余的，因为委托对象本身没变，不太可能会一下子不响应，一下子响应的，所以我们这里可以把这个委托对象能否响应某个协议方法记录下来，以优化程序效率。<br>将方法响应能力缓存起来的最佳途径是使用 “位段”（bitfield）数据类型。我们可以把结构体中某个字段所占用的二进制位个数设为特定的值。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">// 协议</span><br><span class="line">@protocol EOCNetworkingFetcherDelegate&lt;NSObject&gt;</span><br><span class="line"></span><br><span class="line">@optional</span><br><span class="line">- (void) didReceiveData:(NSData *)data;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@interface EOCNetworkingFetcher ()</span><br><span class="line">// 定义位段</span><br><span class="line">struct &#123;</span><br><span class="line">    unsigned int didReceiveData : 1;</span><br><span class="line">&#125; _delegateFlags</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">// 设置</span><br><span class="line">-(void)setDelegate:(id&lt;EOCNetworkingFetcherDelegate&gt;)delegate&#123;</span><br><span class="line">	_delegate = delegate;</span><br><span class="line">	_delegateFlags.didReceiveData = [_delegate respondsToSelector:@selector(didRecevieData:)]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//使用</span><br><span class="line">if(_delageteFlags.didReceiveData)&#123;</span><br><span class="line">	[_delegate didRecevieData:data];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="4-2-将类的实现代码分散到便于管理的数个分类之中"><a href="#4-2-将类的实现代码分散到便于管理的数个分类之中" class="headerlink" title="4.2 将类的实现代码分散到便于管理的数个分类之中"></a>4.2 将类的实现代码分散到便于管理的数个分类之中</h2><p><strong>1. 使用分类机制把类的实现代码划分成易于管理的小块。</strong></p>
-<p><strong>2. 将应该视为 “私有” 的方法归入为叫Private 的分类中，以隐藏实现细节。</strong></p>
-<p><strong>3. 分类原则上不能定义属性，当可以通过【关联对象】实现，参见《2.5-关联对象存放自定义数据》</strong></p>
-<h2 id="4-3-总是为第三方类的分类名称加前缀"><a href="#4-3-总是为第三方类的分类名称加前缀" class="headerlink" title="4.3 总是为第三方类的分类名称加前缀"></a>4.3 总是为第三方类的分类名称加前缀</h2><p><strong>1. 分类机制常用于向无源码的既有类中新增新功能，但是在使用的时候要十分小心，不然很容易产生Bug。因为这个机制时在运行期系统加载分类时，将其方法直接加到原类中，这里要注意方法重名的问题，不然会覆盖原类中的同名方法。</strong></p>
-<p><strong>2. 一般用前缀来区分各个分类的名称与其中所定义的方法。</strong></p>
-<p><strong>3. 不要轻易去利用分类来覆盖方法，这里需要慎重考虑。</strong></p>
-<h2 id="4-4-勿在分类中声明属性"><a href="#4-4-勿在分类中声明属性" class="headerlink" title="4.4 勿在分类中声明属性"></a>4.4 勿在分类中声明属性</h2><p><strong>1. 可以利用运行期的关联对象机制，为分类声明属性，但是这种做法要尽量避免。</strong></p>
-<blockquote>
-<p>因为除了 “class-continuation 分类” 之外，其他分类都无法向类中新增实例变量，因此，他们无法把实现属性所需的实例变量合成出来。</p>
-</blockquote>
-<p><strong>2. 利用关联对象机制可以解决分类中不能合成实例变量的问题。</strong></p>
-<blockquote>
-<p>自己实现存取方法，但是要注意该属性的内存管理语义（属性特质）。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic,copy) NSString *name;</span><br><span class="line">static const void *kViewControllerName = &amp;kViewControllerName;</span><br><span class="line">- (void)setName:(NSString *)name &#123;</span><br><span class="line">    objc_setAssociatedObject(self, kViewControllerName, name, OBJC_ASSOCIATION_COPY_NONATOMIC);</span><br><span class="line">&#125;</span><br><span class="line">- (NSString *)name &#123;</span><br><span class="line">    NSString *myName = objc_getAssociatedObject(self, kViewControllerName);</span><br><span class="line">    return myName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>3. 在可以修改源代码的情况下，尽量把属性定义在主接口中。</strong></p>
-<blockquote>
-<p>这里是唯一能够定义实例变量的地方，属性只是定义实例变量及相关存取方法所用的 “语法糖”。</p>
-</blockquote>
-<h2 id="4-5-使用-”class-continuation-分类“-隐藏实现细节"><a href="#4-5-使用-”class-continuation-分类“-隐藏实现细节" class="headerlink" title="4.5 使用 ”class-continuation 分类“ 隐藏实现细节"></a>4.5 使用 ”class-continuation 分类“ 隐藏实现细节</h2><p><strong>“class-continuation 分类”必须定义在本身类的实现文件中，而且这里是唯一可以声明实例变量的分类(除关联对象机制)。</strong></p>
-<blockquote>
-<p>而且此分类没有特定的实现文件，这个分类也没有名字。这里可以定义实例变量的原因是 “ 稳固的ABI” 机制，我们无须知道对象的大小就可以直接使用它。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@interface EOCPerson ()</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<p><strong>私有的方法、协议、变量等，都可以定义在“class-continuation 分类”</strong></p>
-<p><strong>1. 可以将不需要要暴露给外界知道的实例变量及方法写在 “class-continuation 分类” 中。</strong></p>
-<p><strong>2.  可以利用 “class-continuation 分类” 把引用C++ 类的细节写到实现文件中，这样子别的类引用这个类就不会受到影响，甚至都不知道这个类底层实现混有C++ 代码。</strong></p>
-<blockquote>
-<p>编写Objective-C++ 代码时候，使用 “class-continuation 分类” 会十分方便。因为对于引用了C++的文件的实现文件需要用.mm 为扩展名，表示编译器应该将此文件按照Objective-C++ 来编译。C++ 类必须完全引入，编译器要完整地解析其定义才能得知这个C++ 对象的实例变量大小。如果把对C++ 类的引用写在头文件的话，其他引用到这个类也会引用到这个C++ 类，就也需要编译成Objective-C++ 才行，这样子很容易失控。</p>
-</blockquote>
-<p><strong>3. 使用 “class-continuation 分类” 还可以将头文件声明 “只读” 的属性扩展成 “可读写”，以便在类的内部可以设置其值。</strong></p>
-<blockquote>
-<p>我们通常不直接访问实例变量，而是通过设置方法来做，因为这样子可以触发 “键值观测” （Key-Value Observing，KVO）通知。</p>
-</blockquote>
-<p><strong>4. 若对象所遵循的协议只应视为私有，也可以同过“class-continuation 分类” 来隐藏。</strong></p>
-<h2 id="4-6-通过协议提供匿名对象"><a href="#4-6-通过协议提供匿名对象" class="headerlink" title="4.6 通过协议提供匿名对象"></a>4.6 通过协议提供匿名对象</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic,weak) id delegate;</span><br></pre></td></tr></table></figure>
-<p>该属性类型是id的，所以实际上任何类的都能充当这一属性，即便该类不继承NSObject 也可以，只要遵循EOCDelegae 协议就可以了，对于具备此属性的类来说，delegate 就是 “匿名的”。</p>
-<p><strong>1. 使用匿名对象来隐藏类型名称（或类名）。</strong></p>
-<p><strong>2. 如果具体类型不重要，重要的是对象能够响应（定义在协议里的）特定方法，那么可使用匿名对象来表示。</strong></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/20/iOS-book-EffectiveObjective-C2.0-chap3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Yun">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yun's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/20/iOS-book-EffectiveObjective-C2.0-chap3/" itemprop="url">
-                  EffectiveObjective-C2.0 笔记 - 第三部分
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2018-09-20 14:12:31" itemprop="dateCreated datePublished" datetime="2018-09-20T14:12:31+08:00">2018-09-20</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2018-11-05 10:03:49" itemprop="dateModified" datetime="2018-11-05T10:03:49+08:00">2018-11-05</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>EffectiveObjective-C2.0 笔记 - 第三部分</strong></p>
-<h1 id="3-接口与-API-设计"><a href="#3-接口与-API-设计" class="headerlink" title="3 接口与 API 设计"></a>3 接口与 API 设计</h1><h2 id="3-1-用前缀避免命名空间冲突"><a href="#3-1-用前缀避免命名空间冲突" class="headerlink" title="3.1 用前缀避免命名空间冲突"></a>3.1 用前缀避免命名空间冲突</h2><p><strong>1.如果发生命名冲突（naming clash），那么应用程序的链接过程就会出错，因为出现了重复符号(duplicate symbol)。</strong></p>
-<p><strong>2.应该为所有名称都加上适当的前缀，最好是</strong>++三个字母以上++<strong>做前缀，因为Apple宣称其保留使用所有 “两字母前缀”。</strong></p>
-<p><strong>3.在类的实现文件所有的纯C 函数及全局变量，也是容易命名冲突的，在编译好的目标文件中，这些要算做 “顶级符号”（top-level symbol）。</strong></p>
-<h2 id="3-2-提供-“全能初始化方法”"><a href="#3-2-提供-“全能初始化方法”" class="headerlink" title="3.2 提供 “全能初始化方法”"></a>3.2 提供 “全能初始化方法”</h2><p><strong>1.“全能初始化方法”（designated initializer）：为对象提供必要信息以便其能完成工作的初始化方法。</strong></p>
-<p><strong>2.每个子类的全能初始化方法都应该调用其超类的对应方法，并逐层向上。</strong></p>
-<ul>
-<li>在类中提供一个全能初始化方法，并于文档里指明。其他初始化方法均应调用此方法。</li>
-<li>若全能初始化方法与超类不同，则需覆写超类中的对应方法。</li>
-<li>如果超类的初始化方法不适用于子类，那么应该覆写这个超类方法，并在其中抛出异常。</li>
-</ul>
-<h2 id="3-3-实现-description-方法"><a href="#3-3-实现-description-方法" class="headerlink" title="3.3 实现 description 方法"></a>3.3 实现 description 方法</h2><p><strong>1.在调用NSLog(@”object = %@”,onbject); 其实是调用了对象的description 方法。</strong></p>
-<p><strong>2.在我们自定义类中，这样子打印输出信息有可能是这种object =，这个我们需要重写description 方法，让它返回我们需要的一些信息。</strong></p>
-<p><strong>3.description 定义在NSObject 协议里面，因为NSObject 不是唯一的 “根类”，用继承不能很好的让其他类有这个方法</strong></p>
-<blockquote>
-<p>例如：NSProxy 也是遵从了NSObject 协议的 “根类”。</p>
-</blockquote>
-<p><strong>4.debugDescription 方法是开发者在调试器中以控制台命令打印对象时才调用的，默认是直接调用description 方法。</strong></p>
-<p><strong>5.小技巧：可以在description 中用NSDictionary 的description 方法来输出，就是将信息用字典的形式来展示，这样子更加直观，也更加容易扩展。</strong></p>
-<h2 id="3-4-尽量使用不可变对象"><a href="#3-4-尽量使用不可变对象" class="headerlink" title="3.4 尽量使用不可变对象"></a>3.4 尽量使用不可变对象</h2><p><strong>1.设计类的时候，用属性来封装数据，在用属性的时候，可将其声明为 “只读” ，避免外部不必要的修改</strong></p>
-<blockquote>
-<p>PS：如果把可变对象放到collection 之后又修改其内容，很容易会破坏set 的内部数据结构，使其失去固有的语义。</p>
-</blockquote>
-<p><strong>2.尽量把对外公布出来的属性设为只读，而且只在确有必要时才将属性对外公布。</strong></p>
-<p><strong>3.当我们想外部暴露只读属性、内部需要修改属性，这样子通常是在内部将readonly 属性重新声明为readwrite。但是如果该属性是nonatomic 的，这样子做可能会产生 “竞争条件”（rece condition）。在对象内部写入某属性时，对象外的观察者也许正在读取该属性。若想避免此问题，我们可以在必要时通过 “派发队列”（dispatch queue）等手段，将所有的数据存取操作都设为同步操作。</strong></p>
-<p><strong>4.虽然属性对外设置成readonly 了，但是外部仍能通过 “键值编码”（Key-Value Coding，KVC）技术设置这些属性值。[object setValue:@”abc” forKey:@”name”] ，这样子可以修改name 这个属性，KVC 会在类中查找 “setName：” 方法来修改属性值。</strong></p>
-<p><strong>5.还可以通过类型信息查询功能，查出属性所对应的实例变量在内存中的偏移量，从此来人为设置这个实例变量的值。</strong></p>
-<p><strong>注意点总结：</strong></p>
-<ul>
-<li>尽量创建不可变的对象。</li>
-<li>若某属性仅可于对象内部修改，则在 “class-continuation 分类” 中将其由readonly 属性扩展成readwrite 属性。</li>
-<li>不要把可变的collection 作为属性公开，而应提供相关方法，以此修改对象中的可变collection。</li>
-</ul>
-<h2 id="3-5-使用清晰而协调的命名方式"><a href="#3-5-使用清晰而协调的命名方式" class="headerlink" title="3.5 使用清晰而协调的命名方式"></a>3.5 使用清晰而协调的命名方式</h2><h3 id="1、方法与变量命名"><a href="#1、方法与变量命名" class="headerlink" title="1、方法与变量命名"></a>1、方法与变量命名</h3><p><strong>方法和变量名使用 “驼峰式大小写命名法”：以小写字母开头，其后每个单词首字母大写。</strong></p>
-<p><strong>1.方法名言简意赅，能准确表达方法功能，不易太长。</strong></p>
-<p><strong>2. 如果方法的返回值是新创建的，那么方法名的首个词应该是返回值的类型</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- stringWithString</span><br><span class="line"></span><br><span class="line">- intValue</span><br></pre></td></tr></table></figure>
-<p><strong>除非前面还有修饰语，例如localizedString。属性的存取方法不遵循这种命名方式。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- localizedStringWithFormat:</span><br><span class="line"></span><br><span class="line">- initWith</span><br></pre></td></tr></table></figure>
-<p><strong>3. 不要使用str这种简称，应该使用string 这样的全称。</strong></p>
-<p><strong>4. Boolean 属性应加is前缀。如果某方法返回非属性的Boolean 值，那么应该根据其功能，选用has 或is 当前缀。</strong></p>
-<p><strong>5. 将get 这个前缀留给那些借由 ”输出参数“ 来保存返回值的方法，比如说，把返回值填充到 ”C语言式数组“ 里的那种方法就可以使用这个词做前缀。</strong></p>
-<h3 id="2、类与协议的命名"><a href="#2、类与协议的命名" class="headerlink" title="2、类与协议的命名"></a>2、类与协议的命名</h3><p><strong>1. 类名也采用驼峰式命名法，不过其首字母需要大写，通常还会加三个以上前缀字母，避免命名空间冲突。</strong></p>
-<p><strong>2. 命名应该协调一致，从其他框架继承子类，务必遵循其命名惯例。</strong></p>
-<blockquote>
-<p>UIView 子类末尾必须是View，委托协议末尾必须是Delegate。</p>
-</blockquote>
-<p><strong>3. 起名时应遵从标准的Objective-C 命名规范，这样子创建出来的接口更容易为开发者所理解。</strong></p>
-<h2 id="3-6-为私有方法名加前缀"><a href="#3-6-为私有方法名加前缀" class="headerlink" title="3.6 为私有方法名加前缀"></a>3.6 为私有方法名加前缀</h2><p><strong>1. 给私有方法的名称加上前缀，这样可以很容易地将其同公共方法区分开。</strong></p>
-<blockquote>
-<p>一种方案是加前缀 p_</p>
-</blockquote>
-<p><strong>2. 不要单用一个下划线做私有方法的前缀，因为这种做法是预留给苹果公司用的。</strong></p>
-<h3 id="3-7-理解Objective-C-错误模型"><a href="#3-7-理解Objective-C-错误模型" class="headerlink" title="3.7 理解Objective-C 错误模型"></a>3.7 理解Objective-C 错误模型</h3><p><strong>1. ARC 默认不是 “异常安全的”，如果抛出异常，那么应在作用域末尾释放的对象现在却不会自动释放了。</strong></p>
-<blockquote>
-<p>想要生成 “异常安全的” 代码，可以设置编译器的标志来实现 “-fobjc-arc-exceptions”。但是这样没有异常的情况也会执行这些代码。</p>
-</blockquote>
-<p><strong>2. 平常很难写出在抛出异常时不会导致内存泄漏的代码，Objective-C 语言现在采用的办法是：只在极其罕见的情况下抛出异常，抛出异常应用程序直接退出，不考虑修复问题，不用再写复杂的 “异常安全” 代码。</strong></p>
-<p><strong>3. 只有发生了可使整个应用程序崩溃的严重错误时，才应使用异常。</strong></p>
-<p><strong>4. 在 “不那么严重的错误”，令方法返回nil/0，或者是使用NSError，表明其中有错误发生。</strong></p>
-<blockquote>
-<p>创建对象时，可用 返回nil/0/-1</p>
-</blockquote>
-<blockquote>
-<p>方法逻辑错误或者需要详细错误信息时，考虑 NSError</p>
-</blockquote>
-<p><strong>5. NSError 可以经由此对象，把导致错误的原因回报给调用者。</strong></p>
-<p><strong>NSError 可封装3条信息：</strong></p>
-<ul>
-<li>Error domain （错误范围，其类型为字符串）</li>
-<li>Error code （错误码，其类型为整数）</li>
-<li>User info （用户信息，其类型为字典）</li>
-</ul>
-<p><strong>1）通过委托协议（delegate）来传递NSError</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void) connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;</span><br></pre></td></tr></table></figure>
-<p><strong>2）经由方法的 “输出参数” 返回给调用者</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// 方法定义</span><br><span class="line">// 返回 BOOL，容易判断（不需要查询 error 参数）。</span><br><span class="line">// NSError ** 为指向指针（NSError *）的指针</span><br><span class="line">- (BOOL) doSomething:(NSError **)error &#123;</span><br><span class="line">  if(/*there was an error*/)&#123;</span><br><span class="line">   // error 参数不是nil,不然解引用异常</span><br><span class="line">   if(error)&#123;</span><br><span class="line">         // *error 解引用，即NSError *指针指向新对象。</span><br><span class="line">         *error = [NSError errorWithDomain:domain</span><br><span class="line">                                      code:code</span><br><span class="line">                                  userInfo:userInfo];</span><br><span class="line">           return NO;</span><br><span class="line">     &#125;</span><br><span class="line">  &#125;else&#123;</span><br><span class="line">      return YES;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 用法</span><br><span class="line">NSError *error = nil; // 如果想获取 eroor 详情，不能为 nil</span><br><span class="line">BOOL ret = [objecr doSomething:&amp;error]</span><br><span class="line">if(ret)&#123;</span><br><span class="line">    //to do</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="3-9-理解NSCopying-协议"><a href="#3-9-理解NSCopying-协议" class="headerlink" title="3.9 理解NSCopying 协议"></a>3.9 理解NSCopying 协议</h2><p><strong>1. 使用对象经常需要拷贝它，此操作通过copy 方法完成。如果想令自己的类支持拷贝操作，那就实现NSCopying 协议，该协议只有一个方法：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (id)copyWithZone:(NSZone *)zone</span><br></pre></td></tr></table></figure>
-<p>不必担心zone参数</p>
-<blockquote>
-<p>以前开发程序，会把内存分成不同的 “区”（zone），而对象会创建在不同区里面，现在不用了，每个程序只有一个区：“默认区”（default zone）。因此不必担心 zone 参数</p>
-</blockquote>
-<p><strong>2. NSMutableCopying 协议跟NSCopying 类似，也只有一个方法：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (id)mutableCopyWithZone:(NSZone *)zone</span><br></pre></td></tr></table></figure>
-<p><strong>3. 如果你的类分可变版本与不可变版本，这两个协议你都应该实现。</strong></p>
-<p><strong>4. 注意：在可变对象上调用copy 方法返回另外一个不可变类的实例。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- [NSMutablArray copy] =&gt; NSArray</span><br><span class="line">- [NSArray mutableCopy] =&gt; NSmutableArray</span><br></pre></td></tr></table></figure>
-<p><strong>5. 在编写拷贝方法时，还要确定一个问题：应该执行 “深拷贝”（deep copy）还是 “浅拷贝”（shallow copy）。</strong></p>
-<p><strong>6. 深拷贝是指在拷贝对象自身时，将其底层的数据也一并复制过去；浅拷贝只对拷贝对象的指针，并不会拷贝底层的数据。Foundation 框架中的所有collection 类默认都执行浅拷贝。</strong></p>
-<p><strong>7. 没有专门定义深拷贝的协议，所以具体执行方式由每个类来确定。另外不要假设遵从了NSCopying 协议的对象都会执行深拷贝。绝大多数情况下，执行的都是浅拷贝。</strong></p>
-<p><strong>8. 如果你所写的对象需要深拷贝，那么可以考虑新增一个专门执行深拷贝的方法。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (id)initWithSet:(NSArray *)array copyItems:(BOOL)copyItems</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3034,7 +3047,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">21</span>
+                    <span class="site-state-item-count">25</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -3059,7 +3072,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">6</span>
+                      
+                    
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -3104,7 +3119,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">16</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

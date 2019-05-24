@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="消息队列概述消息队列中间件是分布式系统中重要的组件，主要解决应用解耦，异步消息，流量削锋等问题，实现高性能，高可用，可伸缩和最终一致性架构。目前使用较多的消息队列有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ 1、应用场景消息队列的主要应用场景有：异步处理，应用解耦，流量削锋、日志处理和消息通讯。 1.1 异步处理将不是业务的必须逻辑，采用消息进行异">
+<meta name="keywords" content="java,mq">
+<meta property="og:type" content="article">
+<meta property="og:title" content="消息队列概述">
+<meta property="og:url" content="http://yoursite.com/2019/04/03/mq-summary/index.html">
+<meta property="og:site_name" content="Yun&#39;s Blog">
+<meta property="og:description" content="消息队列概述消息队列中间件是分布式系统中重要的组件，主要解决应用解耦，异步消息，流量削锋等问题，实现高性能，高可用，可伸缩和最终一致性架构。目前使用较多的消息队列有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ 1、应用场景消息队列的主要应用场景有：异步处理，应用解耦，流量削锋、日志处理和消息通讯。 1.1 异步处理将不是业务的必须逻辑，采用消息进行异">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/270324/201607/270324-20160730152810934-1818295010.png">
+<meta property="og:image" content="http://qnyunyun.yunsoho.cn/20160506134211236.png?imageMogr2/thumbnail/!100p">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/270324/201608/270324-20160801102300309-25949110.jpg">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/270324/201608/270324-20160801102309481-1983324345.jpg">
+<meta property="og:updated_time" content="2019-05-24T02:11:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="消息队列概述">
+<meta name="twitter:description" content="消息队列概述消息队列中间件是分布式系统中重要的组件，主要解决应用解耦，异步消息，流量削锋等问题，实现高性能，高可用，可伸缩和最终一致性架构。目前使用较多的消息队列有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ 1、应用场景消息队列的主要应用场景有：异步处理，应用解耦，流量削锋、日志处理和消息通讯。 1.1 异步处理将不是业务的必须逻辑，采用消息进行异">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/270324/201607/270324-20160730152810934-1818295010.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/03/mq-summary/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>消息队列概述 | Yun's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yun's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/03/mq-summary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yun's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">消息队列概述
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-03 22:12:32" itemprop="dateCreated datePublished" datetime="2019-04-03T22:12:32+08:00">2019-04-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-05-24 10:11:33" itemprop="dateModified" datetime="2019-05-24T10:11:33+08:00">2019-05-24</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="消息队列概述"><a href="#消息队列概述" class="headerlink" title="消息队列概述"></a>消息队列概述</h1><p>消息队列中间件是分布式系统中重要的组件，主要解决应用解耦，异步消息，流量削锋等问题，实现高性能，高可用，可伸缩和最终一致性架构。目前使用较多的消息队列有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ</p>
+<h2 id="1、应用场景"><a href="#1、应用场景" class="headerlink" title="1、应用场景"></a>1、应用场景</h2><p>消息队列的主要应用场景有：异步处理，应用解耦，流量削锋、日志处理和消息通讯。</p>
+<h3 id="1-1-异步处理"><a href="#1-1-异步处理" class="headerlink" title="1.1 异步处理"></a>1.1 异步处理</h3><p>将不是业务的必须逻辑，采用消息进行异步处理：</p>
+<blockquote>
+<p>如：用户注册后，需要发注册成功邮件和注册成功短信。邮件和短信可以写入消息队列，异步执行。</p>
+</blockquote>
+<h3 id="1-2-应用解耦"><a href="#1-2-应用解耦" class="headerlink" title="1.2 应用解耦"></a>1.2 应用解耦</h3><p>将接口调用，解耦为消息通知。</p>
+<blockquote>
+<p>用户下单后，订单系统需要通知库存系统。传统的做法是，订单系统调用库存系统的接口。如果库存系统失败，那么整个订单将失败。</p>
+<p>如果订单完成后，采用将后续处理写入队列，由其他系统自行处理。以及解耦。</p>
+</blockquote>
+<h3 id="1-3-流量削锋"><a href="#1-3-流量削锋" class="headerlink" title="1.3 流量削锋"></a>1.3 流量削锋</h3><p>流量过大，导致流量暴增，应用挂掉，可以用消息队列缓冲，一般在秒杀或团抢活动中使用广泛。</p>
+<blockquote>
+<p>用户的请求，服务器接收后，首先写入消息队列。假如消息队列长度超过最大数量，则直接抛弃用户请求或跳转到错误页面。</p>
+<p>秒杀业务根据消息队列中的请求信息，再做后续处理。</p>
+</blockquote>
+<h3 id="1-4-日志处理"><a href="#1-4-日志处理" class="headerlink" title="1.4 日志处理"></a>1.4 日志处理</h3><p>日志处理是指将消息队列用在日志处理中，比如Kafka的应用，解决大量日志传输的问题。架构简化如下</p>
+<p><img src="http://images2015.cnblogs.com/blog/270324/201607/270324-20160730152810934-1818295010.png" alt=""></p>
+<ul>
+<li>日志采集客户端，负责日志数据采集，定时写受写入Kafka队列</li>
+<li>Kafka消息队列，负责日志数据的接收，存储和转发</li>
+<li>日志处理应用：订阅并消费kafka队列中的日志数据 </li>
+</ul>
+<h3 id="1-5-消息通讯"><a href="#1-5-消息通讯" class="headerlink" title="1.5 消息通讯"></a>1.5 消息通讯</h3><p>消息通讯是指，消息队列一般都内置了高效的通信机制，因此也可以用在纯的消息通讯。比如实现点对点消息队列，或者聊天室等</p>
+<ul>
+<li><p>客户端A和客户端B使用同一队列，进行消息通讯。</p>
+</li>
+<li><p>客户端A，客户端B，客户端N订阅同一主题，进行消息发布和接收。实现类似聊天室效果。</p>
+</li>
+</ul>
+<h2 id="2、MQ-框架对比"><a href="#2、MQ-框架对比" class="headerlink" title="2、MQ 框架对比"></a>2、MQ 框架对比</h2><p><a href="https://blog.csdn.net/u010486495/article/details/80179504" target="_blank" rel="noopener">https://blog.csdn.net/u010486495/article/details/80179504</a></p>
+<p><img src="http://qnyunyun.yunsoho.cn/20160506134211236.png?imageMogr2/thumbnail/!100p" alt=""></p>
+<ul>
+<li>在面向服务架构中，推荐 RabbitMQ</li>
+<li>日志消息，推荐 Kafka，高吞吐量。</li>
+</ul>
+<h3 id="1）Kafka"><a href="#1）Kafka" class="headerlink" title="1）Kafka"></a>1）Kafka</h3><p>Kafka是linkedin开源的MQ系统，主要特点是基于Pull的模式来处理消息消费，追求高吞吐量，一开始的目的就是用于日志收集和传输，0.8开始支持复制，不支持事务，适合产生大量数据的互联网服务的数据收集业务。</p>
+<h3 id="2）RabbitMQ"><a href="#2）RabbitMQ" class="headerlink" title="2）RabbitMQ"></a>2）RabbitMQ</h3><p>RabbitMQ是使用Erlang语言开发的开源消息队列系统，基于AMQP协议来实现。AMQP的主要特征是面向消息、队列、路由（包括点对点和发布/订阅）、可靠性、安全。AMQP协议更多用在企业系统内，对数据一致性、稳定性和可靠性要求很高的场景，对性能和吞吐量的要求还在其次。</p>
+<p>RocketMQ是阿里开源的消息中间件，它是纯Java开发，具有高吞吐量、高可用性、适合大规模分布式系统应用的特点。RocketMQ思路起源于Kafka，但并不是Kafka的一个Copy，它对消息的可靠传输及事务性做了优化，目前在阿里集团被广泛应用于交易、充值、流计算、消息推送、日志流式处理、binglog分发等场景。</p>
+<h3 id="3）ZeroMQ"><a href="#3）ZeroMQ" class="headerlink" title="3）ZeroMQ"></a>3）ZeroMQ</h3><p>ZeroMQ只是一个网络编程的Pattern库，将常见的网络请求形式（分组管理，链接管理，发布订阅等）模式化、组件化，简而言之socket之上、MQ之下。对于MQ来说，网络传输只是它的一部分，更多需要处理的是消息存储、路由、Broker服务发现和查找、事务、消费模式（ack、重投等）、集群服务等。</p>
+<h3 id="4）区别"><a href="#4）区别" class="headerlink" title="4）区别"></a>4）区别</h3><p>RabbitMQ/Kafka/ZeroMQ 都能提供消息队列服务，但有很大的区别。<br>在面向服务架构中通过消息代理（比如 RabbitMQ / Kafka等），使用生产者-消费者模式在服务间进行异步通信是一种比较好的思想。</p>
+<p>因为服务间依赖由强耦合变成了松耦合。消息代理都会提供持久化机制，在消费者负载高或者掉线的情况下会把消息保存起来，不会丢失。就是说生产者和消费者不需要同时在线，这是传统的请求-应答模式比较难做到的，需要一个中间件来专门做这件事。其次消息代理可以根据消息本身做简单的路由策略，消费者可以根据这个来做负载均衡，业务分离等。</p>
+<p>缺点也有，就是需要额外搭建消息代理集群（但优点是大于缺点的 ） 。</p>
+<p>ZeroMQ 和 RabbitMQ/Kafka 不同，它只是一个异步消息库，在套接字的基础上提供了类似于消息代理的机制。使用 ZeroMQ 的话，需要对自己的业务代码进行改造，不利于服务解耦。</p>
+<p>RabbitMQ 支持 AMQP（二进制），STOMP（文本），MQTT（二进制），HTTP（里面包装其他协议）等协议。</p>
+<p>Kafka 使用自己的协议。<br>Kafka 自身服务和消费者都需要依赖 Zookeeper。</p>
+<p>RabbitMQ 在有大量消息堆积的情况下性能会下降，Kafka不会。毕竟AMQP设计的初衷不是用来持久化海量消息的，而Kafka一开始是用来处理海量日志的。</p>
+<p>总的来说，RabbitMQ 和 Kafka 都是十分优秀的分布式的消息代理服务，只要合理部署，不作，基本上可以满足生产条件下的任何需求。</p>
+<h2 id="3、示例"><a href="#3、示例" class="headerlink" title="3、示例"></a>3、示例</h2><h3 id="2-1-电商系统"><a href="#2-1-电商系统" class="headerlink" title="2.1 电商系统"></a>2.1 电商系统</h3><p><img src="http://images2015.cnblogs.com/blog/270324/201608/270324-20160801102300309-25949110.jpg" alt=""></p>
+<p>消息队列采用高可用，可持久化的消息中间件。比如Active MQ，Rabbit MQ，Rocket Mq。</p>
+<p>（1）应用将主干逻辑处理完成后，写入消息队列。消息发送是否成功可以开启消息的确认模式。（消息队列返回消息接收成功状态后，应用再返回，这样保障消息的完整性）</p>
+<p>（2）扩展流程（发短信，配送处理）订阅队列消息。采用推或拉的方式获取消息并处理。</p>
+<p>（3）消息将应用解耦的同时，带来了数据一致性问题，可以采用最终一致性方式解决。比如主数据写入数据库，扩展应用根据消息队列，并结合数据库方式实现基于消息队列的后续处理。</p>
+<h3 id="2-2-日志收集系统"><a href="#2-2-日志收集系统" class="headerlink" title="2.2 日志收集系统"></a>2.2 日志收集系统</h3><p><img src="http://images2015.cnblogs.com/blog/270324/201608/270324-20160801102309481-1983324345.jpg" alt=""></p>
+<p>分为Zookeeper注册中心，日志收集客户端，Kafka集群和Storm集群（OtherApp）四部分组成。<br>Zookeeper注册中心，提出负载均衡和地址查找服务<br>日志收集客户端，用于采集应用系统的日志，并将数据推送到kafka队列<br>Kafka集群：接收，路由，存储，转发等消息处理<br>Storm集群：与OtherApp处于同一级别，采用拉的方式消费队列中的数据</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://blog.csdn.net/HD243608836/article/details/80217591" target="_blank" rel="noopener">https://blog.csdn.net/HD243608836/article/details/80217591</a></p>
+<p><a href="https://blog.csdn.net/u010486495/article/details/80179504" target="_blank" rel="noopener">https://blog.csdn.net/u010486495/article/details/80179504</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/mq/" rel="tag"># mq</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/17/jvm-optimize/" rel="next" title="jvm 调优">
+                <i class="fa fa-chevron-left"></i> jvm 调优
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/15/server-performance/" rel="prev" title="服务的性能概述、优化及测试工具">
+                服务的性能概述、优化及测试工具 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Yun</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">25</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#消息队列概述"><span class="nav-number">1.</span> <span class="nav-text">消息队列概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、应用场景"><span class="nav-number">1.1.</span> <span class="nav-text">1、应用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-异步处理"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 异步处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-应用解耦"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 应用解耦</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-流量削锋"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3 流量削锋</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-日志处理"><span class="nav-number">1.1.4.</span> <span class="nav-text">1.4 日志处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-消息通讯"><span class="nav-number">1.1.5.</span> <span class="nav-text">1.5 消息通讯</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、MQ-框架对比"><span class="nav-number">1.2.</span> <span class="nav-text">2、MQ 框架对比</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1）Kafka"><span class="nav-number">1.2.1.</span> <span class="nav-text">1）Kafka</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2）RabbitMQ"><span class="nav-number">1.2.2.</span> <span class="nav-text">2）RabbitMQ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3）ZeroMQ"><span class="nav-number">1.2.3.</span> <span class="nav-text">3）ZeroMQ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4）区别"><span class="nav-number">1.2.4.</span> <span class="nav-text">4）区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、示例"><span class="nav-number">1.3.</span> <span class="nav-text">3、示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-电商系统"><span class="nav-number">1.3.1.</span> <span class="nav-text">2.1 电商系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-日志收集系统"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.2 日志收集系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.4.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yun</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Gemini</a> v6.4.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
